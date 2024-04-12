@@ -1,0 +1,14 @@
+{
+  "name": "reflection",
+  "packageManager": "yarn@4.1.1",
+  "private": true,
+  "workspaces": [
+    "packages/*",
+    "packages/reflection-build/test/examples/parser",
+    "packages/reflection-build/test/examples/source-repository/a",
+    "packages/reflection-build/test/examples/source-repository/b"
+  ],
+  "devDependencies": {
+    "lerna": "8.1.2"
+  }
+}

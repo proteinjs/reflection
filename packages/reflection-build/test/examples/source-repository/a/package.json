@@ -1,0 +1,32 @@
+{
+    "name": "@proteinjs/reflection-build-test-a",
+    "version": "0.0.1",
+    "private": true,
+    "description": "Test package a",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/brentbahry/test.git"
+    },
+    "bugs": {
+        "url": "https://github.com/brentbahry/test/issues"
+    },
+    "homepage": "https://github.com/brentbahry/test#readme",
+    "author": "Brent Bahry",
+    "license": "ISC",
+    "scripts": {
+        "build": "tsc -p tsconfig.parent.json && node ./dist/runBuild.js && tsc"
+    },
+    "dependencies": {
+        "@proteinjs/reflection-build-test-b": "0.0.1"
+    },
+    "devDependencies": {
+        "@proteinjs/reflection": "1.0.0",
+        "@proteinjs/util": "1.0.17",
+        "@proteinjs/util-node": "1.0.17",
+        "@types/node": "20.12.6",
+        "typescript": "5.2.2",
+        "typescript-parser": "0.0.0-development"
+    },
+    "main": "./dist/generated/index.js",
+    "types": "./dist/generated/index.d.ts"
+}
