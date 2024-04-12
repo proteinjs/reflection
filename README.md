@@ -1,6 +1,6 @@
 # Overview
 
-Reflection is an API for querying the source in your runtime, with module loading. Instead of defining APIs and also needing to expose functions for registering implementations of those APIs, you can use the SourceRepositoy to query for API implementations at runtime.
+Reflection is an API for querying the source in your runtime, with module loading. Instead of defining APIs and also needing to expose functions for registering implementations of those APIs, you can use the SourceRepositoy to query for API implementations at runtime. This can result in much cleaner dependency management across packages.
 
 # How to use
 
@@ -46,4 +46,6 @@ Reflection is an API for querying the source in your runtime, with module loadin
   cats[0].getName() // BrownCat
   cats[1].getName() // OrangeCat
   ```
-5. You can also export Cat from your package, and any consuming packages that implement the Cat interface and are loaded in the same runtime as your package will be loadable by your package. An example of this is exposing a Route interface from your server, and then loading all routes included in your build from your server via the SourceRepositoy.
+5. You can also export Cat from your package, and any consuming packages that implement the Cat interface and are loaded in the same runtime as your package will be accessible in this way by your package via the SourceRepository api. 
+
+An example use case for this is exposing a Route interface from your server, and then loading all routes included in your build from your server using SourceRepositoy. Instead of your server package needing to depend on every package where a route is defined, as long as the package implementing a Route is included in the build, your server will have access to it.
