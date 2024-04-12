@@ -44,7 +44,6 @@ jobs:
 
       - name: Authenticate with npm registry
         run: |
-          echo "registry=https://registry.npmjs.org/" >> .npmrc
           echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" >> .npmrc
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -53,8 +52,6 @@ jobs:
         run: |
           git config user.name github-actions
           git config user.email github-actions@github.com
-          yarn workspaces list -v --json
-          npx lerna ls --json -la
           npx lerna publish --yes --no-private --loglevel verbose
         env:
           NPM_TOKEN: ${{secrets.NPM_TOKEN}}
