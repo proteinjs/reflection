@@ -1592,7 +1592,7 @@ __metadata:
     "@proteinjs/util-node": "npm:1.0.17"
     "@types/node": "npm:20.12.6"
     typescript: "npm:5.2.2"
-    typescript-parser: "npm:0.0.0-development"
+    typescript-parser: "npm:0.0.1"
   languageName: unknown
   linkType: soft
 
@@ -1605,7 +1605,7 @@ __metadata:
     "@proteinjs/util-node": "npm:1.0.17"
     "@types/node": "npm:20.12.6"
     typescript: "npm:5.2.2"
-    typescript-parser: "npm:0.0.0-development"
+    typescript-parser: "npm:0.0.1"
   languageName: unknown
   linkType: soft
 
@@ -1637,7 +1637,7 @@ __metadata:
     jsesc: "npm:^3.0.1"
     ts-jest: "npm:29.1.1"
     typescript: "npm:5.2.2"
-    typescript-parser: "npm:0.0.0-development"
+    typescript-parser: "npm:0.0.1"
   bin:
     reflection-build: dist/src/runBuild.js
     reflection-watch: dist/src/runWatch.js
@@ -17243,7 +17243,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript-parser@npm:0.0.0-development, typescript-parser@workspace:packages/node-typescript-parser":
+"typescript-parser@npm:0.0.1, typescript-parser@workspace:packages/node-typescript-parser":
   version: 0.0.0-use.local
   resolution: "typescript-parser@workspace:packages/node-typescript-parser"
   dependencies:

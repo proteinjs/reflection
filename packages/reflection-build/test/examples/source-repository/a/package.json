@@ -25,7 +25,7 @@
         "@proteinjs/util-node": "1.0.17",
         "@types/node": "20.12.6",
         "typescript": "5.2.2",
-        "typescript-parser": "0.0.0-development"
+        "typescript-parser": "0.0.1"
     },
     "main": "./dist/generated/index.js",
     "types": "./dist/generated/index.d.ts"

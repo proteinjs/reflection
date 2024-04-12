@@ -32,7 +32,7 @@
         "gulp": "4.0.2",
         "gulp-shell": "0.8.0",
         "jsesc": "^3.0.1",
-        "typescript-parser": "0.0.0-development"
+        "typescript-parser": "0.0.1"
     },
     "devDependencies": {
         "@proteinjs/reflection-build-test-a": "0.0.1",
