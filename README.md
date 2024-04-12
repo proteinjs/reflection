@@ -1,51 +1,62 @@
 # Overview
 
-Reflection is an API for querying the source in your runtime, with module loading. Instead of defining APIs and also needing to expose functions for registering implementations of those APIs, you can use the SourceRepositoy to query for API implementations at runtime. This can result in much cleaner dependency management across packages.
+Reflection is an api for querying the [typescript] source in your runtime, with module loading. Instead of defining apis and also needing to expose functions for registering implementations of those apis, you can use the SourceRepositoy to query for api implementations at runtime. This can result in much cleaner dependency management across packages.
+
+An example use case for this is exposing a Route interface from your server, and then loading all routes included in your build from your server using the `SourceRepositoy` api. Instead of your server package needing to depend on every package where a route is defined (or having a complicated build process for loading routes into static memory), as long as the package with classes implementing Route is included in the build, your server will have access to query and instantiate those Routes using the `SourceRepository` api.
+
+# Production example
+
+See the Protein Js implementation of a [Service](https://github.com/proteinjs/service/blob/main/packages/service/src/Service.ts).
 
 # How to use
 
-1. Install @proteinjs/reflection as a package dependency, and @proteinjs/reflection-build as a dev dependency
+1. Install `@proteinjs/reflection` as a package dependency, and `@proteinjs/reflection-build` as a dev dependency
 2. Prepend your package build script with `reflection-build`, ie. `reflection-build && tsc`
-3. When you build your package, ./generated/index.ts will be generated, and the package.json will be updated to point main at dist/generated/index.js
-4. You can now do the following in your package
+3. When you build your package, `./generated/index.ts` will be generated, and the package.json will be updated to point main at `dist/generated/index.js`
+4. You can now do the following in your project
+  ## Package: @your-org/server-api
   ```
-  // Cat.ts
-  import { Loadable } from '@proteinjs/reflection'
+  // Route.ts
+  import { Loadable, SourceRepository } from '@proteinjs/reflection'
 
-  export const getCats = () => SourceRepository.get().objects<Cat>('your-package-name/Cat');
+  export const getRoutes = () => SourceRepository.get().objects<Route>('@your-org/server-api/Route');
 
-  export interface Cat extends Loadable {
-    getName(): string;
+  // Extending Loadable causes @proteinjs/reflection-build to load
+  // this type hierarchy into the SourceRepository at build time
+  export interface Route extends Loadable {
+    path: string;
+    method: string;
+    run(args: any[]): Promise<any>;
+  }
+  ```
+  ## Package: @your-org/auth
+  ```
+  // Login.ts
+  import { Route } from '@your-org/server-api'
+
+  export class Login implements Route {
+    path = '/login';
+    method = 'post';
+    async run(args: any[]) { ... }
   }
   ```
   ```
-  // BrownCat.ts
-  import { Cat } from './Cat'
+  // Logout.ts
+  import { Route } from '@your-org/server-api'
 
-  export class BrownCat implements Cat {
-    getName() {
-      return this.constructor.name;
-    }
+  export class Logout implements Route {
+    path = '/logout';
+    method = 'get';
+    async run(args: any[]) { ... }
   }
   ```
-   ```
-  // OrangeCat.ts
-  import { Cat } from './Cat'
-
-  export class OrangeCat implements Cat {
-    getName() {
-      return this.constructor.name;
-    }
-  }
+  ## Package: @your-org/server
   ```
-  ```
-  // testLoading.ts
-  import { getCats } from './Cat'
+  // loadRoutes.ts
+  import { getRoutes } from '@your-org/server-api'
 
-  const cats = getCats();
-  cats[0].getName() // BrownCat
-  cats[1].getName() // OrangeCat
+  // There is no order guarantee
+  const routes = getRoutes();
+  routes[0].path // /login
+  routes[1].path // /logout
   ```
-5. You can also export Cat from your package, and any consuming packages with classes that implement the Cat interface and are loaded in the same runtime as your package will be accessible in this way by your package via the SourceRepository api. 
-
-An example use case for this is exposing a Route interface from your server, and then loading all routes included in your build from your server using SourceRepositoy. Instead of your server package needing to depend on every package where a route is defined (or having a complicated build process for loading routes into static memory), as long as the package implementing a Route is included in the build, your server will have access to it.
