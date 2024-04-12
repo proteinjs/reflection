@@ -20,7 +20,7 @@
         "@proteinjs/reflection-build-test-b": "0.0.1"
     },
     "devDependencies": {
-        "@proteinjs/reflection": "1.0.0",
+        "@proteinjs/reflection": "1.0.2",
         "@proteinjs/util": "1.0.17",
         "@proteinjs/util-node": "1.0.17",
         "@types/node": "20.12.6",
