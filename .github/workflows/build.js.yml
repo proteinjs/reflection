@@ -54,7 +54,6 @@ jobs:
           git config user.name github-actions
           git config user.email github-actions@github.com
           yarn workspaces list -v --json
-          npx lerna bootstrap
           npx lerna publish --yes --no-private --loglevel verbose
         env:
           NPM_TOKEN: ${{secrets.NPM_TOKEN}}
