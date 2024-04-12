@@ -3,7 +3,7 @@
   "packageManager": "yarn@4.1.1",
   "private": true,
   "workspaces": [
-    "packages/*",
+    "packages/reflection",
     "packages/reflection-build/test/examples/parser",
     "packages/reflection-build/test/examples/source-repository/a",
     "packages/reflection-build/test/examples/source-repository/b"
