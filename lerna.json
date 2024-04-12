@@ -1,12 +1,6 @@
 {
   "version": "independent",
   "npmClient": "yarn",
-  "packages": [
-    "packages/*",
-    "packages/reflection-build/test/examples/parser",
-    "packages/reflection-build/test/examples/source-repository/a",
-    "packages/reflection-build/test/examples/source-repository/b"
-  ],
   "command": {
     "publish": {
       "conventionalCommits": true,
