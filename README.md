@@ -1,8 +1,49 @@
 # Overview
 
-Util libraries used by the Protein Js framework.
+Reflection is an API for querying the source in your runtime, with module loading. Instead of defining APIs and also needing to expose functions for registering implementations of those APIs, you can use the SourceRepositoy to query for API implementations at runtime.
 
-- @proteinjs/util are libs that can run in browser or in node
-- @proteinjs/util-node are libs that can run in node
+# How to use
 
-These libraries have minimal, non-framework dependencies (otuside of on each other).
+1. Install @proteinjs/reflection as a package dependency, and @proteinjs/reflection-build as a dev dependency
+2. Prepend your package build script with `reflection-build`, ie. `reflection-build && tsc`
+3. When you build your package, ./generated/index.ts will be generated, and the package.json will be updated to point main at dist/generated/index.js
+4. You can now do the following in your package
+  ```
+  // Cat.ts
+  import { Loadable } from '@proteinjs/reflection'
+
+  export const getCats = () => SourceRepository.get().objects<Cat>('your-package-name/Cat');
+
+  export interface Cat extends Loadable {
+    getName(): string;
+  }
+  ```
+  ```
+  // BrownCat.ts
+  import { Cat } from './Cat'
+
+  export class BrownCat implements Cat {
+    getName() {
+      return this.constructor.name;
+    }
+  }
+  ```
+   ```
+  // OrangeCat.ts
+  import { Cat } from './Cat'
+
+  export class OrangeCat implements Cat {
+    getName() {
+      return this.constructor.name;
+    }
+  }
+  ```
+  ```
+  // testLoading.ts
+  import { getCats } from './Cat'
+
+  const cats = getCats();
+  cats[0].getName() // BrownCat
+  cats[1].getName() // OrangeCat
+  ```
+5. You can also export Cat from your package, and any consuming packages that implement the Cat interface and are loaded in the same runtime as your package will be loadable by your package. An example of this is exposing a Route interface from your server, and then loading all routes included in your build from your server via the SourceRepositoy.
