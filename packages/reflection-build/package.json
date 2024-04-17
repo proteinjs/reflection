@@ -22,6 +22,7 @@
     "author": "Brent Bahry",
     "license": "ISC",
     "scripts": {
+        "clean": "rm -rf dist/ node_modules/ package-lock.json",
         "watch": "tsc -w -p .",
         "build": "tsc",
         "test": "jest"
@@ -29,16 +30,16 @@
     "dependencies": {
         "@dagrejs/graphlib": "2.1.4",
         "@proteinjs/reflection": "1.0.2",
-        "@proteinjs/util": "1.0.17",
-        "@proteinjs/util-node": "1.0.17",
+        "@proteinjs/util": "1.0.18",
+        "@proteinjs/util-node": "1.0.18",
         "globby": "11.0.1",
         "gulp": "4.0.2",
         "gulp-shell": "0.8.0",
         "jsesc": "^3.0.1",
-        "typescript-parser": "0.0.1"
+        "typescript-parser": "file:../node-typescript-parser"
     },
     "devDependencies": {
-        "@proteinjs/reflection-build-test-a": "0.0.1",
+        "@proteinjs/reflection-build-test-a": "file:./test/examples/source-repository/a",
         "@types/globby": "9.1.0",
         "@types/graphlib": "2.1.6",
         "@types/gulp": "4.0.16",
