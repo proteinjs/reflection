@@ -14,8 +14,8 @@
     "author": "Brent Bahry",
     "license": "ISC",
     "scripts": {
-        "clean": "rm -rf dist/ node_modules/ generated/ package-lock.json",
-        "build": "tsc -p tsconfig.parent.json && node ./dist/runBuild.js && tsc"
+        "clean": "rm -rf dist/ node_modules/ generated/ package-lock.json modules",
+        "build": "node symlinkTypescriptParser.js && tsc -p tsconfig.parent.json && node ./dist/runBuild.js && tsc"
     },
     "dependencies": {
         "@proteinjs/reflection-build-test-b": "file:../b"
@@ -25,8 +25,7 @@
         "@proteinjs/util": "1.0.18",
         "@proteinjs/util-node": "1.0.18",
         "@types/node": "20.12.6",
-        "typescript": "5.2.2",
-        "typescript-parser": "file:../../../../../node-typescript-parser"
+        "typescript": "5.2.2"
     },
     "main": "./dist/generated/index.js",
     "types": "./dist/generated/index.d.ts"

@@ -1,5 +1,5 @@
 import * as path from 'path';
-import { File as ParsedFile, NamedImport } from 'typescript-parser';
+import { File as ParsedFile, NamedImport } from '../../../modules/typescript-parser';
 import { promisifiedFs } from '@proteinjs/util-node';
 
 export class PackageNameFinder {

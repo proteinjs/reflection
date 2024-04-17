@@ -1,5 +1,5 @@
 import { TypeAliasDeclaration } from '@proteinjs/reflection';
-import { TypeAliasDeclaration as ParserTypeAliasDeclaration, TypeAlias as ParserTypeAlias } from 'typescript-parser';
+import { TypeAliasDeclaration as ParserTypeAliasDeclaration, TypeAlias as ParserTypeAlias } from '../../../modules/typescript-parser';
 import { PackageNameFinder } from './PackageNameFinder';
 
 export async function createTypeAliasDeclaration(parserTypeAliasDeclaration: ParserTypeAliasDeclaration, packageNameFinder: PackageNameFinder, filePath: string): Promise<TypeAliasDeclaration> {

@@ -28,7 +28,7 @@
       ]
   },
   "include": [
-      "../../../../src/runBuild.ts",
-      "../../../../src/tsconfigTemplate.json"
+        "../../../../src/runBuild.ts",
+        "../../../../src/tsconfigTemplate.json"
   ]
 }

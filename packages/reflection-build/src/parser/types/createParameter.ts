@@ -1,4 +1,4 @@
-import { ParameterDeclaration } from 'typescript-parser';
+import { ParameterDeclaration } from '../../../modules/typescript-parser';
 import { Parameter } from '@proteinjs/reflection';
 import { PackageNameFinder } from './PackageNameFinder';
 import { typeAliasDeclarationFromName } from './createTypeAliasDeclaration';

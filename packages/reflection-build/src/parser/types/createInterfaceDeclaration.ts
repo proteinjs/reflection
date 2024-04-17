@@ -1,4 +1,4 @@
-import { InterfaceDeclaration as ParserInterfaceDeclaration } from 'typescript-parser';
+import { InterfaceDeclaration as ParserInterfaceDeclaration } from '../../../modules/typescript-parser';
 import { InterfaceDeclaration, Property, Method } from '@proteinjs/reflection';
 import { PackageNameFinder } from './PackageNameFinder';
 import { createProperty } from './createProperty';

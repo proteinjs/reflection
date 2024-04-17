@@ -1,7 +1,7 @@
 import * as graphlib from '@dagrejs/graphlib';
 import globby from 'globby';
 import * as path from 'path';
-import { TypescriptParser } from 'typescript-parser';
+import { TypescriptParser } from '../../modules/typescript-parser';
 import { promisifiedFs } from '@proteinjs/util-node';
 import { createGraphBuilder } from './createGraphBuilder';
 

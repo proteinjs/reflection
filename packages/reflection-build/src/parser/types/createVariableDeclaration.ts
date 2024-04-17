@@ -1,5 +1,5 @@
 import { VariableDeclaration, TypeAliasDeclaration } from '@proteinjs/reflection';
-import { VariableDeclaration as ParserVariableDeclaration } from 'typescript-parser';
+import { VariableDeclaration as ParserVariableDeclaration } from '../../../modules/typescript-parser';
 import { PackageNameFinder } from './PackageNameFinder';
 import { typeAliasDeclarationsFromParserTypeAliases } from './createTypeAliasDeclaration';
 

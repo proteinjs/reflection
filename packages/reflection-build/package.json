@@ -35,12 +35,10 @@
         "globby": "11.0.1",
         "gulp": "4.0.2",
         "gulp-shell": "0.8.0",
-        "jsesc": "^3.0.1",
-        "typescript-parser": "file:../node-typescript-parser"
+        "jsesc": "^3.0.1"
     },
     "devDependencies": {
         "@proteinjs/reflection-build-test-a": "file:./test/examples/source-repository/a",
-        "@types/globby": "9.1.0",
         "@types/graphlib": "2.1.6",
         "@types/gulp": "4.0.16",
         "@types/jest": "29.5.6",

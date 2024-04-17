@@ -1,5 +1,5 @@
 import { A } from './typeExample';
-import { TypeAlias } from 'typescript-parser';
+import { TypeAlias } from '../../../modules/typescript-parser';
 
 export type E = {
 	q: string
