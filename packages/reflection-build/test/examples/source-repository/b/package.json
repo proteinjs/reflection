@@ -20,7 +20,7 @@
     "devDependencies": {
         "@proteinjs/reflection": "1.0.2",
         "@proteinjs/util": "1.0.18",
-        "@proteinjs/util-node": "1.0.18",
+        "@proteinjs/util-node": "1.0.22",
         "@types/node": "20.12.6",
         "typescript": "5.2.2"
     },
