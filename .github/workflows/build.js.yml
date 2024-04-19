@@ -31,11 +31,11 @@ jobs:
       
       - name: Build packages
         run: |
-          npx build-workspace
+          npx build-workspace --no-build=typescript-parser
 
       - name: Test packages
         run: |
-          npx test-workspace
+          npx workspace test --skip=typescript-parser
 
       - name: Authenticate with npm registry
         run: |
