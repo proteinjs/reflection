@@ -5,7 +5,6 @@ import { VariableDeclaration, TypeAliasDeclaration, ClassDeclaration, InterfaceD
 import { FlattenedSourceGraph, flattenSourceGraph } from './FlattenedSourceGraph';
 
 export class SourceRepository {
-	private static readonly INSTANCE = new SourceRepository();
 	public readonly sourceGraph = new Graph();
 	private readonly sourceLinks: { [qualifiedName: string]: any } = {};
 	private _flattenedSourceGraph: FlattenedSourceGraph|undefined;
@@ -15,7 +14,17 @@ export class SourceRepository {
 	private constructor() {}
 
 	static get(): SourceRepository {
-		return SourceRepository.INSTANCE;
+		if (!SourceRepository.getGlobal().__proteinjs_reflection_SourceRepository)
+      SourceRepository.getGlobal().__proteinjs_reflection_SourceRepository = new SourceRepository();
+
+    return SourceRepository.getGlobal().__proteinjs_reflection_SourceRepository;
+	}
+
+	private static getGlobal(): any {
+		if (typeof window !== 'undefined')
+			return window;
+
+		return globalThis;
 	}
 
 	get flattenedSourceGraph(): FlattenedSourceGraph {
@@ -117,15 +126,15 @@ export class SourceRepository {
 			if (!nodeValue)
 				continue;
 
-			SourceRepository.INSTANCE.sourceGraph.setNode(nodeName, SourceRepository.deserializeClass(nodeValue));
+			SourceRepository.get().sourceGraph.setNode(nodeName, SourceRepository.deserializeClass(nodeValue));
 		}
 
 		for (const edge of sourceGraph.edges()) {
 			const edgeValue = sourceGraph.edge(edge);
-			SourceRepository.INSTANCE.sourceGraph.setEdge(edge, edgeValue);
+			SourceRepository.get().sourceGraph.setEdge(edge, edgeValue);
 		}
 
-		Object.assign(SourceRepository.INSTANCE.sourceLinks, sourceLinks);
+		Object.assign(SourceRepository.get().sourceLinks, sourceLinks);
 	}
 
 	private static deserializeClass(classJson: any): any {
