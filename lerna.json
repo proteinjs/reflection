@@ -7,7 +7,10 @@
   "command": {
     "publish": {
       "conventionalCommits": true,
-      "message": "chore(release): publish [skip ci]"
+      "message": "chore(release): publish [skip ci]",
+      "scripts": {
+        "precommit": "npm run pre-publish"
+      }
     }
   },
   "ignoreChanges": [

@@ -5,7 +5,8 @@
     "clean-workspace": "workspace clean --skip=typescript-parser",
     "build-workspace": "build-workspace --no-build=typescript-parser",
     "test-workspace": "workspace test --skip=typescript-parser",
-    "watch-workspace": "watch-workspace"
+    "watch-workspace": "watch-workspace",
+    "pre-publish": "git add **/package-lock.json"
   },
   "devDependencies": {
     "@proteinjs/build": "^1.0.16",
