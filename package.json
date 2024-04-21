@@ -6,7 +6,7 @@
     "build-workspace": "build-workspace --no-build=typescript-parser",
     "test-workspace": "workspace test --skip=typescript-parser",
     "watch-workspace": "watch-workspace",
-    "prepublish": "git add **/package-lock.json"
+    "prepublish": "echo 'brent starting prepublish' && git add **/package-lock.json"
   },
   "devDependencies": {
     "@proteinjs/build": "^1.0.16",
