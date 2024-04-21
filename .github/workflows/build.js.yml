@@ -36,7 +36,8 @@ jobs:
       - name: Stage package-locks
         run: |
           git status
-          git add **/package-lock.json
+          git add .
+          git status
 
       - name: Test packages
         run: |
