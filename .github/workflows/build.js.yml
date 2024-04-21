@@ -33,10 +33,11 @@ jobs:
         run: |
           npm run build-workspace
 
-      - name: Stage package-locks
+      - name: Commit package-locks
         run: |
           git status
-          git add .
+          git add **/package-lock.json
+          git commit -m "chore(release): updating package-locks [skip ci]"
           git status
 
       - name: Test packages
