@@ -31,11 +31,15 @@ jobs:
       
       - name: Build packages
         run: |
-          npx build-workspace --no-build=typescript-parser
+          npm run build-workspace
+
+      - name: Stage package-lock.json's
+        run: |
+          git add **/package-lock.json
 
       - name: Test packages
         run: |
-          npx workspace test --skip=typescript-parser
+          npm run test-workspace
 
       - name: Authenticate with npm registry
         run: |
