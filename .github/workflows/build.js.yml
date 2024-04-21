@@ -33,8 +33,9 @@ jobs:
         run: |
           npm run build-workspace
 
-      - name: Stage package-lock.json's
+      - name: Stage package-locks
         run: |
+          git status
           git add **/package-lock.json
 
       - name: Test packages
