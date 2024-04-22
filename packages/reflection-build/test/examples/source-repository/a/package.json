@@ -1,6 +1,6 @@
 {
     "name": "@proteinjs/reflection-build-test-a",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "private": true,
     "description": "Test package a",
     "repository": {
@@ -21,7 +21,7 @@
         "@proteinjs/reflection-build-test-b": "file:../b"
     },
     "devDependencies": {
-        "@proteinjs/reflection": "1.0.3",
+        "@proteinjs/reflection": "1.0.5",
         "@proteinjs/util": "1.0.18",
         "@proteinjs/util-node": "1.0.22",
         "@types/node": "20.12.6",
