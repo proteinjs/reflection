@@ -4,12 +4,12 @@
     "description": "Source introspection and loader apis",
     "main": "./dist/index.js",
     "types": "./dist/index.d.ts",
+    "publishConfig": {
+        "access": "public"
+    },
     "repository": {
         "type": "git",
         "url": "git+https://github.com/proteinjs/reflection.git"
-    },
-    "publishConfig": {
-        "access": "public"
     },
     "bugs": {
         "url": "https://github.com/proteinjs/reflection/issues"

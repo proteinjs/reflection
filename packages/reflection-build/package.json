@@ -8,12 +8,12 @@
         "reflection-build": "dist/src/runBuild.js",
         "reflection-watch": "dist/src/runWatch.js"
     },
+    "publishConfig": {
+        "access": "public"
+    },
     "repository": {
         "type": "git",
         "url": "git+https://github.com/proteinjs/reflection.git"
-    },
-    "publishConfig": {
-        "access": "public"
     },
     "bugs": {
         "url": "https://github.com/proteinjs/reflection/issues"
