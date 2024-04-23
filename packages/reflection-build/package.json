@@ -1,6 +1,6 @@
 {
   "name": "@proteinjs/reflection-build",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "Build system for reflection",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -20,7 +20,7 @@
   },
   "homepage": "https://github.com/proteinjs/reflection#readme",
   "author": "Brent Bahry",
-  "license": "ISC",
+  "license": "MIT",
   "scripts": {
     "clean": "rm -rf dist/ node_modules/ package-lock.json",
     "watch": "tsc -w -p .",
@@ -31,7 +31,7 @@
     "@dagrejs/graphlib": "2.1.4",
     "@proteinjs/reflection": "^1.0.5",
     "@proteinjs/util": "1.0.18",
-    "@proteinjs/util-node": "1.0.22",
+    "@proteinjs/util-node": "1.0.23",
     "globby": "11.0.1",
     "gulp": "4.0.2",
     "gulp-shell": "0.8.0",

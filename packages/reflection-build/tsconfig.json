@@ -75,7 +75,8 @@
 	  "./test/**/*"
 	],
   "exclude": [
-    "./test/**/modules/**/*"
+    "./test/**/modules/**/*",
+		"./test/examples/**/*"
   ]
 }
   
