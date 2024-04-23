@@ -3,11 +3,12 @@ import { graphSerializer } from '@proteinjs/util';
 import { SourceType } from './sourceGraphTypes';
 import { VariableDeclaration, TypeAliasDeclaration, ClassDeclaration, InterfaceDeclaration, Class, Variable, TypeAlias, Interface } from './types';
 import { FlattenedSourceGraph, flattenSourceGraph } from './FlattenedSourceGraph';
+import { instanceOf } from './instanceOf';
 
 export class SourceRepository {
 	public readonly sourceGraph = new Graph();
 	private readonly sourceLinks: { [qualifiedName: string]: any } = {};
-	private _flattenedSourceGraph: FlattenedSourceGraph|undefined;
+	public flattenedSourceGraph: FlattenedSourceGraph = { variables: {}, typeAliases: {}, classes: {}, interfaces: {} };
 	// private readonly typeCache: { [type: string]: (ClassDeclaration|VariableDeclaration)[] } = {};
 	private readonly objectCache: { [type: string]: any[] } = {};
 
@@ -25,13 +26,6 @@ export class SourceRepository {
 			return window;
 
 		return globalThis;
-	}
-
-	get flattenedSourceGraph(): FlattenedSourceGraph {
-		if (!this._flattenedSourceGraph)
-			this._flattenedSourceGraph = flattenSourceGraph(this.sourceGraph, this.sourceLinks);
-
-		return this._flattenedSourceGraph;
 	}
 
 	interface(qualifiedInterfaceName: string) {
@@ -64,10 +58,10 @@ export class SourceRepository {
 		const extendingObjects: T[] = [];
 		for (const baseChildQualifiedName in baseChildren) {
 			const child = baseChildren[baseChildQualifiedName];
-			if (child instanceof Class)
-				extendingObjects.push(new child._constructor());
-			else if (child instanceof Variable)
-				extendingObjects.push(child.value);
+			if (instanceOf(child, Class))
+				extendingObjects.push(new (child as any)._constructor());
+			else if (instanceOf(child, Variable))
+				extendingObjects.push((child as any).value);
 		}
 
 		this.objectCache[extendingType] = extendingObjects;
@@ -135,6 +129,7 @@ export class SourceRepository {
 		}
 
 		Object.assign(SourceRepository.get().sourceLinks, sourceLinks);
+		SourceRepository.get().flattenedSourceGraph = flattenSourceGraph(SourceRepository.get().sourceGraph, SourceRepository.get().sourceLinks);
 	}
 
 	private static deserializeClass(classJson: any): any {
