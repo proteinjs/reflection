@@ -1,6 +1,6 @@
 import * as path from 'path';
 import { promisifiedFs } from '@proteinjs/util-node';
-import { graphSerializer } from '@proteinjs/util';
+import { graphSerializer, isInstanceOf } from '@proteinjs/util';
 import { Graph } from '@dagrejs/graphlib';
 import jsesc from 'jsesc';
 import { createSourceGraph } from '../parser/createSourceGraph';
@@ -128,7 +128,7 @@ function generateSourceLinks(sourceGraph: Graph, packageJson: any, generatedInde
 		if (!node)
 			continue;
 
-		if (!(node instanceof VariableDeclaration || node instanceof ClassDeclaration))
+		if (!(isInstanceOf(node, VariableDeclaration) || isInstanceOf(node, ClassDeclaration)))
 			continue;
 
 		if (node.packageName != packageJson.name)

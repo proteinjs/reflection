@@ -1,7 +1,7 @@
 import { Graph, alg } from '@dagrejs/graphlib';
 import { ClassDeclaration, VariableDeclaration, Variable, TypeAlias, Class, Interface, TypeAliasDeclaration, InterfaceDeclaration } from './types';
+import { isInstanceOf } from '@proteinjs/util';
 import { LOADABLE_QUALIFIED_NAME } from './Loadable';
-import { instanceOf } from './instanceOf';
 
 export type FlattenedSourceGraph = {
 	variables: { [qualifiedName: string]: Variable; };
@@ -31,13 +31,13 @@ function flattenParents(sourceGraph: Graph, sourceLinks: { [qualifiedName: strin
 		if (!node)
 			continue;
 
-		if (instanceOf(node, InterfaceDeclaration))
+		if (isInstanceOf(node, InterfaceDeclaration))
 			loadInterfaceAndParents(node, sourceGraph, sourceLinks, flattenedSourceGraph);
-		else if (instanceOf(node, TypeAliasDeclaration))
+		else if (isInstanceOf(node, TypeAliasDeclaration))
 			loadTypeAliasAndParents(node, sourceGraph, sourceLinks, flattenedSourceGraph);
-		else if (instanceOf(node, ClassDeclaration))
+		else if (isInstanceOf(node, ClassDeclaration))
 			loadClassAndParents(node, sourceGraph, sourceLinks, flattenedSourceGraph);
-		else if (instanceOf(node, VariableDeclaration))
+		else if (isInstanceOf(node, VariableDeclaration))
 			loadVariableAndParents(node, sourceGraph, sourceLinks, flattenedSourceGraph);
 	}
 }
@@ -48,13 +48,13 @@ function flattenChildren(sourceGraph: Graph, sourceLinks: { [qualifiedName: stri
 		if (!node)
 			continue;
 		
-		if (instanceOf(node, TypeAliasDeclaration))
+		if (isInstanceOf(node, TypeAliasDeclaration))
 			loadTypeAliasAndChildren(node, sourceGraph, flattenedSourceGraph);
-		else if (instanceOf(node, InterfaceDeclaration))
+		else if (isInstanceOf(node, InterfaceDeclaration))
 			loadInterfaceAndChildren(node, sourceGraph, flattenedSourceGraph);
-		else if (instanceOf(node, ClassDeclaration))
+		else if (isInstanceOf(node, ClassDeclaration))
 			loadClassAndChildren(node, sourceGraph, sourceLinks, flattenedSourceGraph);
-		else if (instanceOf(node, VariableDeclaration))
+		else if (isInstanceOf(node, VariableDeclaration))
 			getOrCreateVariable(node, sourceLinks, flattenedSourceGraph);
 	}
 }
@@ -81,7 +81,7 @@ function loadTypeAliasAndParents(typeAliasDeclaration: TypeAliasDeclaration, sou
 			if (!node)
 				continue;
 
-			if (instanceOf(node, TypeAliasDeclaration)) {
+			if (isInstanceOf(node, TypeAliasDeclaration)) {
 				const parentTypeAlias = flattenedSourceGraph.typeAliases[outEdge.w];
 				if (!parentTypeAlias)
 					continue;
@@ -93,7 +93,7 @@ function loadTypeAliasAndParents(typeAliasDeclaration: TypeAliasDeclaration, sou
 					typeAlias.rootParents[parentTypeAlias.qualifiedName] = parentTypeAlias;
 				else
 					typeAlias.rootParents = Object.assign(typeAlias.rootParents, parentTypeAlias.rootParents);
-			} else if (instanceOf(node, InterfaceDeclaration)) {
+			} else if (isInstanceOf(node, InterfaceDeclaration)) {
 				const parentInterface = flattenedSourceGraph.interfaces[outEdge.w];
 				if (!parentInterface)
 					continue;
@@ -122,7 +122,7 @@ function loadInterfaceAndParents(interfaceDeclaration: InterfaceDeclaration, sou
 			if (!node)
 				continue;
 
-			if (instanceOf(node, InterfaceDeclaration)) {
+			if (isInstanceOf(node, InterfaceDeclaration)) {
 				const parentInterface = flattenedSourceGraph.interfaces[outEdge.w];
 				if (!parentInterface)
 					continue;
@@ -134,7 +134,7 @@ function loadInterfaceAndParents(interfaceDeclaration: InterfaceDeclaration, sou
 					_interface.rootParents[parentInterface.qualifiedName] = parentInterface;
 				else
 					_interface.rootParents = Object.assign(_interface.rootParents, parentInterface.rootParents);
-			} else if (instanceOf(node, TypeAliasDeclaration)) {
+			} else if (isInstanceOf(node, TypeAliasDeclaration)) {
 				const parentTypeAlias = flattenedSourceGraph.typeAliases[outEdge.w];
 				if (!parentTypeAlias)
 					continue;
@@ -163,7 +163,7 @@ function loadClassAndParents(classDeclaration: ClassDeclaration, sourceGraph: Gr
 			if (!node)
 				continue;
 
-			if (instanceOf(node, ClassDeclaration)) {
+			if (isInstanceOf(node, ClassDeclaration)) {
 				const parentClass = flattenedSourceGraph.classes[outEdge.w];
 				if (!parentClass)
 					continue;
@@ -175,7 +175,7 @@ function loadClassAndParents(classDeclaration: ClassDeclaration, sourceGraph: Gr
 					_class.rootParents[parentClass.qualifiedName] = parentClass;
 				else
 					_class.rootParents = Object.assign(_class.rootParents, parentClass.rootParents);
-			} else if (instanceOf(node, InterfaceDeclaration)) {
+			} else if (isInstanceOf(node, InterfaceDeclaration)) {
 				const parentInterface = flattenedSourceGraph.interfaces[outEdge.w];
 				if (!parentInterface)
 					continue;
@@ -187,7 +187,7 @@ function loadClassAndParents(classDeclaration: ClassDeclaration, sourceGraph: Gr
 					_class.rootParents[parentInterface.qualifiedName] = parentInterface;
 				else
 					_class.rootParents = Object.assign(_class.rootParents, parentInterface.rootParents);
-			} else if (instanceOf(node, TypeAliasDeclaration)) {
+			} else if (isInstanceOf(node, TypeAliasDeclaration)) {
 				const parentTypeAlias = flattenedSourceGraph.typeAliases[outEdge.w];
 				if (!parentTypeAlias)
 					continue;
@@ -213,7 +213,7 @@ function loadVariableAndParents(variableDeclaration: VariableDeclaration, source
 			if (!node)
 				continue;
 
-			if (instanceOf(node, TypeAliasDeclaration)) {
+			if (isInstanceOf(node, TypeAliasDeclaration)) {
 				const parentTypeAlias = flattenedSourceGraph.typeAliases[outEdge.w];
 				if (!parentTypeAlias)
 					continue;
@@ -225,7 +225,7 @@ function loadVariableAndParents(variableDeclaration: VariableDeclaration, source
 					variable.rootParentTypes[parentTypeAlias.qualifiedName] = parentTypeAlias;
 				else
 					variable.rootParentTypes = Object.assign(variable.rootParentTypes, parentTypeAlias.rootParents);
-			} else if (instanceOf(node, InterfaceDeclaration)) {
+			} else if (isInstanceOf(node, InterfaceDeclaration)) {
 				const parentInterface = flattenedSourceGraph.interfaces[outEdge.w];
 				if (!parentInterface)
 					continue;
@@ -263,7 +263,7 @@ function loadTypeAliasAndChildren(typeAliasDeclaration: TypeAliasDeclaration, so
 			if (!node)
 				continue;
 
-			if (instanceOf(node, TypeAliasDeclaration)) {
+			if (isInstanceOf(node, TypeAliasDeclaration)) {
 				const childTypeAlias = flattenedSourceGraph.typeAliases[node.qualifiedName];
 				if (!childTypeAlias)
 					continue;
@@ -275,7 +275,7 @@ function loadTypeAliasAndChildren(typeAliasDeclaration: TypeAliasDeclaration, so
 					typeAlias.baseChildren[childTypeAlias.qualifiedName] = childTypeAlias;
 				else
 					typeAlias.baseChildren = Object.assign(typeAlias.baseChildren, childTypeAlias.baseChildren);
-			} else if (instanceOf(node, InterfaceDeclaration)) {
+			} else if (isInstanceOf(node, InterfaceDeclaration)) {
 				const childInterface = flattenedSourceGraph.interfaces[node.qualifiedName];
 				if (!childInterface)
 					continue;
@@ -287,7 +287,7 @@ function loadTypeAliasAndChildren(typeAliasDeclaration: TypeAliasDeclaration, so
 					typeAlias.baseChildren[childInterface.qualifiedName] = childInterface;
 				else
 					typeAlias.baseChildren = Object.assign(typeAlias.baseChildren, childInterface.baseChildren);
-			} else if (instanceOf(node, VariableDeclaration)) {
+			} else if (isInstanceOf(node, VariableDeclaration)) {
 				const childVariable = flattenedSourceGraph.variables[node.qualifiedName];
 				if (!childVariable)
 					continue;
@@ -295,7 +295,7 @@ function loadTypeAliasAndChildren(typeAliasDeclaration: TypeAliasDeclaration, so
 				typeAlias.directChildren[childVariable.qualifiedName] = childVariable;
 				typeAlias.allChildren[childVariable.qualifiedName] = childVariable;
 				typeAlias.baseChildren[childVariable.qualifiedName] = childVariable;
-			} else if (instanceOf(node, ClassDeclaration)) {
+			} else if (isInstanceOf(node, ClassDeclaration)) {
 				const childClass = flattenedSourceGraph.classes[node.qualifiedName];
 				if (!childClass)
 					continue;
@@ -320,7 +320,7 @@ function loadInterfaceAndChildren(interfaceDeclaration: InterfaceDeclaration, so
 			if (!node)
 				continue;
 
-			if (instanceOf(node, InterfaceDeclaration)) {
+			if (isInstanceOf(node, InterfaceDeclaration)) {
 				const childInterface = flattenedSourceGraph.interfaces[node.qualifiedName];
 				if (!childInterface)
 					continue;
@@ -332,7 +332,7 @@ function loadInterfaceAndChildren(interfaceDeclaration: InterfaceDeclaration, so
 					_interface.baseChildren[childInterface.qualifiedName] = childInterface;
 				else
 					_interface.baseChildren = Object.assign(_interface.baseChildren, childInterface.baseChildren);
-			} else if (instanceOf(node, TypeAliasDeclaration)) {
+			} else if (isInstanceOf(node, TypeAliasDeclaration)) {
 				const childTypeAlias = flattenedSourceGraph.typeAliases[node.qualifiedName];
 				if (!childTypeAlias)
 					continue;
@@ -344,7 +344,7 @@ function loadInterfaceAndChildren(interfaceDeclaration: InterfaceDeclaration, so
 					_interface.baseChildren[childTypeAlias.qualifiedName] = childTypeAlias;
 				else
 					_interface.baseChildren = Object.assign(_interface.baseChildren, childTypeAlias.baseChildren);
-			} else if (instanceOf(node, ClassDeclaration)) {
+			} else if (isInstanceOf(node, ClassDeclaration)) {
 				const childClass = flattenedSourceGraph.classes[node.qualifiedName];
 				if (!childClass)
 					continue;
@@ -356,7 +356,7 @@ function loadInterfaceAndChildren(interfaceDeclaration: InterfaceDeclaration, so
 					_interface.baseChildren[childClass.qualifiedName] = childClass;
 				else
 					_interface.baseChildren = Object.assign(_interface.baseChildren, childClass.baseChildren);
-			} else if (instanceOf(node, VariableDeclaration)) {
+			} else if (isInstanceOf(node, VariableDeclaration)) {
 				const childVariable = flattenedSourceGraph.variables[node.qualifiedName];
 				if (!childVariable)
 					continue;
@@ -381,7 +381,7 @@ function loadClassAndChildren(classDeclaration: ClassDeclaration, sourceGraph: G
 			if (!node)
 				continue;
 
-			if (instanceOf(node, ClassDeclaration)) {
+			if (isInstanceOf(node, ClassDeclaration)) {
 				const childClass = flattenedSourceGraph.classes[node.qualifiedName];
 				if (!childClass)
 					continue;

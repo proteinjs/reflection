@@ -1,9 +1,8 @@
 import { Graph } from '@dagrejs/graphlib';
-import { graphSerializer } from '@proteinjs/util';
+import { graphSerializer, isInstanceOf } from '@proteinjs/util';
 import { SourceType } from './sourceGraphTypes';
 import { VariableDeclaration, TypeAliasDeclaration, ClassDeclaration, InterfaceDeclaration, Class, Variable, TypeAlias, Interface } from './types';
 import { FlattenedSourceGraph, flattenSourceGraph } from './FlattenedSourceGraph';
-import { instanceOf } from './instanceOf';
 
 export class SourceRepository {
 	public readonly sourceGraph = new Graph();
@@ -58,9 +57,9 @@ export class SourceRepository {
 		const extendingObjects: T[] = [];
 		for (const baseChildQualifiedName in baseChildren) {
 			const child = baseChildren[baseChildQualifiedName];
-			if (instanceOf(child, Class))
+			if (isInstanceOf(child, Class))
 				extendingObjects.push(new (child as any)._constructor());
-			else if (instanceOf(child, Variable))
+			else if (isInstanceOf(child, Variable))
 				extendingObjects.push((child as any).value);
 		}
 

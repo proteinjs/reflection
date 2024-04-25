@@ -1,6 +1,7 @@
 import * as graphlib from '@dagrejs/graphlib';
 import { VariableDeclaration as ParserVariableDeclaration, TypeAliasDeclaration as ParserTypeAliasDeclaration, ClassDeclaration as ParserClassDeclaration, InterfaceDeclaration as ParserInterfaceDeclaration, File } from '../../modules/typescript-parser';
 import { TypeAliasDeclaration, SourceRelationship, SourceType } from '@proteinjs/reflection';
+import { isInstanceOf } from '@proteinjs/util';
 import { createVariableDeclaration } from './types/createVariableDeclaration';
 import { PackageNameFinder } from './types/PackageNameFinder';
 import { createTypeAliasDeclaration } from './types/createTypeAliasDeclaration';
@@ -18,16 +19,16 @@ export function createGraphBuilder(graph: graphlib.Graph, packageJson: any, pack
 				continue;
 				
 			const packageNameFinder = new PackageNameFinder(parsedFile, packageJsonDir, packageName);
-			if (declaration instanceof ParserVariableDeclaration) {
-				const variableDeclaration = await createVariableDeclaration(declaration, packageNameFinder, parsedFile.filePath);
+			if (isInstanceOf(declaration, ParserVariableDeclaration)) {
+				const variableDeclaration = await createVariableDeclaration(declaration as ParserVariableDeclaration, packageNameFinder, parsedFile.filePath);
 				graph.setNode(variableDeclaration.qualifiedName, Object.assign(variableDeclaration, { sourceType: SourceType.variable }));
 				addTypeAliasDeclaration(variableDeclaration.type, variableDeclaration.qualifiedName, SourceRelationship.hasType, graph);
-			} else if (declaration instanceof ParserTypeAliasDeclaration) {
-				const typeAliasDeclaration = await createTypeAliasDeclaration(declaration, packageNameFinder, parsedFile.filePath);
+			} else if (isInstanceOf(declaration, ParserTypeAliasDeclaration)) {
+				const typeAliasDeclaration = await createTypeAliasDeclaration(declaration as ParserTypeAliasDeclaration, packageNameFinder, parsedFile.filePath);
 				graph.setNode(typeAliasDeclaration.qualifiedName, Object.assign(typeAliasDeclaration, { sourceType: SourceType.typeAlias }));
 				addTypeAliasDeclaration(typeAliasDeclaration, typeAliasDeclaration.qualifiedName, SourceRelationship.extendsType, graph);
-			} else if (declaration instanceof ParserClassDeclaration) {
-				const classDeclaration = await createClassDeclaration(declaration, packageNameFinder, parsedFile.filePath);
+			} else if (isInstanceOf(declaration, ParserClassDeclaration)) {
+				const classDeclaration = await createClassDeclaration(declaration as ParserClassDeclaration, packageNameFinder, parsedFile.filePath);
 				graph.setNode(classDeclaration.qualifiedName, Object.assign(classDeclaration, { sourceType: SourceType.class }));
 				for (const parentInterface of classDeclaration.directParentInterfaces) {
 					if (parentInterface.packageName.startsWith('/'))
@@ -48,8 +49,8 @@ export function createGraphBuilder(graph: graphlib.Graph, packageJson: any, pack
 
 					graph.setEdge(classDeclaration.qualifiedName, parentClass.qualifiedName, SourceRelationship.extendsClass);
 				}
-			} else if (declaration instanceof ParserInterfaceDeclaration) {
-				const interfaceDeclaration = await createInterfaceDeclaration(declaration, packageNameFinder, parsedFile.filePath);
+			} else if (isInstanceOf(declaration, ParserInterfaceDeclaration)) {
+				const interfaceDeclaration = await createInterfaceDeclaration(declaration as ParserInterfaceDeclaration, packageNameFinder, parsedFile.filePath);
 				graph.setNode(interfaceDeclaration.qualifiedName, Object.assign(interfaceDeclaration, { sourceType: SourceType.interface }));
 				for (const parentInterface of interfaceDeclaration.directParents) {
 					if (parentInterface.packageName.startsWith('/'))

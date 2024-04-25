@@ -1,6 +1,7 @@
 import * as path from 'path';
 import { File as ParsedFile, NamedImport } from '../../../modules/typescript-parser';
 import { promisifiedFs } from '@proteinjs/util-node';
+import { isInstanceOf } from '@proteinjs/util';
 
 export class PackageNameFinder {
 	private readonly symbolToLibraryMap: { [symbol: string]: string };
@@ -18,10 +19,10 @@ export class PackageNameFinder {
 	private createSymbolToLibraryMap(parsedFile: ParsedFile): { [symbol: string]: string } {
 		const symbolToLibraryMap: {[type: string]: string} = {};
 		for (const _import of parsedFile.imports) {
-			if (!(_import instanceof NamedImport))  // TODO support all relevant import types
+			if (!isInstanceOf(_import, NamedImport))  // TODO support all relevant import types
 				continue;
 	
-			for (const specifier of _import.specifiers)
+			for (const specifier of (_import as NamedImport).specifiers)
 				symbolToLibraryMap[specifier.specifier] = _import.libraryName;
 		}
 	
