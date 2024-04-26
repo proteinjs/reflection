@@ -14,7 +14,7 @@
     "author": "Brent Bahry",
     "license": "ISC",
     "scripts": {
-        "clean": "rm -rf dist/ node_modules/ generated/ package-lock.json modules",
+        "clean": "rm -rf dist/ node_modules/ generated/ modules",
         "build": "node symlinkTypescriptParser.js && tsc -p tsconfig.parent.json && node ./dist/runBuild.js && tsc"
     },
     "dependencies": {

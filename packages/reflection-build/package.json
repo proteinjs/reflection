@@ -22,7 +22,7 @@
   "author": "Brent Bahry",
   "license": "MIT",
   "scripts": {
-    "clean": "rm -rf dist/ node_modules/ package-lock.json",
+    "clean": "rm -rf dist/ node_modules/",
     "watch": "tsc -w -p .",
     "build": "tsc && cp -r modules/ dist/modules/ && chmod +x dist/src/runBuild.js dist/src/runWatch.js && chmod -R 755 dist/",
     "test": "jest"
