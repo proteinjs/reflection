@@ -1,6 +1,6 @@
 # Overview
 
-Reflection is an api for querying the [typescript] source in your runtime, with module loading. Instead of defining apis and also needing to expose functions for registering implementations of those apis, you can use the `SourceRepositoy` to query for api implementations at runtime. This can result in much cleaner dependency management across packages.
+Reflection is an api for querying [typescript] source at runtime, with module loading. Instead of defining apis and also needing to expose functions for registering implementations of those apis, you can use the `SourceRepositoy` to query for api implementations at runtime. This can result in much cleaner dependency management across packages.
 
 An example use case for this is exposing a `Route` interface from your server, and then loading all routes included in your build from your server using the `SourceRepositoy` api. Instead of your server package needing to depend on every package where a route is defined (or having a complicated build process for loading routes into static memory), as long as the package with classes implementing `Route` is included in the build, your server will have access to query and instantiate those routes using the `SourceRepository` api.
 
