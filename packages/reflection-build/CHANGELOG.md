@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.15](https://github.com/proteinjs/reflection/compare/@proteinjs/reflection-build@1.0.14...@proteinjs/reflection-build@1.0.15) (2024-05-08)
+
+
+### Bug Fixes
+
+* `SourceRepository.filterObjects` should omit objects for which any filter returns `false`, not `true`; this is inline with general filter semantics ([5f2f4c1](https://github.com/proteinjs/reflection/commit/5f2f4c133f47e447d08bc061f2b7177a767e977b))
+
+
+
+
+
 ## [1.0.14](https://github.com/proteinjs/reflection/compare/@proteinjs/reflection-build@1.0.13...@proteinjs/reflection-build@1.0.14) (2024-05-08)
 
 **Note:** Version bump only for package @proteinjs/reflection-build
