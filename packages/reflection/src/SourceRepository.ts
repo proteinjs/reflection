@@ -3,7 +3,7 @@ import { graphSerializer, isInstanceOf } from '@proteinjs/util';
 import { SourceType } from './sourceGraphTypes';
 import { VariableDeclaration, TypeAliasDeclaration, ClassDeclaration, InterfaceDeclaration, Class, Variable, TypeAlias, Interface, PackageScope } from './types';
 import { FlattenedSourceGraph, flattenSourceGraph } from './FlattenedSourceGraph';
-import { SOURCE_REPOSITORY_TYPE_FILTER_QUALIFIED_NAME, getSourceRepositoryTypeFilters } from './SourceRepositoryTypeFilter';
+import { SOURCE_REPOSITORY_FILTER_QUALIFIED_NAME, getSourceRepositoryFilters } from './SourceRepositoryFilter';
 
 type TypeMap = {[qualifiedName: string]: Interface|TypeAlias|Class|Variable}
 
@@ -89,10 +89,10 @@ export class SourceRepository {
 			throw new Error(`Unable to find type: ${extendingType}`);
 		}
 
-		if (extendingType === SOURCE_REPOSITORY_TYPE_FILTER_QUALIFIED_NAME)
+		if (extendingType === SOURCE_REPOSITORY_FILTER_QUALIFIED_NAME)
 			return baseChildren;
 
-		return this.filterTypes(baseChildren);
+		return this.filterObjects(baseChildren);
 	}
 
 	/**
@@ -114,26 +114,26 @@ export class SourceRepository {
 			throw new Error(`Unable to find type: ${extendingType}`);
 		}
 
-		if (extendingType === SOURCE_REPOSITORY_TYPE_FILTER_QUALIFIED_NAME)
+		if (extendingType === SOURCE_REPOSITORY_FILTER_QUALIFIED_NAME)
 			return directChildren;
 
-		return this.filterTypes(directChildren);
+		return this.filterObjects(directChildren);
 	}
 
-	private filterTypes(typeMap: TypeMap): TypeMap {
+	private filterObjects(typeMap: TypeMap): TypeMap {
 		const filteredTypeMap: TypeMap = {};
-		const typeFilters = getSourceRepositoryTypeFilters();
+		const filters = getSourceRepositoryFilters();
 		for (let qualifiedName of Object.keys(typeMap)) {
 			const packageScope = typeMap[qualifiedName];
-			let filtered = false;
-			for (let typeFilter of typeFilters) {
-				if (typeFilter.filterType(qualifiedName)) {
-					filtered = true;
+			let filtered = true;
+			for (let filter of filters) {
+				if (!filter.filterObject(qualifiedName)) {
+					filtered = false;
 					break;
 				}
 			}
 
-			if (!filtered)
+			if (filtered)
 				filteredTypeMap[qualifiedName] = packageScope;
 		}
 

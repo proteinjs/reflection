@@ -1,13 +1,13 @@
-import { SourceRepositoryTypeFilter } from '@proteinjs/reflection';
+import { SourceRepositoryFilter } from '@proteinjs/reflection';
 
-export class TypeFilter implements SourceRepositoryTypeFilter {
-  private filteredTypes: string[] = [
-    '@proteinjs/reflection-build-test-b/OptionalLoadableForeignType',
-    '@proteinjs/reflection-build-test-b/OptionalLoadableForeignInterface',
-    '@proteinjs/reflection-build-test-b/OptionalLoadableForeignAbstractClass',
+export class TypeFilter implements SourceRepositoryFilter {
+  private blocklist: string[] = [
+    '@proteinjs/reflection-build-test-b/implementsOptionalLoadableForeignType',
+    '@proteinjs/reflection-build-test-b/ImplementsOptionalLoadableForeignInterface',
+    '@proteinjs/reflection-build-test-b/ImplementsOptionalLoadableForeignAbstractClass',
   ];
 
-  filterType(packageQualifiedTypeName: string): boolean {
-    return this.filteredTypes.includes(packageQualifiedTypeName);
+  filterObject(qualifiedName: string): boolean {
+    return !this.blocklist.includes(qualifiedName);
   }
 }

@@ -2,7 +2,7 @@ import { Graph, alg } from '@dagrejs/graphlib';
 import { ClassDeclaration, VariableDeclaration, Variable, TypeAlias, Class, Interface, TypeAliasDeclaration, InterfaceDeclaration } from './types';
 import { isInstanceOf } from '@proteinjs/util';
 import { LOADABLE_QUALIFIED_NAME } from './Loadable';
-import { SOURCE_REPOSITORY_TYPE_FILTER_QUALIFIED_NAME } from './SourceRepositoryTypeFilter';
+import { SOURCE_REPOSITORY_FILTER_QUALIFIED_NAME } from './SourceRepositoryFilter';
 import { SourceRelationship } from './sourceGraphTypes';
 
 export type FlattenedSourceGraph = {
@@ -21,9 +21,9 @@ export function flattenSourceGraph(sourceGraph: Graph, sourceLinks: { [qualified
 	};
 	const loadableInterfaceDeclaration = new InterfaceDeclaration('@proteinjs/reflection', 'Loadable', [], [], [], []);
 	sourceGraph.setNode(LOADABLE_QUALIFIED_NAME, loadableInterfaceDeclaration);
-	if (!sourceGraph.hasNode(SOURCE_REPOSITORY_TYPE_FILTER_QUALIFIED_NAME)) {
-		sourceGraph.setNode(SOURCE_REPOSITORY_TYPE_FILTER_QUALIFIED_NAME, new InterfaceDeclaration('@proteinjs/reflection', 'SourceRepositoryTypeFilter', [], [], [], [loadableInterfaceDeclaration]));
-		sourceGraph.setEdge(SOURCE_REPOSITORY_TYPE_FILTER_QUALIFIED_NAME, LOADABLE_QUALIFIED_NAME, SourceRelationship.extendsInterface);
+	if (!sourceGraph.hasNode(SOURCE_REPOSITORY_FILTER_QUALIFIED_NAME)) {
+		sourceGraph.setNode(SOURCE_REPOSITORY_FILTER_QUALIFIED_NAME, new InterfaceDeclaration('@proteinjs/reflection', 'SourceRepositoryFilter', [], [], [], [loadableInterfaceDeclaration]));
+		sourceGraph.setEdge(SOURCE_REPOSITORY_FILTER_QUALIFIED_NAME, LOADABLE_QUALIFIED_NAME, SourceRelationship.extendsInterface);
 	}
 	flattenParents(sourceGraph, sourceLinks, flattenedSourceGraph);
 	flattenChildren(sourceGraph, sourceLinks, flattenedSourceGraph);
