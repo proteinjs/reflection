@@ -13,8 +13,8 @@ import { Resource } from '../resources/Resource';
  * @returns {boolean}
  */
 export function isNodeExported(node: Node): boolean {
-    const flags = getCombinedModifierFlags(node as Declaration);
-    return (flags & ModifierFlags.Export) === ModifierFlags.Export;
+  const flags = getCombinedModifierFlags(node as Declaration);
+  return (flags & ModifierFlags.Export) === ModifierFlags.Export;
 }
 
 /**
@@ -26,8 +26,8 @@ export function isNodeExported(node: Node): boolean {
  * @returns {boolean}
  */
 export function isNodeDefaultExported(node: Node): boolean {
-    const flags = getCombinedModifierFlags(node as Declaration);
-    return (flags & ModifierFlags.Default) === ModifierFlags.Default;
+  const flags = getCombinedModifierFlags(node as Declaration);
+  return (flags & ModifierFlags.Default) === ModifierFlags.Default;
 }
 
 /**
@@ -38,7 +38,7 @@ export function isNodeDefaultExported(node: Node): boolean {
  * @returns {(string | undefined)}
  */
 export function getNodeType(node: TypeNode | undefined): string | undefined {
-    return node ? node.getText() : undefined;
+  return node ? node.getText() : undefined;
 }
 
 /**
@@ -50,8 +50,8 @@ export function getNodeType(node: TypeNode | undefined): string | undefined {
  * @returns {boolean}
  */
 export function containsModifier(node: Node, modifierKind: SyntaxKind): boolean {
-    if (!node.modifiers) return false;
-    return node.modifiers.some(mod => mod.kind === modifierKind);
+  if (!node.modifiers) return false;
+  return node.modifiers.some((mod) => mod.kind === modifierKind);
 }
 
 /**
@@ -62,22 +62,22 @@ export function containsModifier(node: Node, modifierKind: SyntaxKind): boolean 
  * @returns {(DeclarationVisibility | undefined)}
  */
 export function getNodeVisibility(node: Node): DeclarationVisibility | undefined {
-    if (!node.modifiers) {
-        return undefined;
-    }
+  if (!node.modifiers) {
+    return undefined;
+  }
 
-    for (const modifier of node.modifiers) {
-        switch (modifier.kind) {
-            case SyntaxKind.PublicKeyword:
-                return DeclarationVisibility.Public;
-            case SyntaxKind.ProtectedKeyword:
-                return DeclarationVisibility.Protected;
-            case SyntaxKind.PrivateKeyword:
-                return DeclarationVisibility.Private;
-            default:
-                break;
-        }
+  for (const modifier of node.modifiers) {
+    switch (modifier.kind) {
+      case SyntaxKind.PublicKeyword:
+        return DeclarationVisibility.Public;
+      case SyntaxKind.ProtectedKeyword:
+        return DeclarationVisibility.Protected;
+      case SyntaxKind.PrivateKeyword:
+        return DeclarationVisibility.Private;
+      default:
+        break;
     }
+  }
 }
 
 /**
@@ -89,8 +89,8 @@ export function getNodeVisibility(node: Node): DeclarationVisibility | undefined
  * @returns {string}
  */
 export function getDefaultResourceIdentifier(resource: Resource): string {
-    if (resource instanceof File && resource.isWorkspaceFile) {
-        return resource.parsedPath.name;
-    }
-    return resource.identifier;
+  if (resource instanceof File && resource.isWorkspaceFile) {
+    return resource.parsedPath.name;
+  }
+  return resource.identifier;
 }

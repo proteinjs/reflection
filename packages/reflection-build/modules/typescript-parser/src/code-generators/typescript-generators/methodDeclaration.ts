@@ -12,11 +12,13 @@ import { generateParameterDeclaration } from './parameterDeclaration';
  * @returns {string}
  */
 export function generateMethodDeclaration(method: MethodDeclaration, { tabSize }: TypescriptGenerationOptions): string {
-    const intend = Array(tabSize + 1).join(' ');
-    return `${intend}` +
-        `${method.visibility !== undefined ? getVisibilityText(method.visibility) + ' ' : ''}${method.name}(` +
-        `${method.parameters.map(o => generateParameterDeclaration(o)).join(', ')})` +
-        `${method.type ? `: ${method.type}` : ''} {
+  const intend = Array(tabSize + 1).join(' ');
+  return (
+    `${intend}` +
+    `${method.visibility !== undefined ? getVisibilityText(method.visibility) + ' ' : ''}${method.name}(` +
+    `${method.parameters.map((o) => generateParameterDeclaration(o)).join(', ')})` +
+    `${method.type ? `: ${method.type}` : ''} {
 ${intend}${intend}throw new Error('Not implemented yet.');
-${intend}}\n`;
+${intend}}\n`
+  );
 }

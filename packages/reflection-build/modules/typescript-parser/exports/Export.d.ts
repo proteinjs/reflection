@@ -6,5 +6,4 @@ import { Node } from '../Node';
  * @interface Export
  * @extends {Node}
  */
-export interface Export extends Node {
-}
+export interface Export extends Node {}

@@ -6,18 +6,18 @@
  * @interface Node
  */
 export interface Node {
-    /**
-     * The starting character of the node in the document.
-     *
-     * @type {number}
-     * @memberof Node
-     */
-    start?: number;
-    /**
-     * The ending character of the node in the document.
-     *
-     * @type {number}
-     * @memberof Node
-     */
-    end?: number;
+  /**
+   * The starting character of the node in the document.
+   *
+   * @type {number}
+   * @memberof Node
+   */
+  start?: number;
+  /**
+   * The ending character of the node in the document.
+   *
+   * @type {number}
+   * @memberof Node
+   */
+  end?: number;
 }

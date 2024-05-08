@@ -12,16 +12,16 @@ import { PropertyDeclaration } from './PropertyDeclaration';
  * @implements {GenericDeclaration}
  */
 export class InterfaceDeclaration implements ClassLikeDeclaration, ExportableDeclaration, GenericDeclaration {
-    public accessors: AccessorDeclaration[] = [];
-    public typeParameters: string[] | undefined;
-    public properties: PropertyDeclaration[] = [];
-	public methods: MethodDeclaration[] = [];
-	public extends: { name: string, typeParameters: string[] }[] = [];
+  public accessors: AccessorDeclaration[] = [];
+  public typeParameters: string[] | undefined;
+  public properties: PropertyDeclaration[] = [];
+  public methods: MethodDeclaration[] = [];
+  public extends: { name: string; typeParameters: string[] }[] = [];
 
-    constructor(
-        public name: string,
-        public isExported: boolean,
-        public start?: number,
-        public end?: number,
-    ) { }
+  constructor(
+    public name: string,
+    public isExported: boolean,
+    public start?: number,
+    public end?: number
+  ) {}
 }

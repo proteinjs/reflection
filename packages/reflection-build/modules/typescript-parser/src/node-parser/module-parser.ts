@@ -14,9 +14,10 @@ import { Resource } from '../resources/Resource';
  * @returns {Resource}
  */
 export function parseModule(resource: Resource, node: ModuleDeclaration): Resource {
-    const newResource = (node.flags & NodeFlags.Namespace) === NodeFlags.Namespace ?
-        new Namespace((node.name as Identifier).text, node.getStart(), node.getEnd()) :
-        new Module((node.name as Identifier).text, node.getStart(), node.getEnd());
-    resource.resources.push(newResource);
-    return newResource;
+  const newResource =
+    (node.flags & NodeFlags.Namespace) === NodeFlags.Namespace
+      ? new Namespace((node.name as Identifier).text, node.getStart(), node.getEnd())
+      : new Module((node.name as Identifier).text, node.getStart(), node.getEnd());
+  resource.resources.push(newResource);
+  return newResource;
 }

@@ -8,12 +8,12 @@ import { platform } from 'os';
  * @returns {string}
  */
 export function normalizePathUri(uri: string): string {
-    const decoded = decodeURIComponent(uri);
+  const decoded = decodeURIComponent(uri);
 
-    if (platform() === 'win32') {
-        return decoded.replace('file:///', '');
-    }
-    return decoded.replace('file://', '');
+  if (platform() === 'win32') {
+    return decoded.replace('file:///', '');
+  }
+  return decoded.replace('file://', '');
 }
 
 /**
@@ -25,7 +25,7 @@ export function normalizePathUri(uri: string): string {
  * @returns {string}
  */
 export function normalizeFilename(filepath: string): string {
-    return toPosix(filepath.replace(/([.]d)?[.](t|j)sx?$/g, ''));
+  return toPosix(filepath.replace(/([.]d)?[.](t|j)sx?$/g, ''));
 }
 
 /**
@@ -33,8 +33,8 @@ export function normalizeFilename(filepath: string): string {
  * On other OSes, returns the path unmodified.
  */
 export function toPosix(path: string): string {
-    if (platform() === 'win32') {
-        return path.replace(/\\/g, '/');
-    }
-    return path;
+  if (platform() === 'win32') {
+    return path.replace(/\\/g, '/');
+  }
+  return path;
 }

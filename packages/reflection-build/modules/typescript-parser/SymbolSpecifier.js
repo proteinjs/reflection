@@ -1,5 +1,5 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+'use strict';
+Object.defineProperty(exports, '__esModule', { value: true });
 exports.SymbolSpecifier = void 0;
 /**
  * Class for symbols that are contained in a named import or export or anywhere. Basically an aliased object.
@@ -10,19 +10,19 @@ exports.SymbolSpecifier = void 0;
  * @implements {Clonable}
  */
 class SymbolSpecifier {
-    constructor(specifier, alias) {
-        this.specifier = specifier;
-        this.alias = alias;
-    }
-    /**
-     * Clones the current resolve specifier and returns a new instance with the same properties.
-     *
-     * @returns {SymbolSpecifier}
-     *
-     * @memberof SymbolSpecifier
-     */
-    clone() {
-        return new SymbolSpecifier(this.specifier, this.alias);
-    }
+  constructor(specifier, alias) {
+    this.specifier = specifier;
+    this.alias = alias;
+  }
+  /**
+   * Clones the current resolve specifier and returns a new instance with the same properties.
+   *
+   * @returns {SymbolSpecifier}
+   *
+   * @memberof SymbolSpecifier
+   */
+  clone() {
+    return new SymbolSpecifier(this.specifier, this.alias);
+  }
 }
 exports.SymbolSpecifier = SymbolSpecifier;

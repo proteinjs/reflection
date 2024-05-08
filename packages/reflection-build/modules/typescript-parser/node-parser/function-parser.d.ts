@@ -13,7 +13,11 @@ import { Resource } from '../resources/Resource';
  * @param {(TshConstructor | TshMethod | TshFunction)} parent
  * @param {Node} node
  */
-export declare function parseFunctionParts(resource: Resource, parent: TshConstructor | TshMethod | TshFunction, node: Node): void;
+export declare function parseFunctionParts(
+  resource: Resource,
+  parent: TshConstructor | TshMethod | TshFunction,
+  node: Node
+): void;
 /**
  * Parse method parameters.
  *
@@ -21,7 +25,9 @@ export declare function parseFunctionParts(resource: Resource, parent: TshConstr
  * @param {(FunctionDeclaration | MethodDeclaration | MethodSignature)} node
  * @returns {TshParameter[]}
  */
-export declare function parseMethodParams(node: FunctionDeclaration | MethodDeclaration | MethodSignature): TshParameter[];
+export declare function parseMethodParams(
+  node: FunctionDeclaration | MethodDeclaration | MethodSignature
+): TshParameter[];
 /**
  * Parses a function into its declaration.
  * Parses the functions sub information like parameters and variables.

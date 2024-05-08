@@ -8,4 +8,7 @@ import { TypescriptGenerationOptions } from '../TypescriptGenerationOptions';
  * @param {TypescriptGenerationOptions} { tabSize }
  * @returns {string}
  */
-export declare function generateAccessorDeclaration(accessor: AccessorDeclaration, { tabSize }: TypescriptGenerationOptions): string;
+export declare function generateAccessorDeclaration(
+  accessor: AccessorDeclaration,
+  { tabSize }: TypescriptGenerationOptions
+): string;

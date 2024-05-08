@@ -8,5 +8,5 @@ import { SymbolSpecifier } from '../../SymbolSpecifier';
  * @returns {string}
  */
 export function generateSymbolSpecifier(specifier: SymbolSpecifier): string {
-    return `${specifier.specifier}${specifier.alias ? ` as ${specifier.alias}` : ''}`;
+  return `${specifier.specifier}${specifier.alias ? ` as ${specifier.alias}` : ''}`;
 }

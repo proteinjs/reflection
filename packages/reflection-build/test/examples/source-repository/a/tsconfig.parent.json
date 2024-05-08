@@ -1,35 +1,23 @@
 {
-    "compilerOptions": {
-        "target": "es5",
-        "module": "commonjs",
-        "declaration": true,
-        "sourceMap": true,
-        "outDir": "./dist/",
-        "strict": true,
-        "noImplicitAny": true,
-        "esModuleInterop": true,
-        "skipLibCheck": true,
-        "forceConsistentCasingInFileNames": true,
-        "resolveJsonModule": true,
-        "baseUrl": "./",
-        "paths": { 
-            "*": [
-                "./node_modules/*",
-                "./node_modules/@types/*"
-            ],
-            "@dagrejs/graphlib/*": [
-                "./types/@dagrejs/graphlib.d.ts"
-            ],
-            "@dagrejs/graphlib": [
-                "./types/@dagrejs/graphlib.d.ts"
-            ]
-        },
-        "types": [
-            "node"
-        ]
+  "compilerOptions": {
+    "target": "es5",
+    "module": "commonjs",
+    "declaration": true,
+    "sourceMap": true,
+    "outDir": "./dist/",
+    "strict": true,
+    "noImplicitAny": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "baseUrl": "./",
+    "paths": {
+      "*": ["./node_modules/*", "./node_modules/@types/*"],
+      "@dagrejs/graphlib/*": ["./types/@dagrejs/graphlib.d.ts"],
+      "@dagrejs/graphlib": ["./types/@dagrejs/graphlib.d.ts"]
     },
-    "include": [
-        "../../../../src/runBuild.ts",
-        "../../../../src/tsconfigTemplate.json"
-    ]
+    "types": ["node"]
+  },
+  "include": ["../../../../src/runBuild.ts", "../../../../src/tsconfigTemplate.json"]
 }

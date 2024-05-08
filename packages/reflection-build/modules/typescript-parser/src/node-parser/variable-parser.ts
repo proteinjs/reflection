@@ -15,22 +15,22 @@ import { parseType } from './changes/parseType';
  * @param {VariableStatement} node
  */
 export function parseVariable(parent: Resource | CallableDeclaration, node: VariableStatement): void {
-    const isConst = node.declarationList.getChildren().some(o => o.kind === SyntaxKind.ConstKeyword);
-	if (node.declarationList && node.declarationList.declarations) {
-        node.declarationList.declarations.forEach((o) => {
-            const declaration = new VariableDeclaration(
-                o.name.getText(),
-                isConst,
-                isNodeExported(node),
-                parseType(o),
-                node.getStart(),
-                node.getEnd(),
-            );
-            if (isCallableDeclaration(parent)) {
-                parent.variables.push(declaration);
-            } else {
-                parent.declarations.push(declaration);
-            }
-        });
-    }
+  const isConst = node.declarationList.getChildren().some((o) => o.kind === SyntaxKind.ConstKeyword);
+  if (node.declarationList && node.declarationList.declarations) {
+    node.declarationList.declarations.forEach((o) => {
+      const declaration = new VariableDeclaration(
+        o.name.getText(),
+        isConst,
+        isNodeExported(node),
+        parseType(o),
+        node.getStart(),
+        node.getEnd()
+      );
+      if (isCallableDeclaration(parent)) {
+        parent.variables.push(declaration);
+      } else {
+        parent.declarations.push(declaration);
+      }
+    });
+  }
 }

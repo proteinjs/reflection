@@ -8,26 +8,26 @@ import { TypedDeclaration } from './Declaration';
  * @implements {TypedDeclaration}
  */
 export declare class ParameterDeclaration implements TypedDeclaration {
-    name: string;
-    type: string | undefined;
-    start?: number | undefined;
-    end?: number | undefined;
-    constructor(name: string, type: string | undefined, start?: number | undefined, end?: number | undefined);
+  name: string;
+  type: string | undefined;
+  start?: number | undefined;
+  end?: number | undefined;
+  constructor(name: string, type: string | undefined, start?: number | undefined, end?: number | undefined);
 }
 export declare class BoundParameterDeclaration extends ParameterDeclaration {
-    private startCharacter;
-    private endCharacter;
-    parameters: ParameterDeclaration[];
-    typeReference: string | undefined;
-    get name(): string;
-    set name(_: string);
-    get type(): string;
-    set type(_: string);
-    constructor(startCharacter: string, endCharacter: string, start?: number, end?: number);
+  private startCharacter;
+  private endCharacter;
+  parameters: ParameterDeclaration[];
+  typeReference: string | undefined;
+  get name(): string;
+  set name(_: string);
+  get type(): string;
+  set type(_: string);
+  constructor(startCharacter: string, endCharacter: string, start?: number, end?: number);
 }
 export declare class ObjectBoundParameterDeclaration extends BoundParameterDeclaration {
-    constructor(start?: number, end?: number);
+  constructor(start?: number, end?: number);
 }
 export declare class ArrayBoundParameterDeclaration extends BoundParameterDeclaration {
-    constructor(start?: number, end?: number);
+  constructor(start?: number, end?: number);
 }

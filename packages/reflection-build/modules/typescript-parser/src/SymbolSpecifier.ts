@@ -9,16 +9,19 @@ import { Clonable } from './clonable/Clonable';
  * @implements {Clonable}
  */
 export class SymbolSpecifier implements Clonable<SymbolSpecifier> {
-    constructor(public specifier: string, public alias?: string) { }
+  constructor(
+    public specifier: string,
+    public alias?: string
+  ) {}
 
-    /**
-     * Clones the current resolve specifier and returns a new instance with the same properties.
-     *
-     * @returns {SymbolSpecifier}
-     *
-     * @memberof SymbolSpecifier
-     */
-    public clone(): SymbolSpecifier {
-        return new SymbolSpecifier(this.specifier, this.alias);
-    }
+  /**
+   * Clones the current resolve specifier and returns a new instance with the same properties.
+   *
+   * @returns {SymbolSpecifier}
+   *
+   * @memberof SymbolSpecifier
+   */
+  public clone(): SymbolSpecifier {
+    return new SymbolSpecifier(this.specifier, this.alias);
+  }
 }

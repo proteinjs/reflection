@@ -10,12 +10,12 @@ import { Type } from '../node-parser/changes/parseType';
  * @implements {TypedDeclaration}
  */
 export class VariableDeclaration implements ExportableDeclaration, TypedDeclaration {
-    constructor(
-        public name: string,
-        public isConst: boolean,
-        public isExported: boolean,
-        public type: Type,
-        public start?: number,
-        public end?: number,
-    ) { }
+  constructor(
+    public name: string,
+    public isConst: boolean,
+    public isExported: boolean,
+    public type: Type,
+    public start?: number,
+    public end?: number
+  ) {}
 }

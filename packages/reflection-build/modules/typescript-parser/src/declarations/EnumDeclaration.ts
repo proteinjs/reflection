@@ -8,12 +8,12 @@ import { ExportableDeclaration } from './Declaration';
  * @implements {ExportableDeclaration}
  */
 export class EnumDeclaration implements ExportableDeclaration {
-    public members: string[] = [];
+  public members: string[] = [];
 
-    constructor(
-        public name: string,
-        public isExported: boolean,
-        public start?: number,
-        public end?: number,
-    ) { }
+  constructor(
+    public name: string,
+    public isExported: boolean,
+    public start?: number,
+    public end?: number
+  ) {}
 }

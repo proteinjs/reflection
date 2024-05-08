@@ -11,26 +11,28 @@ import { TypescriptGenerationOptions } from '../TypescriptGenerationOptions';
  * @returns {string}
  */
 export function generateAccessorDeclaration(
-    accessor: AccessorDeclaration,
-    { tabSize }: TypescriptGenerationOptions,
+  accessor: AccessorDeclaration,
+  { tabSize }: TypescriptGenerationOptions
 ): string {
-    const tabs = Array(tabSize + 1).join(' ');
-    let definitionLine: string;
-    if (accessor instanceof SetterDeclaration) {
-        definitionLine = `${tabs}${accessor.visibility !== undefined ? getVisibilityText(accessor.visibility) + ' ' : ''}` +
-            `${accessor.isAbstract ? 'abstract ' : ''}` +
-            `set ${accessor.name}(value${accessor.type ? `: ${accessor.type}` : ''})`;
-    } else {
-        definitionLine = `${tabs}${accessor.visibility !== undefined ? getVisibilityText(accessor.visibility) + ' ' : ''}` +
-            `${accessor.isAbstract ? 'abstract ' : ''}` +
-            `get ${accessor.name}()${accessor.type ? `: ${accessor.type}` : ''}`;
-    }
+  const tabs = Array(tabSize + 1).join(' ');
+  let definitionLine: string;
+  if (accessor instanceof SetterDeclaration) {
+    definitionLine =
+      `${tabs}${accessor.visibility !== undefined ? getVisibilityText(accessor.visibility) + ' ' : ''}` +
+      `${accessor.isAbstract ? 'abstract ' : ''}` +
+      `set ${accessor.name}(value${accessor.type ? `: ${accessor.type}` : ''})`;
+  } else {
+    definitionLine =
+      `${tabs}${accessor.visibility !== undefined ? getVisibilityText(accessor.visibility) + ' ' : ''}` +
+      `${accessor.isAbstract ? 'abstract ' : ''}` +
+      `get ${accessor.name}()${accessor.type ? `: ${accessor.type}` : ''}`;
+  }
 
-    if (accessor.isAbstract) {
-        return `${definitionLine};`;
-    }
+  if (accessor.isAbstract) {
+    return `${definitionLine};`;
+  }
 
-    return `${definitionLine} {
+  return `${definitionLine} {
 ${tabs}${tabs}throw new Error('Not implemented yet.');
 ${tabs}}\n`;
 }

@@ -1,5 +1,5 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+'use strict';
+Object.defineProperty(exports, '__esModule', { value: true });
 exports.AllExport = void 0;
 /**
  * Declares an all export (i.e. export * from ...).
@@ -9,10 +9,10 @@ exports.AllExport = void 0;
  * @implements {Export}
  */
 class AllExport {
-    constructor(start, end, from) {
-        this.start = start;
-        this.end = end;
-        this.from = from;
-    }
+  constructor(start, end, from) {
+    this.start = start;
+    this.end = end;
+    this.from = from;
+  }
 }
 exports.AllExport = AllExport;

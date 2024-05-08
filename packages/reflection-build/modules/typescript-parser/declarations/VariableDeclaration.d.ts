@@ -9,11 +9,18 @@ import { Type } from '../node-parser/changes/parseType';
  * @implements {TypedDeclaration}
  */
 export declare class VariableDeclaration implements ExportableDeclaration, TypedDeclaration {
-    name: string;
-    isConst: boolean;
-    isExported: boolean;
-    type: Type;
-    start?: number | undefined;
-    end?: number | undefined;
-    constructor(name: string, isConst: boolean, isExported: boolean, type: Type, start?: number | undefined, end?: number | undefined);
+  name: string;
+  isConst: boolean;
+  isExported: boolean;
+  type: Type;
+  start?: number | undefined;
+  end?: number | undefined;
+  constructor(
+    name: string,
+    isConst: boolean,
+    isExported: boolean,
+    type: Type,
+    start?: number | undefined,
+    end?: number | undefined
+  );
 }

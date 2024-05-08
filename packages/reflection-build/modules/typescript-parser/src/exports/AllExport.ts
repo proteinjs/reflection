@@ -8,5 +8,9 @@ import { Export } from './Export';
  * @implements {Export}
  */
 export class AllExport implements Export {
-    constructor(public start: number, public end: number, public from: string) { }
+  constructor(
+    public start: number,
+    public end: number,
+    public from: string
+  ) {}
 }

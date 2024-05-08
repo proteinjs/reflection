@@ -1,4 +1,25 @@
-import { ArrayBindingPattern, ConstructorDeclaration, ExportDeclaration, ExternalModuleReference, FunctionDeclaration, GetAccessorDeclaration, Identifier, ImportDeclaration, ImportEqualsDeclaration, MethodDeclaration, MethodSignature, NamedExports, NamedImports, NamespaceImport, Node, ObjectBindingPattern, PropertyDeclaration, PropertySignature, SetAccessorDeclaration, StringLiteral } from 'typescript';
+import {
+  ArrayBindingPattern,
+  ConstructorDeclaration,
+  ExportDeclaration,
+  ExternalModuleReference,
+  FunctionDeclaration,
+  GetAccessorDeclaration,
+  Identifier,
+  ImportDeclaration,
+  ImportEqualsDeclaration,
+  MethodDeclaration,
+  MethodSignature,
+  NamedExports,
+  NamedImports,
+  NamespaceImport,
+  Node,
+  ObjectBindingPattern,
+  PropertyDeclaration,
+  PropertySignature,
+  SetAccessorDeclaration,
+  StringLiteral,
+} from 'typescript';
 /**
  * Determines if the given node is an ImportDeclaration.
  *

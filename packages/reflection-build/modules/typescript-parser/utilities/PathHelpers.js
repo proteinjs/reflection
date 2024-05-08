@@ -1,7 +1,7 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+'use strict';
+Object.defineProperty(exports, '__esModule', { value: true });
 exports.toPosix = exports.normalizeFilename = exports.normalizePathUri = void 0;
-const os_1 = require("os");
+const os_1 = require('os');
 /**
  * Returns a normalized version of the a path uri. Removes a "file://" or "file:///" prefix and removes semicolons.
  *
@@ -10,11 +10,11 @@ const os_1 = require("os");
  * @returns {string}
  */
 function normalizePathUri(uri) {
-    const decoded = decodeURIComponent(uri);
-    if (os_1.platform() === 'win32') {
-        return decoded.replace('file:///', '');
-    }
-    return decoded.replace('file://', '');
+  const decoded = decodeURIComponent(uri);
+  if (os_1.platform() === 'win32') {
+    return decoded.replace('file:///', '');
+  }
+  return decoded.replace('file://', '');
 }
 exports.normalizePathUri = normalizePathUri;
 /**
@@ -26,7 +26,7 @@ exports.normalizePathUri = normalizePathUri;
  * @returns {string}
  */
 function normalizeFilename(filepath) {
-    return toPosix(filepath.replace(/([.]d)?[.](t|j)sx?$/g, ''));
+  return toPosix(filepath.replace(/([.]d)?[.](t|j)sx?$/g, ''));
 }
 exports.normalizeFilename = normalizeFilename;
 /**
@@ -34,9 +34,9 @@ exports.normalizeFilename = normalizeFilename;
  * On other OSes, returns the path unmodified.
  */
 function toPosix(path) {
-    if (os_1.platform() === 'win32') {
-        return path.replace(/\\/g, '/');
-    }
-    return path;
+  if (os_1.platform() === 'win32') {
+    return path.replace(/\\/g, '/');
+  }
+  return path;
 }
 exports.toPosix = toPosix;

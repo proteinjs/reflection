@@ -39,17 +39,17 @@ export type Generators = { [name: string]: (generatable: Generatable, options: T
  * Hash with all possible (yet implemented) generators.
  */
 export const GENERATORS: Generators = {
-    [SymbolSpecifier.name]: generateSymbolSpecifier as any,
-    [MethodDeclaration.name]: generateMethodDeclaration,
-    [ParameterDeclaration.name]: generateParameterDeclaration,
-    [PropertyDeclaration.name]: generatePropertyDeclaration,
-    [VariableDeclaration.name]: generateVariableDelcaration,
-    [ExternalModuleImport.name]: generateExternalModuleImport,
-    [NamedImport.name]: generateNamedImport,
-    [NamespaceImport.name]: generateNamespaceImport,
-    [StringImport.name]: generateStringImport,
-    [SetterDeclaration.name]: generateAccessorDeclaration,
-    [GetterDeclaration.name]: generateAccessorDeclaration,
+  [SymbolSpecifier.name]: generateSymbolSpecifier as any,
+  [MethodDeclaration.name]: generateMethodDeclaration,
+  [ParameterDeclaration.name]: generateParameterDeclaration,
+  [PropertyDeclaration.name]: generatePropertyDeclaration,
+  [VariableDeclaration.name]: generateVariableDelcaration,
+  [ExternalModuleImport.name]: generateExternalModuleImport,
+  [NamedImport.name]: generateNamedImport,
+  [NamespaceImport.name]: generateNamespaceImport,
+  [StringImport.name]: generateStringImport,
+  [SetterDeclaration.name]: generateAccessorDeclaration,
+  [GetterDeclaration.name]: generateAccessorDeclaration,
 };
 
 /**
@@ -59,20 +59,20 @@ export const GENERATORS: Generators = {
  * @class TypescriptCodeGenerator
  */
 export class TypescriptCodeGenerator {
-    constructor(private options: TypescriptGenerationOptions) { }
+  constructor(private options: TypescriptGenerationOptions) {}
 
-    /**
-     * Generator function. Calls the specific element generator. If no generator is found, an exception is thrown.
-     *
-     * @param {Generatable} declaration
-     * @returns {string}
-     * @throws {NotGeneratableYetError}
-     * @memberof TypescriptCodeGenerator
-     */
-    public generate(declaration: Generatable): string {
-        if (GENERATORS[declaration.constructor.name]) {
-            return GENERATORS[declaration.constructor.name](declaration, this.options);
-        }
-        throw new NotGeneratableYetError(declaration);
+  /**
+   * Generator function. Calls the specific element generator. If no generator is found, an exception is thrown.
+   *
+   * @param {Generatable} declaration
+   * @returns {string}
+   * @throws {NotGeneratableYetError}
+   * @memberof TypescriptCodeGenerator
+   */
+  public generate(declaration: Generatable): string {
+    if (GENERATORS[declaration.constructor.name]) {
+      return GENERATORS[declaration.constructor.name](declaration, this.options);
     }
+    throw new NotGeneratableYetError(declaration);
+  }
 }

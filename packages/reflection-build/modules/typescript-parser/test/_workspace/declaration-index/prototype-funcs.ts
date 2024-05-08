@@ -1,7 +1,7 @@
 export function toString(): string {
-    return '';
+  return '';
 }
 
 export function hasOwnProperty(): boolean {
-    return false;
+  return false;
 }

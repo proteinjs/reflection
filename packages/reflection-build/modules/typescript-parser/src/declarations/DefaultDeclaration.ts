@@ -11,22 +11,22 @@ import { Declaration, ExportableDeclaration } from './Declaration';
  * @implements {ExportableDeclaration}
  */
 export class DefaultDeclaration implements ExportableDeclaration {
-    public readonly isExported: boolean = true;
+  public readonly isExported: boolean = true;
 
-    private exported: Declaration | undefined;
+  private exported: Declaration | undefined;
 
-    public get exportedDeclaration(): Declaration {
-        if (!this.exported) {
-            this.exported = this.resource.declarations.find(o => o.name === this.name)!;
-        }
-
-        return this.exported;
+  public get exportedDeclaration(): Declaration {
+    if (!this.exported) {
+      this.exported = this.resource.declarations.find((o) => o.name === this.name)!;
     }
 
-    constructor(
-        public name: string,
-        private resource: Resource,
-        public start?: number,
-        public end?: number,
-    ) { }
+    return this.exported;
+  }
+
+  constructor(
+    public name: string,
+    private resource: Resource,
+    public start?: number,
+    public end?: number
+  ) {}
 }

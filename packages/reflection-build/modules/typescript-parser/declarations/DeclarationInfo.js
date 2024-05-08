@@ -1,5 +1,5 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+'use strict';
+Object.defineProperty(exports, '__esModule', { value: true });
 exports.DeclarationInfo = void 0;
 /**
  * Class that defines information about a declaration.
@@ -9,9 +9,9 @@ exports.DeclarationInfo = void 0;
  * @class DeclarationInfo
  */
 class DeclarationInfo {
-    constructor(declaration, from) {
-        this.declaration = declaration;
-        this.from = from;
-    }
+  constructor(declaration, from) {
+    this.declaration = declaration;
+    this.from = from;
+  }
 }
 exports.DeclarationInfo = DeclarationInfo;

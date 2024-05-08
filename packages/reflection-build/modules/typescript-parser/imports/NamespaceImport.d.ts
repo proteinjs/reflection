@@ -7,18 +7,18 @@ import { AliasedImport } from './Import';
  * @implements {AliasedImport}
  */
 export declare class NamespaceImport implements AliasedImport {
-    libraryName: string;
-    alias: string;
-    start?: number | undefined;
-    end?: number | undefined;
-    get isNew(): boolean;
-    constructor(libraryName: string, alias: string, start?: number | undefined, end?: number | undefined);
-    /**
-     * Clone the current import object.
-     *
-     * @returns {NamespaceImport}
-     *
-     * @memberof NamespaceImport
-     */
-    clone(): NamespaceImport;
+  libraryName: string;
+  alias: string;
+  start?: number | undefined;
+  end?: number | undefined;
+  get isNew(): boolean;
+  constructor(libraryName: string, alias: string, start?: number | undefined, end?: number | undefined);
+  /**
+   * Clone the current import object.
+   *
+   * @returns {NamespaceImport}
+   *
+   * @memberof NamespaceImport
+   */
+  clone(): NamespaceImport;
 }

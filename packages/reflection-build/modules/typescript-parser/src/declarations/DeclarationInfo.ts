@@ -8,5 +8,8 @@ import { Declaration } from './Declaration';
  * @class DeclarationInfo
  */
 export class DeclarationInfo {
-    constructor(public declaration: Declaration, public from: string) { }
+  constructor(
+    public declaration: Declaration,
+    public from: string
+  ) {}
 }

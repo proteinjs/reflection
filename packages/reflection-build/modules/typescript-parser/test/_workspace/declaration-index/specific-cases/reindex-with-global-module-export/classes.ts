@@ -1,4 +1,3 @@
-
-export class MyClass { 
-    public doSomething(): void { }
+export class MyClass {
+  public doSomething(): void {}
 }

@@ -1,5 +1,5 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+'use strict';
+Object.defineProperty(exports, '__esModule', { value: true });
 exports.NamedExport = void 0;
 /**
  * Declares a named export (i.e. export { Foobar } from ...).
@@ -9,10 +9,10 @@ exports.NamedExport = void 0;
  * @implements {Export}
  */
 class NamedExport {
-    constructor(start, end, from) {
-        this.start = start;
-        this.end = end;
-        this.from = from;
-    }
+  constructor(start, end, from) {
+    this.start = start;
+    this.end = end;
+    this.from = from;
+  }
 }
 exports.NamedExport = NamedExport;

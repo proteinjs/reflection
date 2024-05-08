@@ -12,7 +12,7 @@ export declare type Generatable = Declaration | Import | Export | SymbolSpecifie
  * Type for generators.
  */
 export declare type Generators = {
-    [name: string]: (generatable: Generatable, options: TypescriptGenerationOptions) => string;
+  [name: string]: (generatable: Generatable, options: TypescriptGenerationOptions) => string;
 };
 /**
  * Hash with all possible (yet implemented) generators.
@@ -25,15 +25,15 @@ export declare const GENERATORS: Generators;
  * @class TypescriptCodeGenerator
  */
 export declare class TypescriptCodeGenerator {
-    private options;
-    constructor(options: TypescriptGenerationOptions);
-    /**
-     * Generator function. Calls the specific element generator. If no generator is found, an exception is thrown.
-     *
-     * @param {Generatable} declaration
-     * @returns {string}
-     * @throws {NotGeneratableYetError}
-     * @memberof TypescriptCodeGenerator
-     */
-    generate(declaration: Generatable): string;
+  private options;
+  constructor(options: TypescriptGenerationOptions);
+  /**
+   * Generator function. Calls the specific element generator. If no generator is found, an exception is thrown.
+   *
+   * @param {Generatable} declaration
+   * @returns {string}
+   * @throws {NotGeneratableYetError}
+   * @memberof TypescriptCodeGenerator
+   */
+  generate(declaration: Generatable): string;
 }

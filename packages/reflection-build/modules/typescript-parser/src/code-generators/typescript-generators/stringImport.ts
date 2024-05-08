@@ -9,6 +9,9 @@ import { TypescriptGenerationOptions } from '../TypescriptGenerationOptions';
  * @param {TypescriptGenerationOptions} { stringQuoteStyle, eol }
  * @returns {string}
  */
-export function generateStringImport(imp: StringImport, { stringQuoteStyle, eol }: TypescriptGenerationOptions): string {
-    return `import ${stringQuoteStyle}${imp.libraryName}${stringQuoteStyle}${eol}`;
+export function generateStringImport(
+  imp: StringImport,
+  { stringQuoteStyle, eol }: TypescriptGenerationOptions
+): string {
+  return `import ${stringQuoteStyle}${imp.libraryName}${stringQuoteStyle}${eol}`;
 }

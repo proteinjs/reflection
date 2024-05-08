@@ -1,7 +1,26 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.isSetAccessorDeclaration = exports.isGetAccessorDeclaration = exports.isConstructorDeclaration = exports.isPropertyDeclaration = exports.isMethodDeclaration = exports.isPropertySignature = exports.isMethodSignature = exports.isFunctionDeclaration = exports.isArrayBindingPattern = exports.isObjectBindingPattern = exports.isExportDeclaration = exports.isExternalModuleReference = exports.isIdentifier = exports.isStringLiteral = exports.isNamedExports = exports.isNamedImports = exports.isNamespaceImport = exports.isImportEqualsDeclaration = exports.isImportDeclaration = void 0;
-const typescript_1 = require("typescript");
+'use strict';
+Object.defineProperty(exports, '__esModule', { value: true });
+exports.isSetAccessorDeclaration =
+  exports.isGetAccessorDeclaration =
+  exports.isConstructorDeclaration =
+  exports.isPropertyDeclaration =
+  exports.isMethodDeclaration =
+  exports.isPropertySignature =
+  exports.isMethodSignature =
+  exports.isFunctionDeclaration =
+  exports.isArrayBindingPattern =
+  exports.isObjectBindingPattern =
+  exports.isExportDeclaration =
+  exports.isExternalModuleReference =
+  exports.isIdentifier =
+  exports.isStringLiteral =
+  exports.isNamedExports =
+  exports.isNamedImports =
+  exports.isNamespaceImport =
+  exports.isImportEqualsDeclaration =
+  exports.isImportDeclaration =
+    void 0;
+const typescript_1 = require('typescript');
 /**
  * Determines if the given node is an ImportDeclaration.
  *
@@ -10,7 +29,7 @@ const typescript_1 = require("typescript");
  * @returns {node is ImportDeclaration}
  */
 function isImportDeclaration(node) {
-    return node !== undefined && node.kind === typescript_1.SyntaxKind.ImportDeclaration;
+  return node !== undefined && node.kind === typescript_1.SyntaxKind.ImportDeclaration;
 }
 exports.isImportDeclaration = isImportDeclaration;
 /**
@@ -21,7 +40,7 @@ exports.isImportDeclaration = isImportDeclaration;
  * @returns {node is ImportEqualsDeclaration}
  */
 function isImportEqualsDeclaration(node) {
-    return node !== undefined && node.kind === typescript_1.SyntaxKind.ImportEqualsDeclaration;
+  return node !== undefined && node.kind === typescript_1.SyntaxKind.ImportEqualsDeclaration;
 }
 exports.isImportEqualsDeclaration = isImportEqualsDeclaration;
 /**
@@ -32,7 +51,7 @@ exports.isImportEqualsDeclaration = isImportEqualsDeclaration;
  * @returns {node is NamespaceImport}
  */
 function isNamespaceImport(node) {
-    return node !== undefined && node.kind === typescript_1.SyntaxKind.NamespaceImport;
+  return node !== undefined && node.kind === typescript_1.SyntaxKind.NamespaceImport;
 }
 exports.isNamespaceImport = isNamespaceImport;
 /**
@@ -43,7 +62,7 @@ exports.isNamespaceImport = isNamespaceImport;
  * @returns {node is NamedImports}
  */
 function isNamedImports(node) {
-    return node !== undefined && node.kind === typescript_1.SyntaxKind.NamedImports;
+  return node !== undefined && node.kind === typescript_1.SyntaxKind.NamedImports;
 }
 exports.isNamedImports = isNamedImports;
 /**
@@ -54,7 +73,7 @@ exports.isNamedImports = isNamedImports;
  * @returns {node is NamedExports}
  */
 function isNamedExports(node) {
-    return node !== undefined && node.kind === typescript_1.SyntaxKind.NamedExports;
+  return node !== undefined && node.kind === typescript_1.SyntaxKind.NamedExports;
 }
 exports.isNamedExports = isNamedExports;
 /**
@@ -65,7 +84,7 @@ exports.isNamedExports = isNamedExports;
  * @returns {node is StringLiteral}
  */
 function isStringLiteral(node) {
-    return node !== undefined && node.kind === typescript_1.SyntaxKind.StringLiteral;
+  return node !== undefined && node.kind === typescript_1.SyntaxKind.StringLiteral;
 }
 exports.isStringLiteral = isStringLiteral;
 /**
@@ -76,7 +95,7 @@ exports.isStringLiteral = isStringLiteral;
  * @returns {node is Identifier}
  */
 function isIdentifier(node) {
-    return node !== undefined && node.kind === typescript_1.SyntaxKind.Identifier;
+  return node !== undefined && node.kind === typescript_1.SyntaxKind.Identifier;
 }
 exports.isIdentifier = isIdentifier;
 /**
@@ -87,7 +106,7 @@ exports.isIdentifier = isIdentifier;
  * @returns {node is ExternalModuleReference}
  */
 function isExternalModuleReference(node) {
-    return node !== undefined && node.kind === typescript_1.SyntaxKind.ExternalModuleReference;
+  return node !== undefined && node.kind === typescript_1.SyntaxKind.ExternalModuleReference;
 }
 exports.isExternalModuleReference = isExternalModuleReference;
 /**
@@ -98,7 +117,7 @@ exports.isExternalModuleReference = isExternalModuleReference;
  * @returns {node is ExportDeclaration}
  */
 function isExportDeclaration(node) {
-    return node !== undefined && node.kind === typescript_1.SyntaxKind.ExportDeclaration;
+  return node !== undefined && node.kind === typescript_1.SyntaxKind.ExportDeclaration;
 }
 exports.isExportDeclaration = isExportDeclaration;
 /**
@@ -109,7 +128,7 @@ exports.isExportDeclaration = isExportDeclaration;
  * @returns {node is ObjectBindingPattern}
  */
 function isObjectBindingPattern(node) {
-    return node !== undefined && node.kind === typescript_1.SyntaxKind.ObjectBindingPattern;
+  return node !== undefined && node.kind === typescript_1.SyntaxKind.ObjectBindingPattern;
 }
 exports.isObjectBindingPattern = isObjectBindingPattern;
 /**
@@ -120,7 +139,7 @@ exports.isObjectBindingPattern = isObjectBindingPattern;
  * @returns {node is ArrayBindingPattern}
  */
 function isArrayBindingPattern(node) {
-    return node !== undefined && node.kind === typescript_1.SyntaxKind.ArrayBindingPattern;
+  return node !== undefined && node.kind === typescript_1.SyntaxKind.ArrayBindingPattern;
 }
 exports.isArrayBindingPattern = isArrayBindingPattern;
 /**
@@ -131,7 +150,7 @@ exports.isArrayBindingPattern = isArrayBindingPattern;
  * @returns {node is FunctionDeclaration}
  */
 function isFunctionDeclaration(node) {
-    return node !== undefined && node.kind === typescript_1.SyntaxKind.FunctionDeclaration;
+  return node !== undefined && node.kind === typescript_1.SyntaxKind.FunctionDeclaration;
 }
 exports.isFunctionDeclaration = isFunctionDeclaration;
 /**
@@ -142,7 +161,7 @@ exports.isFunctionDeclaration = isFunctionDeclaration;
  * @returns {node is MethodSignature}
  */
 function isMethodSignature(node) {
-    return node !== undefined && node.kind === typescript_1.SyntaxKind.MethodSignature;
+  return node !== undefined && node.kind === typescript_1.SyntaxKind.MethodSignature;
 }
 exports.isMethodSignature = isMethodSignature;
 /**
@@ -153,7 +172,7 @@ exports.isMethodSignature = isMethodSignature;
  * @returns {node is PropertySignature}
  */
 function isPropertySignature(node) {
-    return node !== undefined && node.kind === typescript_1.SyntaxKind.PropertySignature;
+  return node !== undefined && node.kind === typescript_1.SyntaxKind.PropertySignature;
 }
 exports.isPropertySignature = isPropertySignature;
 /**
@@ -164,7 +183,7 @@ exports.isPropertySignature = isPropertySignature;
  * @returns {node is MethodDeclaration}
  */
 function isMethodDeclaration(node) {
-    return node !== undefined && node.kind === typescript_1.SyntaxKind.MethodDeclaration;
+  return node !== undefined && node.kind === typescript_1.SyntaxKind.MethodDeclaration;
 }
 exports.isMethodDeclaration = isMethodDeclaration;
 /**
@@ -175,7 +194,7 @@ exports.isMethodDeclaration = isMethodDeclaration;
  * @returns {node is PropertyDeclaration}
  */
 function isPropertyDeclaration(node) {
-    return node !== undefined && node.kind === typescript_1.SyntaxKind.PropertyDeclaration;
+  return node !== undefined && node.kind === typescript_1.SyntaxKind.PropertyDeclaration;
 }
 exports.isPropertyDeclaration = isPropertyDeclaration;
 /**
@@ -186,7 +205,7 @@ exports.isPropertyDeclaration = isPropertyDeclaration;
  * @returns {node is ConstructorDeclaration}
  */
 function isConstructorDeclaration(node) {
-    return node !== undefined && node.kind === typescript_1.SyntaxKind.Constructor;
+  return node !== undefined && node.kind === typescript_1.SyntaxKind.Constructor;
 }
 exports.isConstructorDeclaration = isConstructorDeclaration;
 /**
@@ -197,7 +216,7 @@ exports.isConstructorDeclaration = isConstructorDeclaration;
  * @returns {node is isGetAccessorDeclaration}
  */
 function isGetAccessorDeclaration(node) {
-    return node !== undefined && node.kind === typescript_1.SyntaxKind.GetAccessor;
+  return node !== undefined && node.kind === typescript_1.SyntaxKind.GetAccessor;
 }
 exports.isGetAccessorDeclaration = isGetAccessorDeclaration;
 /**
@@ -208,6 +227,6 @@ exports.isGetAccessorDeclaration = isGetAccessorDeclaration;
  * @returns {node is SetAccessorDeclaration}
  */
 function isSetAccessorDeclaration(node) {
-    return node !== undefined && node.kind === typescript_1.SyntaxKind.SetAccessor;
+  return node !== undefined && node.kind === typescript_1.SyntaxKind.SetAccessor;
 }
 exports.isSetAccessorDeclaration = isSetAccessorDeclaration;

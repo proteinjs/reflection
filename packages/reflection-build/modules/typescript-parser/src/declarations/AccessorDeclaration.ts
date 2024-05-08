@@ -11,20 +11,18 @@ import { DeclarationVisibility } from './DeclarationVisibility';
  * @implements {TypedDeclaration}
  * @implements {AbstractDeclaration}
  */
-export abstract class AccessorDeclaration implements
-    ScopedDeclaration,
-    StaticDeclaration,
-    TypedDeclaration,
-    AbstractDeclaration {
-    constructor(
-        public name: string,
-        public visibility: DeclarationVisibility | undefined,
-        public type: string | undefined,
-        public isAbstract: boolean,
-        public isStatic: boolean,
-        public start?: number,
-        public end?: number,
-    ) { }
+export abstract class AccessorDeclaration
+  implements ScopedDeclaration, StaticDeclaration, TypedDeclaration, AbstractDeclaration
+{
+  constructor(
+    public name: string,
+    public visibility: DeclarationVisibility | undefined,
+    public type: string | undefined,
+    public isAbstract: boolean,
+    public isStatic: boolean,
+    public start?: number,
+    public end?: number
+  ) {}
 }
 
 /**
@@ -34,7 +32,7 @@ export abstract class AccessorDeclaration implements
  * @class GetterDeclaration
  * @extends {AccessorDeclaration}
  */
-export class GetterDeclaration extends AccessorDeclaration { }
+export class GetterDeclaration extends AccessorDeclaration {}
 
 /**
  * Setter declaration for a getter accessor of a class property.
@@ -43,4 +41,4 @@ export class GetterDeclaration extends AccessorDeclaration { }
  * @class SetterDeclaration
  * @extends {AccessorDeclaration}
  */
-export class SetterDeclaration extends AccessorDeclaration { }
+export class SetterDeclaration extends AccessorDeclaration {}

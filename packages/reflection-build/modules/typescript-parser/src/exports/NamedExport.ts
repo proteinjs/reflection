@@ -9,7 +9,11 @@ import { Export } from './Export';
  * @implements {Export}
  */
 export class NamedExport implements Export {
-    public specifiers: SymbolSpecifier[] | undefined;
+  public specifiers: SymbolSpecifier[] | undefined;
 
-    constructor(public start: number, public end: number, public from: string) { }
+  constructor(
+    public start: number,
+    public end: number,
+    public from: string
+  ) {}
 }

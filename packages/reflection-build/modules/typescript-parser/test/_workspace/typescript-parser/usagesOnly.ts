@@ -1,44 +1,39 @@
 @ClassDecorator
 class Class {
-    @PropertyDecorator()
-    public notInitializedProperty;
+  @PropertyDecorator()
+  public notInitializedProperty;
 
-    public typedProperty: TypedPropertyRef;
+  public typedProperty: TypedPropertyRef;
 
-    public assignedProperty = AssignedProperty;
+  public assignedProperty = AssignedProperty;
 
-    @FunctionDecorator()
-    public func( @ParamDecorator() param: TypedParam, defaultParam = DefaultParam) {
-    }
+  @FunctionDecorator()
+  public func(@ParamDecorator() param: TypedParam, defaultParam = DefaultParam) {}
 
-    private prv(param): ReturnValue {
-        let a = PropertyAccess.To.My.Foobar;
+  private prv(param): ReturnValue {
+    let a = PropertyAccess.To.My.Foobar;
 
-        functionCall(MyProperty);
+    functionCall(MyProperty);
 
-        indexedObject[Indexing];
+    indexedObject[Indexing];
 
-        let b;
-        b = AssignmentToVariable;
+    let b;
+    b = AssignmentToVariable;
 
-        console.log(a);
-        console.log(b);
+    console.log(a);
+    console.log(b);
 
-        () => () => () => NestedBinaryAssignment === true;
+    () => () => () => NestedBinaryAssignment === true;
 
-        return null;
-    }
+    return null;
+  }
 }
 
 let a = globalFunction();
 
-class Class extends DefaultClass {
+class Class extends DefaultClass {}
 
-}
-
-class Class extends GenericClass<GenericType> {
-
-}
+class Class extends GenericClass<GenericType> {}
 
 indexedUsage[indexingUsage];
 

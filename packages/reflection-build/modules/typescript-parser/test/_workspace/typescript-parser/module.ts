@@ -1,12 +1,12 @@
 declare module 'Module' {
-    export function modFunc(): void;
+  export function modFunc(): void;
 }
 
 declare namespace Namespace {
-    class NotExported { }
+  class NotExported {}
 
-    export enum Exported {
-        MemberA,
-        MemberB
-    }
+  export enum Exported {
+    MemberA,
+    MemberB,
+  }
 }

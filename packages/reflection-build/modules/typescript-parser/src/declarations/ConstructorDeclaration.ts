@@ -10,12 +10,12 @@ import { VariableDeclaration } from './VariableDeclaration';
  * @implements {CallableDeclaration}
  */
 export class ConstructorDeclaration implements CallableDeclaration {
-    public parameters: ParameterDeclaration[] = [];
-    public variables: VariableDeclaration[] = [];
+  public parameters: ParameterDeclaration[] = [];
+  public variables: VariableDeclaration[] = [];
 
-    constructor(
-        public name: string,
-        public start?: number,
-        public end?: number,
-    ) { }
+  constructor(
+    public name: string,
+    public start?: number,
+    public end?: number
+  ) {}
 }

@@ -11,10 +11,12 @@ import { TypescriptGenerationOptions } from '../TypescriptGenerationOptions';
  * @returns {string}
  */
 export function generatePropertyDeclaration(
-    property: PropertyDeclaration,
-    { tabSize }: TypescriptGenerationOptions,
+  property: PropertyDeclaration,
+  { tabSize }: TypescriptGenerationOptions
 ): string {
-    return `${Array(tabSize + 1).join(' ')}` +
-            `${property.visibility !== undefined ? getVisibilityText(property.visibility) + ' ' : ''}` +
-            `${property.name}${property.isOptional ? '?' : ''}${property.type ? `: ${property.type}` : ''};\n`;
+  return (
+    `${Array(tabSize + 1).join(' ')}` +
+    `${property.visibility !== undefined ? getVisibilityText(property.visibility) + ' ' : ''}` +
+    `${property.name}${property.isOptional ? '?' : ''}${property.type ? `: ${property.type}` : ''};\n`
+  );
 }

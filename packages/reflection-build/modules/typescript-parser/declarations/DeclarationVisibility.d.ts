@@ -12,7 +12,7 @@ export declare function getVisibilityText(visibility?: DeclarationVisibility): s
  * @enum {number}
  */
 export declare const enum DeclarationVisibility {
-    Private = 0,
-    Protected = 1,
-    Public = 2
+  Private = 0,
+  Protected = 1,
+  Public = 2,
 }

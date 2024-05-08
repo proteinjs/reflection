@@ -11,13 +11,20 @@ import { VariableDeclaration } from './VariableDeclaration';
  * @implements {ExportableDeclaration}
  */
 export declare class FunctionDeclaration implements AsyncDeclaration, CallableDeclaration, ExportableDeclaration {
-    name: string;
-    isExported: boolean;
-    isAsync: boolean;
-    type?: string | undefined;
-    start?: number | undefined;
-    end?: number | undefined;
-    parameters: ParameterDeclaration[];
-    variables: VariableDeclaration[];
-    constructor(name: string, isExported: boolean, isAsync: boolean, type?: string | undefined, start?: number | undefined, end?: number | undefined);
+  name: string;
+  isExported: boolean;
+  isAsync: boolean;
+  type?: string | undefined;
+  start?: number | undefined;
+  end?: number | undefined;
+  parameters: ParameterDeclaration[];
+  variables: VariableDeclaration[];
+  constructor(
+    name: string,
+    isExported: boolean,
+    isAsync: boolean,
+    type?: string | undefined,
+    start?: number | undefined,
+    end?: number | undefined
+  );
 }

@@ -7,7 +7,7 @@ import { Declaration } from './Declaration';
  * @class DeclarationInfo
  */
 export declare class DeclarationInfo {
-    declaration: Declaration;
-    from: string;
-    constructor(declaration: Declaration, from: string);
+  declaration: Declaration;
+  from: string;
+  constructor(declaration: Declaration, from: string);
 }

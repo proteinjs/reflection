@@ -1,5 +1,5 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+'use strict';
+Object.defineProperty(exports, '__esModule', { value: true });
 exports.FunctionDeclaration = void 0;
 /**
  * Function declaration. Like the MethodDeclaration it contains the base info about the function
@@ -11,15 +11,15 @@ exports.FunctionDeclaration = void 0;
  * @implements {ExportableDeclaration}
  */
 class FunctionDeclaration {
-    constructor(name, isExported, isAsync, type, start, end) {
-        this.name = name;
-        this.isExported = isExported;
-        this.isAsync = isAsync;
-        this.type = type;
-        this.start = start;
-        this.end = end;
-        this.parameters = [];
-        this.variables = [];
-    }
+  constructor(name, isExported, isAsync, type, start, end) {
+    this.name = name;
+    this.isExported = isExported;
+    this.isAsync = isAsync;
+    this.type = type;
+    this.start = start;
+    this.end = end;
+    this.parameters = [];
+    this.variables = [];
+  }
 }
 exports.FunctionDeclaration = FunctionDeclaration;

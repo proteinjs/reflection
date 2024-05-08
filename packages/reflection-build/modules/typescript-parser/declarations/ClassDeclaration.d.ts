@@ -13,22 +13,22 @@ import { PropertyDeclaration } from './PropertyDeclaration';
  * @implements {GenericDeclaration}
  */
 export declare class ClassDeclaration implements ClassLikeDeclaration, ExportableDeclaration, GenericDeclaration {
+  name: string;
+  isExported: boolean;
+  start?: number | undefined;
+  end?: number | undefined;
+  ctor: ConstructorDeclaration | undefined;
+  accessors: AccessorDeclaration[];
+  properties: PropertyDeclaration[];
+  methods: MethodDeclaration[];
+  typeParameters: string[] | undefined;
+  extends: {
     name: string;
-    isExported: boolean;
-    start?: number | undefined;
-    end?: number | undefined;
-    ctor: ConstructorDeclaration | undefined;
-    accessors: AccessorDeclaration[];
-    properties: PropertyDeclaration[];
-    methods: MethodDeclaration[];
-    typeParameters: string[] | undefined;
-    extends: {
-        name: string;
-        typeParameters: string[];
-    }[];
-    implements: {
-        name: string;
-        typeParameters: string[];
-    }[];
-    constructor(name: string, isExported: boolean, start?: number | undefined, end?: number | undefined);
+    typeParameters: string[];
+  }[];
+  implements: {
+    name: string;
+    typeParameters: string[];
+  }[];
+  constructor(name: string, isExported: boolean, start?: number | undefined, end?: number | undefined);
 }

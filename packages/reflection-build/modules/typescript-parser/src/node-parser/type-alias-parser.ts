@@ -13,11 +13,10 @@ import { parseType } from './changes/parseType';
  * @param {TypeAliasDeclaration} node
  */
 export function parseTypeAlias(resource: Resource, node: TypeAliasDeclaration): void {
-	let typeParameters: string[] = [];
-	if (node.typeParameters)
-		typeParameters = node.typeParameters.map(param => param.getText());
-		
-    resource.declarations.push(
-        new TshType(node.name.text, isNodeExported(node), typeParameters, parseType(node), node.getStart(), node.getEnd()),
-    );
+  let typeParameters: string[] = [];
+  if (node.typeParameters) typeParameters = node.typeParameters.map((param) => param.getText());
+
+  resource.declarations.push(
+    new TshType(node.name.text, isNodeExported(node), typeParameters, parseType(node), node.getStart(), node.getEnd())
+  );
 }

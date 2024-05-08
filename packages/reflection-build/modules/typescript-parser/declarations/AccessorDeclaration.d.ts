@@ -10,15 +10,25 @@ import { DeclarationVisibility } from './DeclarationVisibility';
  * @implements {TypedDeclaration}
  * @implements {AbstractDeclaration}
  */
-export declare abstract class AccessorDeclaration implements ScopedDeclaration, StaticDeclaration, TypedDeclaration, AbstractDeclaration {
-    name: string;
-    visibility: DeclarationVisibility | undefined;
-    type: string | undefined;
-    isAbstract: boolean;
-    isStatic: boolean;
-    start?: number | undefined;
-    end?: number | undefined;
-    constructor(name: string, visibility: DeclarationVisibility | undefined, type: string | undefined, isAbstract: boolean, isStatic: boolean, start?: number | undefined, end?: number | undefined);
+export declare abstract class AccessorDeclaration
+  implements ScopedDeclaration, StaticDeclaration, TypedDeclaration, AbstractDeclaration
+{
+  name: string;
+  visibility: DeclarationVisibility | undefined;
+  type: string | undefined;
+  isAbstract: boolean;
+  isStatic: boolean;
+  start?: number | undefined;
+  end?: number | undefined;
+  constructor(
+    name: string,
+    visibility: DeclarationVisibility | undefined,
+    type: string | undefined,
+    isAbstract: boolean,
+    isStatic: boolean,
+    start?: number | undefined,
+    end?: number | undefined
+  );
 }
 /**
  * Getter declaration for a getter accessor of a class property.
@@ -27,8 +37,7 @@ export declare abstract class AccessorDeclaration implements ScopedDeclaration, 
  * @class GetterDeclaration
  * @extends {AccessorDeclaration}
  */
-export declare class GetterDeclaration extends AccessorDeclaration {
-}
+export declare class GetterDeclaration extends AccessorDeclaration {}
 /**
  * Setter declaration for a getter accessor of a class property.
  *
@@ -36,5 +45,4 @@ export declare class GetterDeclaration extends AccessorDeclaration {
  * @class SetterDeclaration
  * @extends {AccessorDeclaration}
  */
-export declare class SetterDeclaration extends AccessorDeclaration {
-}
+export declare class SetterDeclaration extends AccessorDeclaration {}

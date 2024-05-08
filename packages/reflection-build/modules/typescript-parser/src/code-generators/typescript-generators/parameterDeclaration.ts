@@ -8,5 +8,5 @@ import { ParameterDeclaration } from '../../declarations/ParameterDeclaration';
  * @returns {string}
  */
 export function generateParameterDeclaration(parameter: ParameterDeclaration): string {
-    return `${parameter.name}${parameter.type ? `: ${parameter.type}` : ''}`;
+  return `${parameter.name}${parameter.type ? `: ${parameter.type}` : ''}`;
 }

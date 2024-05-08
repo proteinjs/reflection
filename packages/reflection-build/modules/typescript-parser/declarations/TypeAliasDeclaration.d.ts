@@ -9,11 +9,18 @@ import { Type } from '../node-parser/changes/parseType';
  * @implements {ExportableDeclaration}
  */
 export declare class TypeAliasDeclaration implements ExportableDeclaration {
-    name: string;
-    isExported: boolean;
-    typeParameters: string[];
-    type: Type;
-    start?: number | undefined;
-    end?: number | undefined;
-    constructor(name: string, isExported: boolean, typeParameters: string[], type: Type, start?: number | undefined, end?: number | undefined);
+  name: string;
+  isExported: boolean;
+  typeParameters: string[];
+  type: Type;
+  start?: number | undefined;
+  end?: number | undefined;
+  constructor(
+    name: string,
+    isExported: boolean,
+    typeParameters: string[],
+    type: Type,
+    start?: number | undefined,
+    end?: number | undefined
+  );
 }

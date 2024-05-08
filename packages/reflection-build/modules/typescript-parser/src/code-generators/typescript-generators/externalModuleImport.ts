@@ -10,8 +10,8 @@ import { TypescriptGenerationOptions } from '../TypescriptGenerationOptions';
  * @returns {string}
  */
 export function generateExternalModuleImport(
-    imp: ExternalModuleImport,
-    { stringQuoteStyle, eol }: TypescriptGenerationOptions,
+  imp: ExternalModuleImport,
+  { stringQuoteStyle, eol }: TypescriptGenerationOptions
 ): string {
-    return `import ${imp.alias} = require(${stringQuoteStyle}${imp.libraryName}${stringQuoteStyle})${eol}`;
+  return `import ${imp.alias} = require(${stringQuoteStyle}${imp.libraryName}${stringQuoteStyle})${eol}`;
 }

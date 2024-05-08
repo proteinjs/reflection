@@ -8,8 +8,8 @@ import { Generatable } from '../code-generators/TypescriptCodeGenerator';
  * @extends {Error}
  */
 export class NotGeneratableYetError extends Error {
-    constructor(generatable: Generatable) {
-        super();
-        this.message = `The element "${generatable.constructor.name}" is not yet generatable.`;
-    }
+  constructor(generatable: Generatable) {
+    super();
+    this.message = `The element "${generatable.constructor.name}" is not yet generatable.`;
+  }
 }

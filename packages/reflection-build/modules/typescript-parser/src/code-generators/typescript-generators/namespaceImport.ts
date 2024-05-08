@@ -10,8 +10,8 @@ import { TypescriptGenerationOptions } from '../TypescriptGenerationOptions';
  * @returns {string}
  */
 export function generateNamespaceImport(
-    imp: NamespaceImport,
-    { stringQuoteStyle, eol }: TypescriptGenerationOptions,
+  imp: NamespaceImport,
+  { stringQuoteStyle, eol }: TypescriptGenerationOptions
 ): string {
-    return `import * as ${imp.alias} from ${stringQuoteStyle}${imp.libraryName}${stringQuoteStyle}${eol}`;
+  return `import * as ${imp.alias} from ${stringQuoteStyle}${imp.libraryName}${stringQuoteStyle}${eol}`;
 }

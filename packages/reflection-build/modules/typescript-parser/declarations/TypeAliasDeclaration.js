@@ -1,5 +1,5 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+'use strict';
+Object.defineProperty(exports, '__esModule', { value: true });
 exports.TypeAliasDeclaration = void 0;
 /**
  * Alias declaration that can be exported. Is used to defined types.
@@ -10,13 +10,13 @@ exports.TypeAliasDeclaration = void 0;
  * @implements {ExportableDeclaration}
  */
 class TypeAliasDeclaration {
-    constructor(name, isExported, typeParameters, type, start, end) {
-        this.name = name;
-        this.isExported = isExported;
-        this.typeParameters = typeParameters;
-        this.type = type;
-        this.start = start;
-        this.end = end;
-    }
+  constructor(name, isExported, typeParameters, type, start, end) {
+    this.name = name;
+    this.isExported = isExported;
+    this.typeParameters = typeParameters;
+    this.type = type;
+    this.start = start;
+    this.end = end;
+  }
 }
 exports.TypeAliasDeclaration = TypeAliasDeclaration;

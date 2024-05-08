@@ -11,19 +11,19 @@ import { Import } from './Import';
  * @implements {Import}
  */
 export declare class NamedImport implements Import {
-    libraryName: string;
-    start?: number | undefined;
-    end?: number | undefined;
-    specifiers: SymbolSpecifier[];
-    defaultAlias?: string;
-    get isNew(): boolean;
-    constructor(libraryName: string, start?: number | undefined, end?: number | undefined);
-    /**
-     * Clone the current import object.
-     *
-     * @returns {NamedImport}
-     *
-     * @memberof NamedImport
-     */
-    clone(): NamedImport;
+  libraryName: string;
+  start?: number | undefined;
+  end?: number | undefined;
+  specifiers: SymbolSpecifier[];
+  defaultAlias?: string;
+  get isNew(): boolean;
+  constructor(libraryName: string, start?: number | undefined, end?: number | undefined);
+  /**
+   * Clone the current import object.
+   *
+   * @returns {NamedImport}
+   *
+   * @memberof NamedImport
+   */
+  clone(): NamedImport;
 }

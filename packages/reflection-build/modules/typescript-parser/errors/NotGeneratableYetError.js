@@ -1,5 +1,5 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+'use strict';
+Object.defineProperty(exports, '__esModule', { value: true });
 exports.NotGeneratableYetError = void 0;
 /**
  * Error that should be thrown, when a generatable is not yet able to be generated.
@@ -9,9 +9,9 @@ exports.NotGeneratableYetError = void 0;
  * @extends {Error}
  */
 class NotGeneratableYetError extends Error {
-    constructor(generatable) {
-        super();
-        this.message = `The element "${generatable.constructor.name}" is not yet generatable.`;
-    }
+  constructor(generatable) {
+    super();
+    this.message = `The element "${generatable.constructor.name}" is not yet generatable.`;
+  }
 }
 exports.NotGeneratableYetError = NotGeneratableYetError;

@@ -14,32 +14,32 @@ import { Resource } from './Resource';
  * @implements {Node}
  */
 export declare class File implements Resource, Node {
-    filePath: string;
-    private rootPath;
-    start: number;
-    end: number;
-    imports: Import[];
-    exports: Export[];
-    declarations: Declaration[];
-    resources: Resource[];
-    usages: string[];
-    get identifier(): string;
-    get nonLocalUsages(): string[];
-    /**
-     * Returns the parsed path of a resource.
-     *
-     * @readonly
-     * @type {ParsedPath}
-     * @memberof File
-     */
-    get parsedPath(): ParsedPath;
-    /**
-     * Determines if a file is a workspace file or an external resource.
-     *
-     * @readonly
-     * @type {boolean}
-     * @memberof File
-     */
-    get isWorkspaceFile(): boolean;
-    constructor(filePath: string, rootPath: string, start: number, end: number);
+  filePath: string;
+  private rootPath;
+  start: number;
+  end: number;
+  imports: Import[];
+  exports: Export[];
+  declarations: Declaration[];
+  resources: Resource[];
+  usages: string[];
+  get identifier(): string;
+  get nonLocalUsages(): string[];
+  /**
+   * Returns the parsed path of a resource.
+   *
+   * @readonly
+   * @type {ParsedPath}
+   * @memberof File
+   */
+  get parsedPath(): ParsedPath;
+  /**
+   * Determines if a file is a workspace file or an external resource.
+   *
+   * @readonly
+   * @type {boolean}
+   * @memberof File
+   */
+  get isWorkspaceFile(): boolean;
+  constructor(filePath: string, rootPath: string, start: number, end: number);
 }

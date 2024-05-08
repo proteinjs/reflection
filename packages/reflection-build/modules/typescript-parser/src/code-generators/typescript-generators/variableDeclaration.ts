@@ -8,5 +8,5 @@ import { VariableDeclaration } from '../../declarations/VariableDeclaration';
  * @returns {string}
  */
 export function generateVariableDelcaration(variable: VariableDeclaration): string {
-    return `${variable.name}${variable.type ? `: ${variable.type}` : ''}`;
+  return `${variable.name}${variable.type ? `: ${variable.type}` : ''}`;
 }

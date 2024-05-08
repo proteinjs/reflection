@@ -12,24 +12,24 @@ import { Resource } from './Resource';
  * @implements {Node}
  */
 export declare class Namespace implements Resource, Node {
-    name: string;
-    start: number;
-    end: number;
-    imports: Import[];
-    exports: Export[];
-    declarations: Declaration[];
-    resources: Resource[];
-    usages: string[];
-    get identifier(): string;
-    get nonLocalUsages(): string[];
-    constructor(name: string, start: number, end: number);
-    /**
-     * Function that calculates the alias name of a namespace.
-     * Removes all underlines and dashes and camelcases the name.
-     *
-     * @returns {string}
-     *
-     * @memberof Namespace
-     */
-    getNamespaceAlias(): string;
+  name: string;
+  start: number;
+  end: number;
+  imports: Import[];
+  exports: Export[];
+  declarations: Declaration[];
+  resources: Resource[];
+  usages: string[];
+  get identifier(): string;
+  get nonLocalUsages(): string[];
+  constructor(name: string, start: number, end: number);
+  /**
+   * Function that calculates the alias name of a namespace.
+   * Removes all underlines and dashes and camelcases the name.
+   *
+   * @returns {string}
+   *
+   * @memberof Namespace
+   */
+  getNamespaceAlias(): string;
 }

@@ -5,16 +5,16 @@
  * @returns {string}
  */
 export function getVisibilityText(visibility?: DeclarationVisibility): string {
-    switch (visibility) {
-        case DeclarationVisibility.Private:
-            return 'private';
-        case DeclarationVisibility.Public:
-            return 'public';
-        case DeclarationVisibility.Protected:
-            return 'protected';
-        default:
-            return '';
-    }
+  switch (visibility) {
+    case DeclarationVisibility.Private:
+      return 'private';
+    case DeclarationVisibility.Public:
+      return 'public';
+    case DeclarationVisibility.Protected:
+      return 'protected';
+    default:
+      return '';
+  }
 }
 
 /**
@@ -24,7 +24,7 @@ export function getVisibilityText(visibility?: DeclarationVisibility): string {
  * @enum {number}
  */
 export const enum DeclarationVisibility {
-    Private,
-    Protected,
-    Public,
+  Private,
+  Protected,
+  Public,
 }

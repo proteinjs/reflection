@@ -15,13 +15,13 @@ import { Type } from '../node-parser/changes/parseType';
  * @extends {Node}
  */
 export interface Declaration extends Node {
-    /**
-     * The name of the declaration.
-     *
-     * @type {string}
-     * @memberof Declaration
-     */
-    name: string;
+  /**
+   * The name of the declaration.
+   *
+   * @type {string}
+   * @memberof Declaration
+   */
+  name: string;
 }
 
 /**
@@ -33,15 +33,15 @@ export interface Declaration extends Node {
  * @extends {Declaration}
  */
 export interface TypedDeclaration extends Declaration {
-    /**
-     * The type of the declaration.
-     *
-     * @type {(string | undefined)}
-     * @example "string"
-     * @example "Declaration[]"
-     * @memberof TypedDeclaration
-     */
-    type: Type | string | undefined;
+  /**
+   * The type of the declaration.
+   *
+   * @type {(string | undefined)}
+   * @example "string"
+   * @example "Declaration[]"
+   * @memberof TypedDeclaration
+   */
+  type: Type | string | undefined;
 }
 
 /**
@@ -53,16 +53,16 @@ export interface TypedDeclaration extends Declaration {
  * @extends {Declaration}
  */
 export interface GenericDeclaration extends Declaration {
-    /**
-     * List of type parameters
-     *
-     * @type {(string[] | undefined)}
-     * @memberof GenericDeclaration
-     *
-     * @example
-     * ['T', 'TResult', 'TError']
-     */
-    typeParameters: string[] | undefined;
+  /**
+   * List of type parameters
+   *
+   * @type {(string[] | undefined)}
+   * @memberof GenericDeclaration
+   *
+   * @example
+   * ['T', 'TResult', 'TError']
+   */
+  typeParameters: string[] | undefined;
 }
 
 /**
@@ -73,13 +73,13 @@ export interface GenericDeclaration extends Declaration {
  * @extends {Declaration}
  */
 export interface ExportableDeclaration extends Declaration {
-    /**
-     * Indicates if the declaration is exported (i.e. export function ...) or not.
-     *
-     * @type {boolean}
-     * @memberof ExportableDeclaration
-     */
-    isExported: boolean;
+  /**
+   * Indicates if the declaration is exported (i.e. export function ...) or not.
+   *
+   * @type {boolean}
+   * @memberof ExportableDeclaration
+   */
+  isExported: boolean;
 }
 
 /**
@@ -90,14 +90,14 @@ export interface ExportableDeclaration extends Declaration {
  * @extends {Declaration}
  */
 export interface ScopedDeclaration extends Declaration {
-    /**
-     * Defines the visibility scope of the declaration. Can be undefined, in which case there
-     * is no visibility given (e.g. methods in interfaces).
-     *
-     * @type {(DeclarationVisibility | undefined)}
-     * @memberof ScopedDeclaration
-     */
-    visibility: DeclarationVisibility | undefined;
+  /**
+   * Defines the visibility scope of the declaration. Can be undefined, in which case there
+   * is no visibility given (e.g. methods in interfaces).
+   *
+   * @type {(DeclarationVisibility | undefined)}
+   * @memberof ScopedDeclaration
+   */
+  visibility: DeclarationVisibility | undefined;
 }
 
 /**
@@ -109,29 +109,29 @@ export interface ScopedDeclaration extends Declaration {
  * @extends {Declaration}
  */
 export interface ClassLikeDeclaration extends Declaration {
-    /**
-     * Accessors of this class.
-     *
-     * @type {AccessorDeclaration[]}
-     * @memberof ClassLikeDeclaration
-     */
-    accessors: AccessorDeclaration[];
+  /**
+   * Accessors of this class.
+   *
+   * @type {AccessorDeclaration[]}
+   * @memberof ClassLikeDeclaration
+   */
+  accessors: AccessorDeclaration[];
 
-    /**
-     * The properties of the declaration.
-     *
-     * @type {PropertyDeclaration[]}
-     * @memberof ClassLikeDeclaration
-     */
-    properties: PropertyDeclaration[];
+  /**
+   * The properties of the declaration.
+   *
+   * @type {PropertyDeclaration[]}
+   * @memberof ClassLikeDeclaration
+   */
+  properties: PropertyDeclaration[];
 
-    /**
-     * The methods of the declaration.
-     *
-     * @type {MethodDeclaration[]}
-     * @memberof ClassLikeDeclaration
-     */
-    methods: MethodDeclaration[];
+  /**
+   * The methods of the declaration.
+   *
+   * @type {MethodDeclaration[]}
+   * @memberof ClassLikeDeclaration
+   */
+  methods: MethodDeclaration[];
 }
 
 /**
@@ -143,21 +143,21 @@ export interface ClassLikeDeclaration extends Declaration {
  * @extends {Declaration}
  */
 export interface CallableDeclaration extends Declaration {
-    /**
-     * List of used parameters in the callable node.
-     *
-     * @type {ParameterDeclaration[]}
-     * @memberof CallableDeclaration
-     */
-    parameters: ParameterDeclaration[];
+  /**
+   * List of used parameters in the callable node.
+   *
+   * @type {ParameterDeclaration[]}
+   * @memberof CallableDeclaration
+   */
+  parameters: ParameterDeclaration[];
 
-    /**
-     * List of used variables in the callable node.
-     *
-     * @type {VariableDeclaration[]}
-     * @memberof CallableDeclaration
-     */
-    variables: VariableDeclaration[];
+  /**
+   * List of used variables in the callable node.
+   *
+   * @type {VariableDeclaration[]}
+   * @memberof CallableDeclaration
+   */
+  variables: VariableDeclaration[];
 }
 
 /**
@@ -168,13 +168,13 @@ export interface CallableDeclaration extends Declaration {
  * @extends {Declaration}
  */
 export interface AbstractDeclaration extends Declaration {
-    /**
-     * Defines if the declaration is abstract or not.
-     *
-     * @type {boolean}
-     * @memberof AbstractDeclaration
-     */
-    isAbstract: boolean;
+  /**
+   * Defines if the declaration is abstract or not.
+   *
+   * @type {boolean}
+   * @memberof AbstractDeclaration
+   */
+  isAbstract: boolean;
 }
 
 /**
@@ -185,13 +185,13 @@ export interface AbstractDeclaration extends Declaration {
  * @extends {Declaration}
  */
 export interface OptionalDeclaration extends Declaration {
-    /**
-     * Defines if the declaration is optional or not.
-     *
-     * @type {boolean}
-     * @memberof OptionalDeclaration
-     */
-    isOptional: boolean;
+  /**
+   * Defines if the declaration is optional or not.
+   *
+   * @type {boolean}
+   * @memberof OptionalDeclaration
+   */
+  isOptional: boolean;
 }
 
 /**
@@ -202,13 +202,13 @@ export interface OptionalDeclaration extends Declaration {
  * @extends {Declaration}
  */
 export interface StaticDeclaration extends Declaration {
-    /**
-     * Defines if the declaration is static or not.
-     *
-     * @type {boolean}
-     * @memberof StaticDeclaration
-     */
-    isStatic: boolean;
+  /**
+   * Defines if the declaration is static or not.
+   *
+   * @type {boolean}
+   * @memberof StaticDeclaration
+   */
+  isStatic: boolean;
 }
 
 /**
@@ -219,11 +219,11 @@ export interface StaticDeclaration extends Declaration {
  * @extends {Declaration}
  */
 export interface AsyncDeclaration extends Declaration {
-    /**
-     * Defines if the declaration is async or not.
-     *
-     * @type {boolean}
-     * @memberof AsyncDeclaration
-     */
-    isAsync: boolean;
+  /**
+   * Defines if the declaration is async or not.
+   *
+   * @type {boolean}
+   * @memberof AsyncDeclaration
+   */
+  isAsync: boolean;
 }

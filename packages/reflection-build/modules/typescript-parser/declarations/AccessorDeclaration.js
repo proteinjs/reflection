@@ -1,5 +1,5 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+'use strict';
+Object.defineProperty(exports, '__esModule', { value: true });
 exports.SetterDeclaration = exports.GetterDeclaration = exports.AccessorDeclaration = void 0;
 /**
  * Property accessor declaration. This element represents the base and will be used in setters and getters.
@@ -12,15 +12,15 @@ exports.SetterDeclaration = exports.GetterDeclaration = exports.AccessorDeclarat
  * @implements {AbstractDeclaration}
  */
 class AccessorDeclaration {
-    constructor(name, visibility, type, isAbstract, isStatic, start, end) {
-        this.name = name;
-        this.visibility = visibility;
-        this.type = type;
-        this.isAbstract = isAbstract;
-        this.isStatic = isStatic;
-        this.start = start;
-        this.end = end;
-    }
+  constructor(name, visibility, type, isAbstract, isStatic, start, end) {
+    this.name = name;
+    this.visibility = visibility;
+    this.type = type;
+    this.isAbstract = isAbstract;
+    this.isStatic = isStatic;
+    this.start = start;
+    this.end = end;
+  }
 }
 exports.AccessorDeclaration = AccessorDeclaration;
 /**
@@ -30,8 +30,7 @@ exports.AccessorDeclaration = AccessorDeclaration;
  * @class GetterDeclaration
  * @extends {AccessorDeclaration}
  */
-class GetterDeclaration extends AccessorDeclaration {
-}
+class GetterDeclaration extends AccessorDeclaration {}
 exports.GetterDeclaration = GetterDeclaration;
 /**
  * Setter declaration for a getter accessor of a class property.
@@ -40,6 +39,5 @@ exports.GetterDeclaration = GetterDeclaration;
  * @class SetterDeclaration
  * @extends {AccessorDeclaration}
  */
-class SetterDeclaration extends AccessorDeclaration {
-}
+class SetterDeclaration extends AccessorDeclaration {}
 exports.SetterDeclaration = SetterDeclaration;

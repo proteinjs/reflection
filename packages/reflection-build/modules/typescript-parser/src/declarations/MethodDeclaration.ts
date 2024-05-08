@@ -1,11 +1,11 @@
 import {
-    AbstractDeclaration,
-    AsyncDeclaration,
-    CallableDeclaration,
-    OptionalDeclaration,
-    ScopedDeclaration,
-    StaticDeclaration,
-    TypedDeclaration,
+  AbstractDeclaration,
+  AsyncDeclaration,
+  CallableDeclaration,
+  OptionalDeclaration,
+  ScopedDeclaration,
+  StaticDeclaration,
+  TypedDeclaration,
 } from './Declaration';
 import { DeclarationVisibility } from './DeclarationVisibility';
 import { ParameterDeclaration } from './ParameterDeclaration';
@@ -21,27 +21,28 @@ import { VariableDeclaration } from './VariableDeclaration';
  * @implements {ScopedDeclaration}
  * @implements {TypedDeclaration}
  */
-export class MethodDeclaration implements
+export class MethodDeclaration
+  implements
     AbstractDeclaration,
     AsyncDeclaration,
     CallableDeclaration,
     OptionalDeclaration,
     ScopedDeclaration,
     StaticDeclaration,
-    TypedDeclaration {
+    TypedDeclaration
+{
+  public parameters: ParameterDeclaration[] = [];
+  public variables: VariableDeclaration[] = [];
 
-    public parameters: ParameterDeclaration[] = [];
-    public variables: VariableDeclaration[] = [];
-
-    constructor(
-        public name: string,
-        public isAbstract: boolean,
-        public visibility: DeclarationVisibility | undefined,
-        public type: string | undefined,
-        public isOptional: boolean,
-        public isStatic: boolean,
-        public isAsync: boolean,
-        public start?: number,
-        public end?: number,
-    ) { }
+  constructor(
+    public name: string,
+    public isAbstract: boolean,
+    public visibility: DeclarationVisibility | undefined,
+    public type: string | undefined,
+    public isOptional: boolean,
+    public isStatic: boolean,
+    public isAsync: boolean,
+    public start?: number,
+    public end?: number
+  ) {}
 }

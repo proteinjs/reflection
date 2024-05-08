@@ -1,5 +1,3 @@
-export class ExportedCircularClass1 {
-
-}
+export class ExportedCircularClass1 {}
 
 export * from './circularExport2';

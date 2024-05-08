@@ -7,8 +7,8 @@ import { Export } from './Export';
  * @implements {Export}
  */
 export declare class AllExport implements Export {
-    start: number;
-    end: number;
-    from: string;
-    constructor(start: number, end: number, from: string);
+  start: number;
+  end: number;
+  from: string;
+  constructor(start: number, end: number, from: string);
 }

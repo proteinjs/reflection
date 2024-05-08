@@ -7,10 +7,10 @@ import { ExportableDeclaration } from './Declaration';
  * @implements {ExportableDeclaration}
  */
 export declare class EnumDeclaration implements ExportableDeclaration {
-    name: string;
-    isExported: boolean;
-    start?: number | undefined;
-    end?: number | undefined;
-    members: string[];
-    constructor(name: string, isExported: boolean, start?: number | undefined, end?: number | undefined);
+  name: string;
+  isExported: boolean;
+  start?: number | undefined;
+  end?: number | undefined;
+  members: string[];
+  constructor(name: string, isExported: boolean, start?: number | undefined, end?: number | undefined);
 }

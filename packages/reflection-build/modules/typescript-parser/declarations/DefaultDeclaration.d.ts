@@ -10,12 +10,12 @@ import { Declaration, ExportableDeclaration } from './Declaration';
  * @implements {ExportableDeclaration}
  */
 export declare class DefaultDeclaration implements ExportableDeclaration {
-    name: string;
-    private resource;
-    start?: number | undefined;
-    end?: number | undefined;
-    readonly isExported: boolean;
-    private exported;
-    get exportedDeclaration(): Declaration;
-    constructor(name: string, resource: Resource, start?: number | undefined, end?: number | undefined);
+  name: string;
+  private resource;
+  start?: number | undefined;
+  end?: number | undefined;
+  readonly isExported: boolean;
+  private exported;
+  get exportedDeclaration(): Declaration;
+  constructor(name: string, resource: Resource, start?: number | undefined, end?: number | undefined);
 }

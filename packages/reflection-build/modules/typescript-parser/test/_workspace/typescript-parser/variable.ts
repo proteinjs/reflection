@@ -9,4 +9,4 @@ export const ExportedConst = '';
 export let ExportedLet = '';
 
 export let MultiLet1 = '',
-    MultiLet2 = '';
+  MultiLet2 = '';

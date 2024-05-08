@@ -1,5 +1,5 @@
-import * as React from "react";
+import * as React from 'react';
 
 export const myComponent = (test: string) => {
-    return <div>Hello World: {test}</div>;
-}
+  return <div>Hello World: {test}</div>;
+};

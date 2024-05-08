@@ -1,25 +1,25 @@
 import {
-    ArrayBindingPattern,
-    ConstructorDeclaration,
-    ExportDeclaration,
-    ExternalModuleReference,
-    FunctionDeclaration,
-    GetAccessorDeclaration,
-    Identifier,
-    ImportDeclaration,
-    ImportEqualsDeclaration,
-    MethodDeclaration,
-    MethodSignature,
-    NamedExports,
-    NamedImports,
-    NamespaceImport,
-    Node,
-    ObjectBindingPattern,
-    PropertyDeclaration,
-    PropertySignature,
-    SetAccessorDeclaration,
-    StringLiteral,
-    SyntaxKind,
+  ArrayBindingPattern,
+  ConstructorDeclaration,
+  ExportDeclaration,
+  ExternalModuleReference,
+  FunctionDeclaration,
+  GetAccessorDeclaration,
+  Identifier,
+  ImportDeclaration,
+  ImportEqualsDeclaration,
+  MethodDeclaration,
+  MethodSignature,
+  NamedExports,
+  NamedImports,
+  NamespaceImport,
+  Node,
+  ObjectBindingPattern,
+  PropertyDeclaration,
+  PropertySignature,
+  SetAccessorDeclaration,
+  StringLiteral,
+  SyntaxKind,
 } from 'typescript';
 
 /**
@@ -30,7 +30,7 @@ import {
  * @returns {node is ImportDeclaration}
  */
 export function isImportDeclaration(node?: Node): node is ImportDeclaration {
-    return node !== undefined && node.kind === SyntaxKind.ImportDeclaration;
+  return node !== undefined && node.kind === SyntaxKind.ImportDeclaration;
 }
 
 /**
@@ -41,7 +41,7 @@ export function isImportDeclaration(node?: Node): node is ImportDeclaration {
  * @returns {node is ImportEqualsDeclaration}
  */
 export function isImportEqualsDeclaration(node?: Node): node is ImportEqualsDeclaration {
-    return node !== undefined && node.kind === SyntaxKind.ImportEqualsDeclaration;
+  return node !== undefined && node.kind === SyntaxKind.ImportEqualsDeclaration;
 }
 
 /**
@@ -52,7 +52,7 @@ export function isImportEqualsDeclaration(node?: Node): node is ImportEqualsDecl
  * @returns {node is NamespaceImport}
  */
 export function isNamespaceImport(node?: Node): node is NamespaceImport {
-    return node !== undefined && node.kind === SyntaxKind.NamespaceImport;
+  return node !== undefined && node.kind === SyntaxKind.NamespaceImport;
 }
 
 /**
@@ -63,7 +63,7 @@ export function isNamespaceImport(node?: Node): node is NamespaceImport {
  * @returns {node is NamedImports}
  */
 export function isNamedImports(node?: Node): node is NamedImports {
-    return node !== undefined && node.kind === SyntaxKind.NamedImports;
+  return node !== undefined && node.kind === SyntaxKind.NamedImports;
 }
 
 /**
@@ -74,7 +74,7 @@ export function isNamedImports(node?: Node): node is NamedImports {
  * @returns {node is NamedExports}
  */
 export function isNamedExports(node?: Node): node is NamedExports {
-    return node !== undefined && node.kind === SyntaxKind.NamedExports;
+  return node !== undefined && node.kind === SyntaxKind.NamedExports;
 }
 
 /**
@@ -85,7 +85,7 @@ export function isNamedExports(node?: Node): node is NamedExports {
  * @returns {node is StringLiteral}
  */
 export function isStringLiteral(node?: Node): node is StringLiteral {
-    return node !== undefined && node.kind === SyntaxKind.StringLiteral;
+  return node !== undefined && node.kind === SyntaxKind.StringLiteral;
 }
 
 /**
@@ -96,7 +96,7 @@ export function isStringLiteral(node?: Node): node is StringLiteral {
  * @returns {node is Identifier}
  */
 export function isIdentifier(node?: Node): node is Identifier {
-    return node !== undefined && node.kind === SyntaxKind.Identifier;
+  return node !== undefined && node.kind === SyntaxKind.Identifier;
 }
 
 /**
@@ -107,7 +107,7 @@ export function isIdentifier(node?: Node): node is Identifier {
  * @returns {node is ExternalModuleReference}
  */
 export function isExternalModuleReference(node?: Node): node is ExternalModuleReference {
-    return node !== undefined && node.kind === SyntaxKind.ExternalModuleReference;
+  return node !== undefined && node.kind === SyntaxKind.ExternalModuleReference;
 }
 
 /**
@@ -118,7 +118,7 @@ export function isExternalModuleReference(node?: Node): node is ExternalModuleRe
  * @returns {node is ExportDeclaration}
  */
 export function isExportDeclaration(node?: Node): node is ExportDeclaration {
-    return node !== undefined && node.kind === SyntaxKind.ExportDeclaration;
+  return node !== undefined && node.kind === SyntaxKind.ExportDeclaration;
 }
 
 /**
@@ -129,7 +129,7 @@ export function isExportDeclaration(node?: Node): node is ExportDeclaration {
  * @returns {node is ObjectBindingPattern}
  */
 export function isObjectBindingPattern(node?: Node): node is ObjectBindingPattern {
-    return node !== undefined && node.kind === SyntaxKind.ObjectBindingPattern;
+  return node !== undefined && node.kind === SyntaxKind.ObjectBindingPattern;
 }
 
 /**
@@ -140,7 +140,7 @@ export function isObjectBindingPattern(node?: Node): node is ObjectBindingPatter
  * @returns {node is ArrayBindingPattern}
  */
 export function isArrayBindingPattern(node?: Node): node is ArrayBindingPattern {
-    return node !== undefined && node.kind === SyntaxKind.ArrayBindingPattern;
+  return node !== undefined && node.kind === SyntaxKind.ArrayBindingPattern;
 }
 
 /**
@@ -151,7 +151,7 @@ export function isArrayBindingPattern(node?: Node): node is ArrayBindingPattern 
  * @returns {node is FunctionDeclaration}
  */
 export function isFunctionDeclaration(node?: Node): node is FunctionDeclaration {
-    return node !== undefined && node.kind === SyntaxKind.FunctionDeclaration;
+  return node !== undefined && node.kind === SyntaxKind.FunctionDeclaration;
 }
 
 /**
@@ -162,7 +162,7 @@ export function isFunctionDeclaration(node?: Node): node is FunctionDeclaration 
  * @returns {node is MethodSignature}
  */
 export function isMethodSignature(node?: Node): node is MethodSignature {
-    return node !== undefined && node.kind === SyntaxKind.MethodSignature;
+  return node !== undefined && node.kind === SyntaxKind.MethodSignature;
 }
 
 /**
@@ -173,7 +173,7 @@ export function isMethodSignature(node?: Node): node is MethodSignature {
  * @returns {node is PropertySignature}
  */
 export function isPropertySignature(node?: Node): node is PropertySignature {
-    return node !== undefined && node.kind === SyntaxKind.PropertySignature;
+  return node !== undefined && node.kind === SyntaxKind.PropertySignature;
 }
 
 /**
@@ -184,7 +184,7 @@ export function isPropertySignature(node?: Node): node is PropertySignature {
  * @returns {node is MethodDeclaration}
  */
 export function isMethodDeclaration(node?: Node): node is MethodDeclaration {
-    return node !== undefined && node.kind === SyntaxKind.MethodDeclaration;
+  return node !== undefined && node.kind === SyntaxKind.MethodDeclaration;
 }
 
 /**
@@ -195,7 +195,7 @@ export function isMethodDeclaration(node?: Node): node is MethodDeclaration {
  * @returns {node is PropertyDeclaration}
  */
 export function isPropertyDeclaration(node?: Node): node is PropertyDeclaration {
-    return node !== undefined && node.kind === SyntaxKind.PropertyDeclaration;
+  return node !== undefined && node.kind === SyntaxKind.PropertyDeclaration;
 }
 
 /**
@@ -206,7 +206,7 @@ export function isPropertyDeclaration(node?: Node): node is PropertyDeclaration 
  * @returns {node is ConstructorDeclaration}
  */
 export function isConstructorDeclaration(node?: Node): node is ConstructorDeclaration {
-    return node !== undefined && node.kind === SyntaxKind.Constructor;
+  return node !== undefined && node.kind === SyntaxKind.Constructor;
 }
 
 /**
@@ -217,7 +217,7 @@ export function isConstructorDeclaration(node?: Node): node is ConstructorDeclar
  * @returns {node is isGetAccessorDeclaration}
  */
 export function isGetAccessorDeclaration(node?: Node): node is GetAccessorDeclaration {
-    return node !== undefined && node.kind === SyntaxKind.GetAccessor;
+  return node !== undefined && node.kind === SyntaxKind.GetAccessor;
 }
 
 /**
@@ -228,5 +228,5 @@ export function isGetAccessorDeclaration(node?: Node): node is GetAccessorDeclar
  * @returns {node is SetAccessorDeclaration}
  */
 export function isSetAccessorDeclaration(node?: Node): node is SetAccessorDeclaration {
-    return node !== undefined && node.kind === SyntaxKind.SetAccessor;
+  return node !== undefined && node.kind === SyntaxKind.SetAccessor;
 }

@@ -1,42 +1,42 @@
 {
-    "name": "@proteinjs/reflection-build-test-b",
-    "version": "0.0.7",
-    "private": true,
-    "description": "Test package b",
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/proteinjs/reflection.git"
-    },
-    "bugs": {
-        "url": "https://github.com/proteinjs/reflection/issues"
-    },
-    "homepage": "https://github.com/proteinjs/reflection#readme",
-    "author": "Brent Bahry",
-    "license": "ISC",
-    "scripts": {
-        "clean": "rm -rf dist/ node_modules/ generated/ modules",
-        "build": "node symlinkTypescriptParser.js && tsc -p tsconfig.parent.json && node ./dist/runBuild.js && tsc"
-    },
-    "dependencies": {
-        "@dagrejs/graphlib": "2.1.4",
-        "@proteinjs/reflection": "^1.1.1",
-        "@proteinjs/util": "1.1.0",
-        "@proteinjs/util-node": "1.2.0",
-        "globby": "11.0.1",
-        "gulp": "4.0.2",
-        "gulp-shell": "0.8.0",
-        "jsesc": "^3.0.1"
-    },
-    "devDependencies": {
-        "@types/graphlib": "2.1.6",
-        "@types/gulp": "4.0.16",
-        "@types/jest": "29.5.6",
-        "@types/jsesc": "^2.5.1",
-        "@types/node": "14.0.13",
-        "jest": "29.7.0",
-        "ts-jest": "29.1.1",
-        "typescript": "5.2.2"
-    },
-    "main": "./dist/generated/index.js",
-    "types": "./dist/generated/index.d.ts"
+  "name": "@proteinjs/reflection-build-test-b",
+  "version": "0.0.7",
+  "private": true,
+  "description": "Test package b",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/proteinjs/reflection.git"
+  },
+  "bugs": {
+    "url": "https://github.com/proteinjs/reflection/issues"
+  },
+  "homepage": "https://github.com/proteinjs/reflection#readme",
+  "author": "Brent Bahry",
+  "license": "ISC",
+  "scripts": {
+    "clean": "rm -rf dist/ node_modules/ generated/ modules",
+    "build": "node symlinkTypescriptParser.js && tsc -p tsconfig.parent.json && node ./dist/runBuild.js && tsc"
+  },
+  "dependencies": {
+    "@dagrejs/graphlib": "2.1.4",
+    "@proteinjs/reflection": "^1.1.1",
+    "@proteinjs/util": "1.1.0",
+    "@proteinjs/util-node": "1.2.0",
+    "globby": "11.0.1",
+    "gulp": "4.0.2",
+    "gulp-shell": "0.8.0",
+    "jsesc": "^3.0.1"
+  },
+  "devDependencies": {
+    "@types/graphlib": "2.1.6",
+    "@types/gulp": "4.0.16",
+    "@types/jest": "29.5.6",
+    "@types/jsesc": "^2.5.1",
+    "@types/node": "14.0.13",
+    "jest": "29.7.0",
+    "ts-jest": "29.1.1",
+    "typescript": "5.2.2"
+  },
+  "main": "./dist/generated/index.js",
+  "types": "./dist/generated/index.d.ts"
 }

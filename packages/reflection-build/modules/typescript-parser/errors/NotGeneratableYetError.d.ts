@@ -7,5 +7,5 @@ import { Generatable } from '../code-generators/TypescriptCodeGenerator';
  * @extends {Error}
  */
 export declare class NotGeneratableYetError extends Error {
-    constructor(generatable: Generatable);
+  constructor(generatable: Generatable);
 }

@@ -1,5 +1,5 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+'use strict';
+Object.defineProperty(exports, '__esModule', { value: true });
 exports.stringTemplate = void 0;
 /**
  * Creates a template from an expression string. The template can then be used to infuse stuff into the template.
@@ -10,12 +10,12 @@ exports.stringTemplate = void 0;
  * @returns {(...values: any[]) => string}
  */
 function stringTemplate(strings, ...keys) {
-    return (...values) => {
-        const result = [strings[0]];
-        keys.forEach((key, idx) => {
-            result.push(values[key], strings[idx + 1]);
-        });
-        return result.join('');
-    };
+  return (...values) => {
+    const result = [strings[0]];
+    keys.forEach((key, idx) => {
+      result.push(values[key], strings[idx + 1]);
+    });
+    return result.join('');
+  };
 }
 exports.stringTemplate = stringTemplate;

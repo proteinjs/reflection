@@ -8,9 +8,9 @@ import { Export } from './Export';
  * @implements {Export}
  */
 export declare class NamedExport implements Export {
-    start: number;
-    end: number;
-    from: string;
-    specifiers: SymbolSpecifier[] | undefined;
-    constructor(start: number, end: number, from: string);
+  start: number;
+  end: number;
+  from: string;
+  specifiers: SymbolSpecifier[] | undefined;
+  constructor(start: number, end: number, from: string);
 }

@@ -8,18 +8,18 @@ import { AliasedImport } from './Import';
  * @implements {AliasedImport}
  */
 export declare class ExternalModuleImport implements AliasedImport {
-    libraryName: string;
-    alias: string;
-    start?: number | undefined;
-    end?: number | undefined;
-    get isNew(): boolean;
-    constructor(libraryName: string, alias: string, start?: number | undefined, end?: number | undefined);
-    /**
-     * Clone the current import object.
-     *
-     * @returns {ExternalModuleImport}
-     *
-     * @memberof ExternalModuleImport
-     */
-    clone(): ExternalModuleImport;
+  libraryName: string;
+  alias: string;
+  start?: number | undefined;
+  end?: number | undefined;
+  get isNew(): boolean;
+  constructor(libraryName: string, alias: string, start?: number | undefined, end?: number | undefined);
+  /**
+   * Clone the current import object.
+   *
+   * @returns {ExternalModuleImport}
+   *
+   * @memberof ExternalModuleImport
+   */
+  clone(): ExternalModuleImport;
 }

@@ -1,5 +1,5 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+'use strict';
+Object.defineProperty(exports, '__esModule', { value: true });
 exports.generateVariableDelcaration = void 0;
 /**
  * Generates typescript code for a variable.
@@ -9,6 +9,6 @@ exports.generateVariableDelcaration = void 0;
  * @returns {string}
  */
 function generateVariableDelcaration(variable) {
-    return `${variable.name}${variable.type ? `: ${variable.type}` : ''}`;
+  return `${variable.name}${variable.type ? `: ${variable.type}` : ''}`;
 }
 exports.generateVariableDelcaration = generateVariableDelcaration;

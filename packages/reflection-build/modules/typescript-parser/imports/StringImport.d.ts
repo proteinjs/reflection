@@ -7,17 +7,17 @@ import { Import } from './Import';
  * @implements {Import}
  */
 export declare class StringImport implements Import {
-    libraryName: string;
-    start?: number | undefined;
-    end?: number | undefined;
-    get isNew(): boolean;
-    constructor(libraryName: string, start?: number | undefined, end?: number | undefined);
-    /**
-     * Clone the current import object.
-     *
-     * @returns {StringImport}
-     *
-     * @memberof StringImport
-     */
-    clone(): StringImport;
+  libraryName: string;
+  start?: number | undefined;
+  end?: number | undefined;
+  get isNew(): boolean;
+  constructor(libraryName: string, start?: number | undefined, end?: number | undefined);
+  /**
+   * Clone the current import object.
+   *
+   * @returns {StringImport}
+   *
+   * @memberof StringImport
+   */
+  clone(): StringImport;
 }

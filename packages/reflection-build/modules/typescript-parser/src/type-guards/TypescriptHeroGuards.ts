@@ -9,7 +9,7 @@ import { AliasedImport } from '../imports/Import';
  * @returns {obj is CallableDeclaration}
  */
 export function isCallableDeclaration(obj: any): obj is CallableDeclaration {
-    return obj && obj.parameters && obj.variables;
+  return obj && obj.parameters && obj.variables;
 }
 
 /**
@@ -20,7 +20,7 @@ export function isCallableDeclaration(obj: any): obj is CallableDeclaration {
  * @returns {obj is ExportableDeclaration}
  */
 export function isExportableDeclaration(obj: any): obj is ExportableDeclaration {
-    return obj && Object.keys(obj).indexOf('isExported') >= 0;
+  return obj && Object.keys(obj).indexOf('isExported') >= 0;
 }
 
 /**
@@ -31,5 +31,5 @@ export function isExportableDeclaration(obj: any): obj is ExportableDeclaration 
  * @returns {obj is AliasedImport}
  */
 export function isAliasedImport(obj: any): obj is AliasedImport {
-    return obj && Object.keys(obj).indexOf('alias') >= 0;
+  return obj && Object.keys(obj).indexOf('alias') >= 0;
 }

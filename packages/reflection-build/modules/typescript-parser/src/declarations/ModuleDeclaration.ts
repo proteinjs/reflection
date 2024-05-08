@@ -9,9 +9,9 @@ import { Declaration } from './Declaration';
  * @implements {Declaration}
  */
 export class ModuleDeclaration implements Declaration {
-    constructor(
-        public name: string,
-        public start?: number,
-        public end?: number,
-    ) { }
+  constructor(
+    public name: string,
+    public start?: number,
+    public end?: number
+  ) {}
 }

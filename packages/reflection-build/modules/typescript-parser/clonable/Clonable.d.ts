@@ -6,12 +6,12 @@
  * @interface Clonable
  */
 export interface Clonable<T> {
-    /**
-     * Create a deep clone of this object.
-     *
-     * @returns {T}
-     *
-     * @memberof Clonable
-     */
-    clone(): T;
+  /**
+   * Create a deep clone of this object.
+   *
+   * @returns {T}
+   *
+   * @memberof Clonable
+   */
+  clone(): T;
 }

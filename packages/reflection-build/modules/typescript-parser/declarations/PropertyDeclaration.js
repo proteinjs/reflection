@@ -1,5 +1,5 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+'use strict';
+Object.defineProperty(exports, '__esModule', { value: true });
 exports.PropertyDeclaration = void 0;
 /**
  * Property declaration that contains its visibility.
@@ -10,14 +10,14 @@ exports.PropertyDeclaration = void 0;
  * @implements {TypedDeclaration}
  */
 class PropertyDeclaration {
-    constructor(name, visibility, type, isOptional, isStatic, start, end) {
-        this.name = name;
-        this.visibility = visibility;
-        this.type = type;
-        this.isOptional = isOptional;
-        this.isStatic = isStatic;
-        this.start = start;
-        this.end = end;
-    }
+  constructor(name, visibility, type, isOptional, isStatic, start, end) {
+    this.name = name;
+    this.visibility = visibility;
+    this.type = type;
+    this.isOptional = isOptional;
+    this.isStatic = isStatic;
+    this.start = start;
+    this.end = end;
+  }
 }
 exports.PropertyDeclaration = PropertyDeclaration;
