@@ -1,8 +1,11 @@
 import { Graph } from '@dagrejs/graphlib';
 import { graphSerializer, isInstanceOf } from '@proteinjs/util';
 import { SourceType } from './sourceGraphTypes';
-import { VariableDeclaration, TypeAliasDeclaration, ClassDeclaration, InterfaceDeclaration, Class, Variable, TypeAlias, Interface } from './types';
+import { VariableDeclaration, TypeAliasDeclaration, ClassDeclaration, InterfaceDeclaration, Class, Variable, TypeAlias, Interface, PackageScope } from './types';
 import { FlattenedSourceGraph, flattenSourceGraph } from './FlattenedSourceGraph';
+import { SOURCE_REPOSITORY_TYPE_FILTER_QUALIFIED_NAME, getSourceRepositoryTypeFilters } from './SourceRepositoryTypeFilter';
+
+type TypeMap = {[qualifiedName: string]: Interface|TypeAlias|Class|Variable}
 
 export class SourceRepository {
 	public readonly sourceGraph = new Graph();
@@ -71,11 +74,11 @@ export class SourceRepository {
 	 * @param extendingType a Type, Interface, or Class that the Class or Variable extends
 	 * @returns a hashmap (key is qualified name) of base child types (vs the instantiated objects provided by the objects method) that extend `extendingType`
 	 */
-	baseChildren(extendingType: string): {[qualifiedName: string]: (Interface|TypeAlias|Class|Variable)} {
+	baseChildren(extendingType: string): TypeMap {
 		const _interface = SourceRepository.get().flattenedSourceGraph.interfaces[extendingType];
 		const typeAlias = SourceRepository.get().flattenedSourceGraph.typeAliases[extendingType];
 		const _class = SourceRepository.get().flattenedSourceGraph.classes[extendingType];
-		let baseChildren: any;
+		let baseChildren: TypeMap;
 		if (_interface)
 			baseChildren = _interface.baseChildren;
 		else if (typeAlias) {
@@ -86,14 +89,17 @@ export class SourceRepository {
 			throw new Error(`Unable to find type: ${extendingType}`);
 		}
 
-		return baseChildren;
+		if (extendingType === SOURCE_REPOSITORY_TYPE_FILTER_QUALIFIED_NAME)
+			return baseChildren;
+
+		return this.filterTypes(baseChildren);
 	}
 
 	/**
 	 * @param extendingType a Type, Interface, or Class that the Class or Variable extends
 	 * @returns a hashmap (key is qualified name) of direct child types (vs the instantiated objects provided by the objects method) that extend `extendingType`
 	 */
-	directChildren(extendingType: string): {[qualifiedName: string]: (Interface|TypeAlias|Class|Variable)} {
+	directChildren(extendingType: string): TypeMap {
 		const _interface = SourceRepository.get().flattenedSourceGraph.interfaces[extendingType];
 		const typeAlias = SourceRepository.get().flattenedSourceGraph.typeAliases[extendingType];
 		const _class = SourceRepository.get().flattenedSourceGraph.classes[extendingType];
@@ -108,7 +114,30 @@ export class SourceRepository {
 			throw new Error(`Unable to find type: ${extendingType}`);
 		}
 
-		return directChildren;
+		if (extendingType === SOURCE_REPOSITORY_TYPE_FILTER_QUALIFIED_NAME)
+			return directChildren;
+
+		return this.filterTypes(directChildren);
+	}
+
+	private filterTypes(typeMap: TypeMap): TypeMap {
+		const filteredTypeMap: TypeMap = {};
+		const typeFilters = getSourceRepositoryTypeFilters();
+		for (let qualifiedName of Object.keys(typeMap)) {
+			const packageScope = typeMap[qualifiedName];
+			let filtered = false;
+			for (let typeFilter of typeFilters) {
+				if (typeFilter.filterType(qualifiedName)) {
+					filtered = true;
+					break;
+				}
+			}
+
+			if (!filtered)
+				filteredTypeMap[qualifiedName] = packageScope;
+		}
+
+		return filteredTypeMap;
 	}
 
 	static merge(serializedSourceGraph: string, sourceLinks: { [qualifiedName: string]: any }) {
