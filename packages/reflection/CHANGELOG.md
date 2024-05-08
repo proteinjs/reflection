@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1.0](https://github.com/proteinjs/reflection/compare/@proteinjs/reflection@1.0.7...@proteinjs/reflection@1.1.0) (2024-05-08)
+
+
+### Features
+
+* added `SourceRepositoryTypeFilter` to optionally filter out `Loadable`s from dependencies ([6cc0cda](https://github.com/proteinjs/reflection/commit/6cc0cdada9bb5e0d8fe8281582722bfb8aa7de64))
+
+
+
+
+
 ## [1.0.6](https://github.com/proteinjs/reflection/compare/@proteinjs/reflection@1.0.5...@proteinjs/reflection@1.0.6) (2024-04-23)
 
 

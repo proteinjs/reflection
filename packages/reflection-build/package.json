@@ -1,6 +1,6 @@
 {
   "name": "@proteinjs/reflection-build",
-  "version": "1.0.13",
+  "version": "1.0.14",
   "description": "Build system for reflection",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -29,7 +29,7 @@
   },
   "dependencies": {
     "@dagrejs/graphlib": "2.1.4",
-    "@proteinjs/reflection": "^1.0.7",
+    "@proteinjs/reflection": "^1.1.0",
     "@proteinjs/util": "1.1.0",
     "@proteinjs/util-node": "1.2.0",
     "globby": "11.0.1",
