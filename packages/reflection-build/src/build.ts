@@ -15,8 +15,9 @@ export async function build() {
   // TODO save their index location in package.json and pass it in to writeGeneratedIndex above
   async function updatePackageJson() {
     const targetDirPackageJson = path.join(targetDir, 'package.json');
-    if (!(await promisifiedFs.exists(targetDirPackageJson)))
+    if (!(await promisifiedFs.exists(targetDirPackageJson))) {
       throw new Error(`package.json does not exist, run \`npm init -y\` to create one`);
+    }
 
     const targetPackageJson = require(targetDirPackageJson);
     const targetDirDist = path.join(targetDir, 'dist');
@@ -39,7 +40,7 @@ export async function build() {
         await promisifiedFs.writeFile(targetDirTsconfig, JSON.stringify(existingTsconfig, null, 4));
       }
     } else {
-      let generatedTsconfig = Object.assign({}, tsconfig);
+      const generatedTsconfig = Object.assign({}, tsconfig);
       generatedTsconfig.include = [`./${path.relative(targetDir, generatedIndex)}`];
       await promisifiedFs.writeFile(targetDirTsconfig, JSON.stringify(generatedTsconfig, null, 4));
     }

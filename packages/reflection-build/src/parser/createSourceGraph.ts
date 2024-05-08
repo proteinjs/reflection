@@ -7,7 +7,9 @@ import { createGraphBuilder } from './createGraphBuilder';
 
 export async function createSourceGraph(dir: string, excludedDirs: string[] = []) {
   const packageJsonPath = path.join(dir, 'package.json');
-  if (!(await promisifiedFs.exists(packageJsonPath))) throw new Error(`Unable to find package.json in dir: ${dir}`);
+  if (!(await promisifiedFs.exists(packageJsonPath))) {
+    throw new Error(`Unable to find package.json in dir: ${dir}`);
+  }
 
   const packageJson = require(packageJsonPath);
   const sourceFilePaths = await globby(

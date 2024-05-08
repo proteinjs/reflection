@@ -29,8 +29,9 @@ export async function typeAliasDeclarationsFromParserTypeAliases(
   packageNameFinder: PackageNameFinder
 ): Promise<TypeAliasDeclaration[]> {
   const types: TypeAliasDeclaration[] = [];
-  for (const typeAlias of parserTypeAliasDeclarations)
+  for (const typeAlias of parserTypeAliasDeclarations) {
     types.push(await typeAliasDeclarationFromParserTypeAlias(typeAlias, packageNameFinder));
+  }
   return types;
 }
 
@@ -48,8 +49,9 @@ export async function typeAliasDeclarationsFromNames(
   packageNameFinder: PackageNameFinder
 ): Promise<TypeAliasDeclaration[]> {
   const typeAliasDeclarations: TypeAliasDeclaration[] = [];
-  for (const typeName of typeNames)
+  for (const typeName of typeNames) {
     typeAliasDeclarations.push(await typeAliasDeclarationFromName(typeName, packageNameFinder));
+  }
   return typeAliasDeclarations;
 }
 
@@ -63,7 +65,8 @@ export async function typeAliasDeclarationFromName(
 
 async function qualifyNames(typeNames: string[], packageNameFinder: PackageNameFinder): Promise<string[]> {
   const qualifiedNames: string[] = [];
-  for (const typeName of typeNames)
+  for (const typeName of typeNames) {
     qualifiedNames.push(`${await packageNameFinder.getPackageName(typeName)}/${typeName}`);
+  }
   return qualifiedNames;
 }

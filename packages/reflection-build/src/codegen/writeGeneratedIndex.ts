@@ -10,8 +10,9 @@ export async function writeGeneratedIndex(packageDir: string, packageGeneratedDi
   let packageIndexPath = path.join(packageDir, 'index.ts');
   if (!(await promisifiedFs.exists(packageIndexPath))) {
     packageIndexPath = path.join(packageDir, 'src/index.ts');
-    if (!(await promisifiedFs.exists(packageIndexPath)))
+    if (!(await promisifiedFs.exists(packageIndexPath))) {
       throw new Error('Cannot find index.ts at ./index.ts or ./src/index.ts');
+    }
   }
 
   await promisifiedFs.mkdir(packageGeneratedDir, { recursive: true });
@@ -32,8 +33,9 @@ async function sourceRepositoryLoader(packageDir: string, generatedIndexPath: st
 
 async function getPackageJson(packageDir: string): Promise<any> {
   const packageJsonPath = path.join(packageDir, 'package.json');
-  if (!(await promisifiedFs.exists(packageJsonPath)))
+  if (!(await promisifiedFs.exists(packageJsonPath))) {
     throw new Error(`Unable to find package.json in dir: ${packageDir}`);
+  }
   return require(packageJsonPath);
 }
 
@@ -41,7 +43,9 @@ function loadDependencySourceGraphs(packageJson: any): string {
   let code = '/** Load Dependency Source Graphs */\n\n';
   if (packageJson.dependencies) {
     for (const packageName in packageJson.dependencies) {
-      if (packageName.startsWith('@material-ui')) continue;
+      if (packageName.startsWith('@material-ui')) {
+        continue;
+      }
 
       code += `import '${packageName}';\n`; // Load dependencies of package (ie. run code in dependency index)
     }
@@ -71,9 +75,10 @@ function generateSourceGraph(sourceGraph: Graph, buildTargetPackageName: string)
 function removeNonLoadables(sourceGraph: Graph, buildTargetPackageName: string): void {
   for (const nodeName of sourceGraph.nodes()) {
     const node = sourceGraph.node(nodeName);
-    if (!node)
+    if (!node) {
       // may have been removed by a previous interation
       continue;
+    }
 
     removeNonLoadableNode(node, buildTargetPackageName, sourceGraph);
   }
@@ -111,12 +116,18 @@ function removeNonLoadableNode(
     }
 
     const parent = sourceGraph.node(outEdge.w);
-    if (!parent) continue;
+    if (!parent) {
+      continue;
+    }
 
-    if (!removeNonLoadableNode(parent, buildTargetPackageName, sourceGraph)) shouldRemove = false;
+    if (!removeNonLoadableNode(parent, buildTargetPackageName, sourceGraph)) {
+      shouldRemove = false;
+    }
   }
 
-  if (shouldRemove) sourceGraph.removeNode(packageScope.qualifiedName);
+  if (shouldRemove) {
+    sourceGraph.removeNode(packageScope.qualifiedName);
+  }
 
   return shouldRemove;
 }
@@ -126,13 +137,21 @@ function generateSourceLinks(sourceGraph: Graph, packageJson: any, generatedInde
   const linkableNodes: PackageScope[] = [];
   for (const nodeName of sourceGraph.nodes()) {
     const node = sourceGraph.node(nodeName);
-    if (!node) continue;
+    if (!node) {
+      continue;
+    }
 
-    if (!(isInstanceOf(node, VariableDeclaration) || isInstanceOf(node, ClassDeclaration))) continue;
+    if (!(isInstanceOf(node, VariableDeclaration) || isInstanceOf(node, ClassDeclaration))) {
+      continue;
+    }
 
-    if (node.packageName != packageJson.name) continue;
+    if (node.packageName != packageJson.name) {
+      continue;
+    }
 
-    if (!node.filePath) continue;
+    if (!node.filePath) {
+      continue;
+    }
 
     const relativeImportPath = path.relative(path.dirname(generatedIndexPath), node.filePath);
     code += `import { ${node.name} } from '${relativeImportPath.replace(/\.[^/.]+$/, '')}';\n`;
@@ -140,7 +159,9 @@ function generateSourceLinks(sourceGraph: Graph, packageJson: any, generatedInde
   }
 
   code += `\nconst sourceLinks = {\n`;
-  for (const node of linkableNodes) code += `\t'${node.qualifiedName}': ${node.name},\n`;
+  for (const node of linkableNodes) {
+    code += `\t'${node.qualifiedName}': ${node.name},\n`;
+  }
   code += `};\n`;
 
   return code;

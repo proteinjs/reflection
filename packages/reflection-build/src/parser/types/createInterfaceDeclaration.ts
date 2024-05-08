@@ -10,24 +10,28 @@ export async function createInterfaceDeclaration(
   filePath: string
 ): Promise<InterfaceDeclaration> {
   const properties: Property[] = [];
-  for (const propertyDeclaration of parserInterfaceDeclaration.properties)
+  for (const propertyDeclaration of parserInterfaceDeclaration.properties) {
     properties.push(await createProperty(propertyDeclaration, packageNameFinder));
+  }
 
   const methods: Method[] = [];
-  for (const methodDeclaration of parserInterfaceDeclaration.methods)
+  for (const methodDeclaration of parserInterfaceDeclaration.methods) {
     methods.push(await createMethod(methodDeclaration, packageNameFinder));
+  }
 
   const parameters: string[] = [];
   if (parserInterfaceDeclaration.typeParameters) {
-    for (const typeParameter of parserInterfaceDeclaration.typeParameters)
+    for (const typeParameter of parserInterfaceDeclaration.typeParameters) {
       parameters.push(`${await packageNameFinder.getPackageName(typeParameter)}/${typeParameter}`);
+    }
   }
 
   const directParents: InterfaceDeclaration[] = [];
   for (const parentInterface of parserInterfaceDeclaration.extends) {
     const typeParameters: string[] = [];
-    for (const typeParameter of parentInterface.typeParameters)
+    for (const typeParameter of parentInterface.typeParameters) {
       typeParameters.push(`${await packageNameFinder.getPackageName(typeParameter)}/${typeParameter}`);
+    }
 
     const packageName = await packageNameFinder.getPackageName(parentInterface.name);
     directParents.push(new InterfaceDeclaration(packageName, parentInterface.name, [], [], typeParameters, []));

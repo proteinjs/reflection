@@ -19,12 +19,14 @@ export class PackageNameFinder {
   private createSymbolToLibraryMap(parsedFile: ParsedFile): { [symbol: string]: string } {
     const symbolToLibraryMap: { [type: string]: string } = {};
     for (const _import of parsedFile.imports) {
-      if (!isInstanceOf(_import, NamedImport))
+      if (!isInstanceOf(_import, NamedImport)) {
         // TODO support all relevant import types
         continue;
+      }
 
-      for (const specifier of (_import as NamedImport).specifiers)
+      for (const specifier of (_import as NamedImport).specifiers) {
         symbolToLibraryMap[specifier.specifier] = _import.libraryName;
+      }
     }
 
     return symbolToLibraryMap;
@@ -32,12 +34,16 @@ export class PackageNameFinder {
 
   private createSymbolDeclaredInFileMap(parsedFile: ParsedFile): { [symbol: string]: boolean } {
     const symbolToFileLocalLibraryMap: { [symbol: string]: boolean } = {};
-    for (const declaration of parsedFile.declarations) symbolToFileLocalLibraryMap[declaration.name] = true;
+    for (const declaration of parsedFile.declarations) {
+      symbolToFileLocalLibraryMap[declaration.name] = true;
+    }
     return symbolToFileLocalLibraryMap;
   }
 
   async getPackageName(symbolName: string): Promise<string> {
-    if (symbolName.startsWith('{')) return this.referencingPackage;
+    if (symbolName.startsWith('{')) {
+      return this.referencingPackage;
+    }
 
     const relativePathFromSourceFileToPackageJson = path.relative(
       this.referencingFile.filePath,
@@ -49,8 +55,9 @@ export class PackageNameFinder {
     if (importLibrary) {
       if (importLibrary.startsWith('.')) {
         const relativeHeightOfImportLibrary = this.maxDirHeight(importLibrary);
-        if (relativeHeightOfImportLibrary > relativeHeightOfPackageJson)
+        if (relativeHeightOfImportLibrary > relativeHeightOfPackageJson) {
           packageName = await this.getLocalPackageName(importLibrary);
+        }
       } else {
         packageName = importLibrary;
       }
@@ -66,11 +73,17 @@ export class PackageNameFinder {
     let maxHeight = 0;
     for (let i = 0; i < pathParts.length; i++) {
       const currentPathPart = pathParts[i];
-      if (currentPathPart == '..') maxHeight++;
+      if (currentPathPart == '..') {
+        maxHeight++;
+      }
 
-      if (i > 1 && maxHeight == 0) return maxHeight;
+      if (i > 1 && maxHeight == 0) {
+        return maxHeight;
+      }
 
-      if (maxHeight > 0 && currentPathPart != '..') return maxHeight;
+      if (maxHeight > 0 && currentPathPart != '..') {
+        return maxHeight;
+      }
     }
 
     return maxHeight;
@@ -79,16 +92,19 @@ export class PackageNameFinder {
   private async getLocalPackageName(sourceFilePath: string): Promise<string> {
     const sourceFilePathParts = sourceFilePath.split(path.sep);
     const lastPathPart = sourceFilePathParts.pop();
-    if (lastPathPart && !lastPathPart.includes('.')) sourceFilePathParts.push(lastPathPart);
+    if (lastPathPart && !lastPathPart.includes('.')) {
+      sourceFilePathParts.push(lastPathPart);
+    }
 
     while (sourceFilePathParts.length > 0) {
       const candidatePackagoJsonPath = path.join(sourceFilePathParts.join(path.sep), 'package.json');
       if (await promisifiedFs.exists(candidatePackagoJsonPath)) {
         const packageJson = require(candidatePackagoJsonPath);
-        if (!packageJson.name)
+        if (!packageJson.name) {
           throw new Error(
             `Unable to package-qualify symbol declared in source file: ${sourceFilePath}, reason: package.json does not have name property: ${candidatePackagoJsonPath}`
           );
+        }
 
         return packageJson.name;
       } else {

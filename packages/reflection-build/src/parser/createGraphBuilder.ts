@@ -18,9 +18,13 @@ export function createGraphBuilder(graph: graphlib.Graph, packageJson: any, pack
   const packageName = packageJson.name;
   return async (parsedFile: File): Promise<void> => {
     for (const declaration of parsedFile.declarations) {
-      if (!(declaration as any)['isExported']) continue;
+      if (!(declaration as any)['isExported']) {
+        continue;
+      }
 
-      if (!declaration.name) continue;
+      if (!declaration.name) {
+        continue;
+      }
 
       const packageNameFinder = new PackageNameFinder(parsedFile, packageJsonDir, packageName);
       if (isInstanceOf(declaration, ParserVariableDeclaration)) {
@@ -66,9 +70,13 @@ export function createGraphBuilder(graph: graphlib.Graph, packageJson: any, pack
           Object.assign(classDeclaration, { sourceType: SourceType.class })
         );
         for (const parentInterface of classDeclaration.directParentInterfaces) {
-          if (parentInterface.packageName.startsWith('/')) continue;
+          if (parentInterface.packageName.startsWith('/')) {
+            continue;
+          }
 
-          if (!graph.hasNode(parentInterface.qualifiedName)) graph.setNode(parentInterface.qualifiedName);
+          if (!graph.hasNode(parentInterface.qualifiedName)) {
+            graph.setNode(parentInterface.qualifiedName);
+          }
 
           graph.setEdge(
             classDeclaration.qualifiedName,
@@ -78,9 +86,13 @@ export function createGraphBuilder(graph: graphlib.Graph, packageJson: any, pack
         }
 
         for (const parentClass of classDeclaration.directParentClasses) {
-          if (parentClass.packageName.startsWith('/')) continue;
+          if (parentClass.packageName.startsWith('/')) {
+            continue;
+          }
 
-          if (!graph.hasNode(parentClass.qualifiedName)) graph.setNode(parentClass.qualifiedName);
+          if (!graph.hasNode(parentClass.qualifiedName)) {
+            graph.setNode(parentClass.qualifiedName);
+          }
 
           graph.setEdge(classDeclaration.qualifiedName, parentClass.qualifiedName, SourceRelationship.extendsClass);
         }
@@ -95,9 +107,13 @@ export function createGraphBuilder(graph: graphlib.Graph, packageJson: any, pack
           Object.assign(interfaceDeclaration, { sourceType: SourceType.interface })
         );
         for (const parentInterface of interfaceDeclaration.directParents) {
-          if (parentInterface.packageName.startsWith('/')) continue;
+          if (parentInterface.packageName.startsWith('/')) {
+            continue;
+          }
 
-          if (!graph.hasNode(parentInterface.qualifiedName)) graph.setNode(parentInterface.qualifiedName);
+          if (!graph.hasNode(parentInterface.qualifiedName)) {
+            graph.setNode(parentInterface.qualifiedName);
+          }
 
           graph.setEdge(
             interfaceDeclaration.qualifiedName,
@@ -116,14 +132,22 @@ function addTypeAliasDeclaration(
   sourceRelationship: SourceRelationship,
   graph: graphlib.Graph
 ) {
-  if (!typeAliasDeclaration.directParents) return;
+  if (!typeAliasDeclaration.directParents) {
+    return;
+  }
 
   for (const parentType of typeAliasDeclaration.directParents) {
-    if (parentType.name.startsWith('{')) continue;
+    if (parentType.name.startsWith('{')) {
+      continue;
+    }
 
-    if (parentType.packageName.startsWith('/')) continue;
+    if (parentType.packageName.startsWith('/')) {
+      continue;
+    }
 
-    if (!graph.hasNode(parentType.qualifiedName)) graph.setNode(parentType.qualifiedName);
+    if (!graph.hasNode(parentType.qualifiedName)) {
+      graph.setNode(parentType.qualifiedName);
+    }
 
     graph.setEdge(parentQualifiedName, parentType.qualifiedName, sourceRelationship);
   }

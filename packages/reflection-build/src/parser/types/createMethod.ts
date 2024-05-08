@@ -9,8 +9,9 @@ export async function createMethod(
   packageNameFinder: PackageNameFinder
 ): Promise<Method> {
   const parameters: Parameter[] = [];
-  for (const parameterDeclaration of methodDeclaration.parameters)
+  for (const parameterDeclaration of methodDeclaration.parameters) {
     parameters.push(await createParameter(parameterDeclaration, packageNameFinder));
+  }
   const returnType = methodDeclaration.type
     ? await typeAliasDeclarationFromName(methodDeclaration.type, packageNameFinder)
     : undefined;
