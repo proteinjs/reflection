@@ -19,13 +19,18 @@ export async function build() {
 			throw new Error(`package.json does not exist, run \`npm init -y\` to create one`);
 
 		const targetPackageJson = require(targetDirPackageJson);
+		const originalPackageJsonString = JSON.stringify(targetPackageJson, null, 2);
 		const targetDirDist = path.join(targetDir, 'dist');
 		const targetDirDistGenerated = path.join(targetDirDist, 'generated');
 		const generatedIndexJs = path.join(targetDirDistGenerated, 'index.js');
 		const generatedIndexDts = path.join(targetDirDistGenerated, 'index.d.ts');
 		targetPackageJson.main = `./${path.relative(targetDir, generatedIndexJs)}`;
 		targetPackageJson.types = `./${path.relative(targetDir, generatedIndexDts)}`;
-		await promisifiedFs.writeFile(targetDirPackageJson, JSON.stringify(targetPackageJson, null, 4));
+
+		const updatedPackageJsonString = JSON.stringify(targetPackageJson, null, 2);
+		if (originalPackageJsonString !== updatedPackageJsonString) {
+			await promisifiedFs.writeFile(targetDirPackageJson, JSON.stringify(targetPackageJson, null, 2));
+		}
 	}
 
 	async function writeTsconfig() {
