@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.16](https://github.com/proteinjs/reflection/compare/@proteinjs/reflection-build@1.0.15...@proteinjs/reflection-build@1.0.16) (2024-05-09)
+
+
+### Bug Fixes
+
+* only write new package json file when fields are missing ([#1](https://github.com/proteinjs/reflection/issues/1)) ([038a3ef](https://github.com/proteinjs/reflection/commit/038a3ef7c764770c781de00d30ed74b7f610408e))
+
+
+
+
+
 ## [1.0.15](https://github.com/proteinjs/reflection/compare/@proteinjs/reflection-build@1.0.14...@proteinjs/reflection-build@1.0.15) (2024-05-08)
 
 
