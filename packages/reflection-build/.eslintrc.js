@@ -1,9 +1,9 @@
 module.exports = {
-  extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended', 'prettier'],
+  extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended', 'plugin:prettier/recommended', 'prettier'],
   parser: '@typescript-eslint/parser',
   plugins: ['@typescript-eslint', 'prettier'],
   root: true,
-  ignorePatterns: ['**/dist/*', '**/node_modules/*', '**/modules/*'],
+  ignorePatterns: ['**/dist/*', '**/node_modules/*'],
   rules: {
     'prettier/prettier': ['error'],
     curly: ['error'],
