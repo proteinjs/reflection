@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.18](https://github.com/proteinjs/reflection/compare/@proteinjs/reflection-build@1.0.17...@proteinjs/reflection-build@1.0.18) (2024-05-10)
+
+
+### Bug Fixes
+
+* add .md file type to lint ignore files ([d7bdf6b](https://github.com/proteinjs/reflection/commit/d7bdf6baa50f93781e71abac3c2732e87cb21999))
+
+
+
+
+
 ## [1.0.17](https://github.com/proteinjs/reflection/compare/@proteinjs/reflection-build@1.0.16...@proteinjs/reflection-build@1.0.17) (2024-05-10)
 
 
