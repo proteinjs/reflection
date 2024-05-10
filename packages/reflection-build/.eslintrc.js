@@ -3,7 +3,7 @@ module.exports = {
   parser: '@typescript-eslint/parser',
   plugins: ['@typescript-eslint', 'prettier'],
   root: true,
-  ignorePatterns: ['**/dist/*', '**/node_modules/*'],
+  ignorePatterns: ['**/dist/*', '**/node_modules/*', 'typescript-parser/'],
   rules: {
     'prettier/prettier': ['error'],
     curly: ['error'],
