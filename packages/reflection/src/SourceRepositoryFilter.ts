@@ -2,7 +2,8 @@ import { Loadable } from './Loadable';
 import { SourceRepository } from './SourceRepository';
 
 export const SOURCE_REPOSITORY_FILTER_QUALIFIED_NAME = '@proteinjs/reflection/SourceRepositoryFilter';
-export const getSourceRepositoryFilters = () => SourceRepository.get().objects<SourceRepositoryFilter>(SOURCE_REPOSITORY_FILTER_QUALIFIED_NAME);
+export const getSourceRepositoryFilters = () =>
+  SourceRepository.get().objects<SourceRepositoryFilter>(SOURCE_REPOSITORY_FILTER_QUALIFIED_NAME);
 
 export interface SourceRepositoryFilter extends Loadable {
   /**

@@ -2,6 +2,6 @@
 
 import { build } from './build';
 
-(async function() {
-	await build();
+(async function () {
+  await build();
 })();

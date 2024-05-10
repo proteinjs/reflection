@@ -7,25 +7,25 @@ export type LocalNotLoadableType = { z: number };
 export type LocalLoadableTypeWithArgs<T> = { a: number } & Loadable;
 
 export interface LocalLoadableInterface extends Loadable {
-	a: number;
+  a: number;
 }
 
 export interface LocalNotLoadableInterface {
-	z: number;
+  z: number;
 }
 
 export interface LocalLoadableInterfaceWithArgs<T> extends Loadable {
-	a: number;
+  a: number;
 }
 
 export abstract class LocalLoadableAbstractClass implements Loadable {
-	abstract a: number;
+  abstract a: number;
 }
 
 export abstract class LocalNotLoadableAbstractClass {
-	abstract z: number;
+  abstract z: number;
 }
 
 export abstract class LocalLoadableAbstractClassWithArgs<T> implements Loadable {
-	abstract a: number;
+  abstract a: number;
 }

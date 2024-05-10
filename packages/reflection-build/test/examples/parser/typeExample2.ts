@@ -1,4 +1,4 @@
 export type C = {
-	x: string,
-	y: number
+  x: string;
+  y: number;
 };

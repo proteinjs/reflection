@@ -1,8 +1,8 @@
 export type A = {
-	x: string,
-	b: B
+  x: string;
+  b: B;
 };
 
 export type B = {
-	x: string,
+  x: string;
 };

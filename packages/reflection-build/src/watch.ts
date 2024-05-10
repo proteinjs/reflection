@@ -14,8 +14,8 @@ function executeCommand(command: string, cb: (error?: any) => void): void {
     if (stdout) {
       console.log(stdout);
     }
-    
-    cb();  // Always call the callback to signal task completion
+
+    cb(); // Always call the callback to signal task completion
   });
 }
 
@@ -33,14 +33,18 @@ gulp.task('tsc', (cb) => {
 
 gulp.task('watch', () => {
   const watcher = gulp.watch(
-    [path.resolve(process.cwd(), 'src/**/*'), path.resolve(process.cwd(), 'test/**/*'), path.resolve(process.cwd(), 'index.ts')],
+    [
+      path.resolve(process.cwd(), 'src/**/*'),
+      path.resolve(process.cwd(), 'test/**/*'),
+      path.resolve(process.cwd(), 'index.ts'),
+    ],
     gulp.series('reflection-build', 'tsc')
   );
 
-  watcher.on('error', function(this: typeof watcher, err: any) {
+  watcher.on('error', function (this: typeof watcher, err: any) {
     console.error('Error:', err.toString());
-    this.emit('end');  // End the task to allow the watch task to continue
+    this.emit('end'); // End the task to allow the watch task to continue
   });
 });
 
-gulp.task('default', gulp.series('reflection-build', 'tsc', 'watch'));  // run reflection-build and tsc once at the start
+gulp.task('default', gulp.series('reflection-build', 'tsc', 'watch')); // run reflection-build and tsc once at the start
