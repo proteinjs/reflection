@@ -1,6 +1,6 @@
 {
   "name": "@proteinjs/reflection",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "description": "Source introspection and loader apis",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "@dagrejs/graphlib": "2.1.4",
-    "@proteinjs/util": "1.1.0"
+    "@proteinjs/util": "1.1.2"
   },
   "devDependencies": {
     "@types/graphlib": "2.1.6",
