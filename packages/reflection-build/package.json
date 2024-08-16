@@ -1,6 +1,6 @@
 {
   "name": "@proteinjs/reflection-build",
-  "version": "1.0.23",
+  "version": "1.0.24",
   "description": "Build system for reflection",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -29,9 +29,9 @@
   },
   "dependencies": {
     "@dagrejs/graphlib": "2.1.4",
-    "@proteinjs/reflection": "^1.1.8",
-    "@proteinjs/util": "1.4.0",
-    "@proteinjs/util-node": "1.4.0",
+    "@proteinjs/reflection": "^1.1.9",
+    "@proteinjs/util": "1.4.1",
+    "@proteinjs/util-node": "1.4.1",
     "globby": "11.0.1",
     "gulp": "4.0.2",
     "gulp-shell": "0.8.0",
