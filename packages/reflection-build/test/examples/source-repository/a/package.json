@@ -1,6 +1,6 @@
 {
   "name": "@proteinjs/reflection-build-test-a",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "private": true,
   "description": "Test package a",
   "repository": {
@@ -19,10 +19,10 @@
   },
   "dependencies": {
     "@dagrejs/graphlib": "2.1.4",
-    "@proteinjs/reflection": "^1.1.9",
+    "@proteinjs/reflection": "^1.1.10",
     "@proteinjs/reflection-build-test-b": "file:../b",
-    "@proteinjs/util": "1.4.1",
-    "@proteinjs/util-node": "1.4.1",
+    "@proteinjs/util": "1.5.0",
+    "@proteinjs/util-node": "1.4.2",
     "globby": "11.0.1",
     "gulp": "4.0.2",
     "gulp-shell": "0.8.0",
