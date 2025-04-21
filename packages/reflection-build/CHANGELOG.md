@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1.0](https://github.com/proteinjs/reflection/compare/@proteinjs/reflection-build@1.0.25...@proteinjs/reflection-build@1.1.0) (2025-04-21)
+
+
+### Features
+
+* `watch` now just calls the npm `build` script for the package instead of hardcoding `reflection-build && tsc`. ([e781fac](https://github.com/proteinjs/reflection/commit/e781facf8d3e010c4decd44659f12e971da7c96c))
+
+
+
+
+
 ## [1.0.18](https://github.com/proteinjs/reflection/compare/@proteinjs/reflection-build@1.0.17...@proteinjs/reflection-build@1.0.18) (2024-05-10)
 
 
