@@ -23,7 +23,7 @@ export async function writeGeneratedIndex(packageDir: string, packageGeneratedDi
 
 async function sourceRepositoryLoader(packageDir: string, generatedIndexPath: string): Promise<string> {
   const packageJson = await getPackageJson(packageDir);
-  let code = loadDependencySourceGraphs(packageJson);
+  let code = loadDependencySourceGraphs(packageDir, packageJson);
   const sourceGraph = await createSourceGraph(packageDir);
   code += generateSourceGraph(sourceGraph, packageJson.name);
   code += generateSourceLinks(sourceGraph, packageJson, generatedIndexPath);
@@ -39,7 +39,7 @@ async function getPackageJson(packageDir: string): Promise<any> {
   return require(packageJsonPath);
 }
 
-function loadDependencySourceGraphs(packageJson: any): string {
+function loadDependencySourceGraphs(packageDir: string, packageJson: any): string {
   let code = '/** Load Dependency Source Graphs */\n\n';
   if (packageJson.dependencies) {
     for (const packageName in packageJson.dependencies) {
@@ -47,11 +47,69 @@ function loadDependencySourceGraphs(packageJson: any): string {
         continue;
       }
 
-      code += `import '${packageName}';\n`; // Load dependencies of package (ie. run code in dependency index)
+      const specifier = getDependencyImportSpecifier(packageDir, packageName);
+      if (!specifier) {
+        continue;
+      }
+      code += `import '${specifier}';\n`; // Load dependencies of package (ie. run code in dependency index)
     }
   }
 
   return code;
+}
+
+/**
+ * Determine an import specifier for a dependency that respects its package.json exports or main/module fields.
+ */
+function getDependencyImportSpecifier(packageDir: string, packageName: string): string | undefined {
+  try {
+    require.resolve(packageName, { paths: [packageDir] });
+    return packageName;
+  } catch {
+    // Load the dependency's package.json to inspect exports or entryfields
+    let depPkgJson: any;
+    try {
+      const pkgJsonPath = require.resolve(path.join(packageName, 'package.json'), { paths: [packageDir] });
+      depPkgJson = require(pkgJsonPath);
+    } catch {
+      return undefined;
+    }
+    const exportsField = depPkgJson.exports;
+    if (exportsField) {
+      let entryPoint: string | undefined;
+      if (typeof exportsField === 'string') {
+        entryPoint = exportsField;
+      } else if (typeof exportsField === 'object') {
+        const mainExport = exportsField['.'];
+        if (typeof mainExport === 'string') {
+          entryPoint = mainExport;
+        } else if (mainExport && typeof mainExport === 'object') {
+          entryPoint = mainExport.import || mainExport.require;
+        }
+      }
+      if (!entryPoint) {
+        return undefined;
+      }
+      if (entryPoint.startsWith('./')) {
+        entryPoint = entryPoint.slice(2);
+      }
+      entryPoint = entryPoint.replace(/\.[^/.]+$/, '');
+      return `${packageName}/${entryPoint}`;
+    }
+
+    // No exports field: fall back to module or main
+    const fallback = depPkgJson.module || depPkgJson.main;
+    if (!fallback) {
+      return undefined;
+    }
+
+    let entryPoint = fallback;
+    if (entryPoint.startsWith('./')) {
+      entryPoint = entryPoint.slice(2);
+    }
+    entryPoint = entryPoint.replace(/\.[^/.]+$/, '');
+    return `${packageName}/${entryPoint}`;
+  }
 }
 
 function generateSourceGraph(sourceGraph: Graph, buildTargetPackageName: string): string {
