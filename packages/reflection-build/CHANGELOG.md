@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.1](https://github.com/proteinjs/reflection/compare/@proteinjs/reflection-build@1.1.0...@proteinjs/reflection-build@1.1.1) (2025-05-22)
+
+
+### Bug Fixes
+
+* `writeGeneratedIndex` should respect `exports` in dependency package.jsons when generating an import statement. ([8046dc4](https://github.com/proteinjs/reflection/commit/8046dc47eec4394decb7b78cfe2d78f1c0f9fd42))
+
+
+
+
+
 # [1.1.0](https://github.com/proteinjs/reflection/compare/@proteinjs/reflection-build@1.0.25...@proteinjs/reflection-build@1.1.0) (2025-04-21)
 
 
