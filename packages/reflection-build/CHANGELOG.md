@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0](https://github.com/proteinjs/reflection/compare/@proteinjs/reflection-build@1.1.1...@proteinjs/reflection-build@1.2.0) (2025-06-03)
+
+
+### Features
+
+* Support `SKIP_REFLECTION_LOAD` env var to skip loading source graphs for a comma-separated list of package names. ([16fdd28](https://github.com/proteinjs/reflection/commit/16fdd288c1ff3bd979595dafcab9d7c2d803d1b1))
+
+
+
+
+
 ## [1.1.1](https://github.com/proteinjs/reflection/compare/@proteinjs/reflection-build@1.1.0...@proteinjs/reflection-build@1.1.1) (2025-05-22)
 
 
