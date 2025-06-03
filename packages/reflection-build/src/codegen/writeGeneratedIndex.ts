@@ -41,8 +41,20 @@ async function getPackageJson(packageDir: string): Promise<any> {
 
 function loadDependencySourceGraphs(packageDir: string, packageJson: any): string {
   let code = '/** Load Dependency Source Graphs */\n\n';
+
+  const skipEnv = process.env.SKIP_REFLECTION_LOAD || '';
+  const skipList = skipEnv
+    .split(',')
+    .map((s) => s.trim())
+    .filter(Boolean);
+
   if (packageJson.dependencies) {
     for (const packageName in packageJson.dependencies) {
+      // Skip any packages listed in SKIP_REFLECTION_LOAD
+      if (skipList.includes(packageName)) {
+        continue;
+      }
+
       if (packageName.startsWith('@material-ui')) {
         continue;
       }
