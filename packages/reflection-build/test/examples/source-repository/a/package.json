@@ -1,6 +1,6 @@
 {
   "name": "@proteinjs/reflection-build-test-a",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "private": true,
   "description": "Test package a",
   "repository": {
@@ -22,7 +22,7 @@
     "@proteinjs/reflection": "^1.1.10",
     "@proteinjs/reflection-build-test-b": "file:../b",
     "@proteinjs/util": "1.5.0",
-    "@proteinjs/util-node": "1.4.2",
+    "@proteinjs/util-node": "1.5.0",
     "globby": "11.0.1",
     "gulp": "4.0.2",
     "gulp-shell": "0.8.0",
