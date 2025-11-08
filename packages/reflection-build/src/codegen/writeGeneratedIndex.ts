@@ -6,7 +6,18 @@ import jsesc from 'jsesc';
 import { createSourceGraph } from '../parser/createSourceGraph';
 import { VariableDeclaration, PackageScope, ClassDeclaration, LOADABLE_QUALIFIED_NAME } from '@proteinjs/reflection';
 
-export async function writeGeneratedIndex(packageDir: string, packageGeneratedDir: string, generatedIndexPath: string) {
+/**
+ * @param packageDir            Root of the package (contains package.json)
+ * @param packageGeneratedDir   Directory where generated/index.ts will be written
+ * @param generatedIndexPath    Full path to generated/index.ts
+ * @param sourceRootRel         Optional relative directories to scan (e.g. "test"); defaults to "src"
+ */
+export async function writeGeneratedIndex(
+  packageDir: string,
+  packageGeneratedDir: string,
+  generatedIndexPath: string,
+  sourceRootsRel: string | string[] = 'src'
+) {
   let packageIndexPath = path.join(packageDir, 'index.ts');
   if (!(await promisifiedFs.exists(packageIndexPath))) {
     packageIndexPath = path.join(packageDir, 'src/index.ts');
@@ -16,15 +27,23 @@ export async function writeGeneratedIndex(packageDir: string, packageGeneratedDi
   }
 
   await promisifiedFs.mkdir(packageGeneratedDir, { recursive: true });
-  let generatedIndex = await sourceRepositoryLoader(packageDir, generatedIndexPath);
+  let generatedIndex = await sourceRepositoryLoader(packageDir, generatedIndexPath, sourceRootsRel);
   generatedIndex += `\n\n\nexport * from '${path.relative(packageGeneratedDir, packageDir)}/index';`;
   await promisifiedFs.writeFile(generatedIndexPath, generatedIndex);
 }
 
-async function sourceRepositoryLoader(packageDir: string, generatedIndexPath: string): Promise<string> {
+async function sourceRepositoryLoader(
+  packageDir: string,
+  generatedIndexPath: string,
+  sourceRootsRel: string | string[]
+): Promise<string> {
   const packageJson = await getPackageJson(packageDir);
   let code = loadDependencySourceGraphs(packageDir, packageJson);
-  const sourceGraph = await createSourceGraph(packageDir);
+
+  // Allow multiple roots (e.g., ['test','src']) to keep ancestry intact.
+  const roots = Array.isArray(sourceRootsRel) ? sourceRootsRel : [sourceRootsRel];
+  const sourceGraph: Graph = await createSourceGraph(packageDir, [], roots);
+
   code += generateSourceGraph(sourceGraph, packageJson.name);
   code += generateSourceLinks(sourceGraph, packageJson, generatedIndexPath);
   code += mergeSourceGraph();
