@@ -6,11 +6,34 @@ import { writeGeneratedIndex } from './codegen/writeGeneratedIndex';
 export async function build() {
   const targetDir = process.env.INIT_CWD as string;
   const targetDirTsconfig = path.join(targetDir, 'tsconfig.json');
-  const targetDirGenerated = path.join(targetDir, 'generated');
+
+  // Env is ONLY read here.
+  // Allow multiple comma-separated roots, e.g. "test,src" or "integration,examples,src".
+  // The first root is the primary source.
+  const sourceRootsRaw = (process.env.REFLECTION_SOURCE_DIRS || '')
+    .split(',')
+    .map((s) => s.trim())
+    .filter(Boolean);
+
+  // If not provided, default to ['src'] for prod builds.
+  const sourceRoots = sourceRootsRaw.length > 0 ? sourceRootsRaw : ['src'];
+  const primaryRoot = sourceRoots[0]; // first entry is authoritative
+
+  const distDirRel = process.env.REFLECTION_DIST_DIR || 'dist';
+
+  // Where to emit the generated index:
+  // - primary === 'src':   ./generated/index.ts
+  // - otherwise:           ./generated/<primary>/index.ts
+  const targetDirGenerated =
+    primaryRoot && primaryRoot !== 'src'
+      ? path.join(targetDir, 'generated', primaryRoot)
+      : path.join(targetDir, 'generated');
+
   const generatedIndex = path.join(targetDirGenerated, 'index.ts');
+
   await updatePackageJson();
   await writeTsconfig();
-  await writeGeneratedIndex(targetDir, targetDirGenerated, generatedIndex);
+  await writeGeneratedIndex(targetDir, targetDirGenerated, generatedIndex, sourceRoots);
 
   // TODO save their index location in package.json and pass it in to writeGeneratedIndex above
   async function updatePackageJson() {
@@ -21,27 +44,35 @@ export async function build() {
 
     const targetPackageJson = require(targetDirPackageJson);
     const originalPackageJsonString = JSON.stringify(targetPackageJson, null, 2);
-    const targetDirDist = path.join(targetDir, 'dist');
-    const targetDirDistGenerated = path.join(targetDirDist, 'generated');
-    const generatedIndexJs = path.join(targetDirDistGenerated, 'index.js');
-    const generatedIndexDts = path.join(targetDirDistGenerated, 'index.d.ts');
-    targetPackageJson.main = `./${path.relative(targetDir, generatedIndexJs)}`;
-    targetPackageJson.types = `./${path.relative(targetDir, generatedIndexDts)}`;
+
+    // Only update main/types when primary root is 'src'. Prevents infinite toggle.
+    const isProd = primaryRoot === 'src';
+    if (isProd) {
+      const targetDirDist = path.join(targetDir, distDirRel);
+      const relGenPath =
+        primaryRoot === 'src'
+          ? path.relative(targetDir, path.join(targetDir, 'generated'))
+          : path.relative(targetDir, path.join(targetDir, 'generated', primaryRoot));
+
+      const targetDirDistGenerated = path.join(targetDirDist, relGenPath);
+      const generatedIndexJs = path.join(targetDirDistGenerated, 'index.js');
+      const generatedIndexDts = path.join(targetDirDistGenerated, 'index.d.ts');
+      targetPackageJson.main = `./${path.relative(targetDir, generatedIndexJs)}`;
+      targetPackageJson.types = `./${path.relative(targetDir, generatedIndexDts)}`;
+    }
 
     const updatedPackageJsonString = JSON.stringify(targetPackageJson, null, 2);
     if (originalPackageJsonString !== updatedPackageJsonString) {
-      await promisifiedFs.writeFile(targetDirPackageJson, JSON.stringify(targetPackageJson, null, 2));
+      await promisifiedFs.writeFile(targetDirPackageJson, updatedPackageJsonString);
     }
   }
 
   async function writeTsconfig() {
     if (await promisifiedFs.exists(targetDirTsconfig)) {
       const existingTsconfig = require(targetDirTsconfig);
-      if (
-        existingTsconfig.include &&
-        !existingTsconfig.include.includes(`./${path.relative(targetDir, generatedIndex)}`)
-      ) {
-        existingTsconfig.include.push(`./${path.relative(targetDir, generatedIndex)}`);
+      const includePath = `./${path.relative(targetDir, generatedIndex)}`;
+      if (existingTsconfig.include && !existingTsconfig.include.includes(includePath)) {
+        existingTsconfig.include.push(includePath);
         await promisifiedFs.writeFile(targetDirTsconfig, JSON.stringify(existingTsconfig, null, 4));
       }
     } else {
