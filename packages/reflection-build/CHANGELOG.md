@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.3.0](https://github.com/proteinjs/reflection/compare/@proteinjs/reflection-build@1.2.1...@proteinjs/reflection-build@1.3.0) (2025-11-08)
+
+
+### Features
+
+* `relfection-build` now supports `REFLECTION_SOURCE_DIRS` and `REFLECTION_DIST_DIR` env vars. ([#3](https://github.com/proteinjs/reflection/issues/3)) ([95d6836](https://github.com/proteinjs/reflection/commit/95d68364859e8526f2218cfeda85c23ade9a210f))
+
+
+
+
+
 # [1.2.0](https://github.com/proteinjs/reflection/compare/@proteinjs/reflection-build@1.1.1...@proteinjs/reflection-build@1.2.0) (2025-06-03)
 
 
