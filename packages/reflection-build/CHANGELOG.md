@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.4.0](https://github.com/proteinjs/reflection/compare/@proteinjs/reflection-build@1.3.0...@proteinjs/reflection-build@1.4.0) (2025-11-11)
+
+
+### Features
+
+* `refelction-build` added `REFLECTION_EXPORT_FROM` so consumers can use reflection to build a generated test index and specify where test code is exported from (ie. `from ./test/index instead of ./index which was the hardcoded default). ([3a1411d](https://github.com/proteinjs/reflection/commit/3a1411dfdf7ba53c923ba46efe6c0ddf651373c4))
+
+
+
+
+
 # [1.3.0](https://github.com/proteinjs/reflection/compare/@proteinjs/reflection-build@1.2.1...@proteinjs/reflection-build@1.3.0) (2025-11-08)
 
 
