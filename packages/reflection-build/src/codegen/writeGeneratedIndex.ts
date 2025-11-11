@@ -7,17 +7,23 @@ import { createSourceGraph } from '../parser/createSourceGraph';
 import { VariableDeclaration, PackageScope, ClassDeclaration, LOADABLE_QUALIFIED_NAME } from '@proteinjs/reflection';
 
 /**
- * @param packageDir            Root of the package (contains package.json)
- * @param packageGeneratedDir   Directory where generated/index.ts will be written
- * @param generatedIndexPath    Full path to generated/index.ts
- * @param sourceRootRel         Optional relative directories to scan (e.g. "test"); defaults to "src"
+ * @param packageDir               Root of the package (contains package.json)
+ * @param packageGeneratedDir      Directory where generated/index.ts will be written
+ * @param generatedIndexPath       Full path to generated/index.ts
+ * @param sourceRootsRel           Relative directories to scan (e.g. ['test','src']) — defaults to 'src'
+ * @param publicEntryRelOverride   Optional relative path (from package root) to the public entry that the
+ *                                 generated index should re-export from (e.g. 'test/index.ts').
+ *                                 If omitted, we re-export from '<packageRoot>/index'.
  */
 export async function writeGeneratedIndex(
   packageDir: string,
   packageGeneratedDir: string,
   generatedIndexPath: string,
-  sourceRootsRel: string | string[] = 'src'
+  sourceRootsRel: string | string[] = 'src',
+  publicEntryRelOverride?: string
 ) {
+  // Keep the original safety check for a package entry.
+  // Even if we later re-export from a custom entry, most packages still have ./index.ts or ./src/index.ts.
   let packageIndexPath = path.join(packageDir, 'index.ts');
   if (!(await promisifiedFs.exists(packageIndexPath))) {
     packageIndexPath = path.join(packageDir, 'src/index.ts');
@@ -26,9 +32,37 @@ export async function writeGeneratedIndex(
     }
   }
 
+  // If an override was provided, optionally sanity-check that it exists. (Non-fatal if missing TS extension.)
+  if (publicEntryRelOverride) {
+    const overrideAbsCandidates = [
+      path.join(packageDir, publicEntryRelOverride),
+      path.join(packageDir, publicEntryRelOverride.replace(/\.[^/.]+$/, '') + '.ts'),
+      path.join(packageDir, publicEntryRelOverride.replace(/\.[^/.]+$/, '') + '.tsx'),
+    ];
+    const exists = await Promise.all(overrideAbsCandidates.map((p) => promisifiedFs.exists(p)));
+    if (!exists.some(Boolean)) {
+      // Soft fail with a better message; do not throw, to keep behavior minimal and predictable.
+      // If it truly doesn't exist, the final 'export * from' will fail at compile time which is also explicit.
+      // eslint-disable-next-line no-console
+      console.warn(
+        `[reflection-build] WARN: REFLECTION_EXPORT_FROM points at '${publicEntryRelOverride}', but no .ts/.tsx file was found under the package root.`
+      );
+    }
+  }
+
   await promisifiedFs.mkdir(packageGeneratedDir, { recursive: true });
+
   let generatedIndex = await sourceRepositoryLoader(packageDir, generatedIndexPath, sourceRootsRel);
-  generatedIndex += `\n\n\nexport * from '${path.relative(packageGeneratedDir, packageDir)}/index';`;
+
+  // Choose the target module to re-export from:
+  // - If override provided, re-export from that (path relative to generated dir, without extension)
+  // - Else fallback to the current default: '<packageRoot>/index'
+  const exportTargetNoExt = publicEntryRelOverride
+    ? path.relative(packageGeneratedDir, path.join(packageDir, publicEntryRelOverride)).replace(/\.[^/.]+$/, '')
+    : `${path.relative(packageGeneratedDir, packageDir)}/index`;
+
+  generatedIndex += `\n\n\nexport * from '${exportTargetNoExt}';`;
+
   await promisifiedFs.writeFile(generatedIndexPath, generatedIndex);
 }
 
@@ -97,7 +131,7 @@ function getDependencyImportSpecifier(packageDir: string, packageName: string): 
     require.resolve(packageName, { paths: [packageDir] });
     return packageName;
   } catch {
-    // Load the dependency's package.json to inspect exports or entryfields
+    // Load the dependency's package.json to inspect exports or entry fields
     let depPkgJson: any;
     try {
       const pkgJsonPath = require.resolve(path.join(packageName, 'package.json'), { paths: [packageDir] });
@@ -165,7 +199,7 @@ function removeNonLoadables(sourceGraph: Graph, buildTargetPackageName: string):
   for (const nodeName of sourceGraph.nodes()) {
     const node = sourceGraph.node(nodeName);
     if (!node) {
-      // may have been removed by a previous interation
+      // may have been removed by a previous iteration
       continue;
     }
 

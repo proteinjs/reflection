@@ -9,7 +9,7 @@ export async function build() {
 
   // Env is ONLY read here.
   // Allow multiple comma-separated roots, e.g. "test,src" or "integration,examples,src".
-  // The first root is the primary source.
+  // The first root is considered the "primary" tree for this invocation.
   const sourceRootsRaw = (process.env.REFLECTION_SOURCE_DIRS || '')
     .split(',')
     .map((s) => s.trim())
@@ -17,7 +17,11 @@ export async function build() {
 
   // If not provided, default to ['src'] for prod builds.
   const sourceRoots = sourceRootsRaw.length > 0 ? sourceRootsRaw : ['src'];
-  const primaryRoot = sourceRoots[0]; // first entry is authoritative
+  const primaryRoot = sourceRoots[0];
+
+  // Optional: explicit public entry to re-export from (relative to package root)
+  // e.g. REFLECTION_EXPORT_FROM=test/index.ts
+  const publicEntryRelOverride = process.env.REFLECTION_EXPORT_FROM;
 
   const distDirRel = process.env.REFLECTION_DIST_DIR || 'dist';
 
@@ -33,7 +37,7 @@ export async function build() {
 
   await updatePackageJson();
   await writeTsconfig();
-  await writeGeneratedIndex(targetDir, targetDirGenerated, generatedIndex, sourceRoots);
+  await writeGeneratedIndex(targetDir, targetDirGenerated, generatedIndex, sourceRoots, publicEntryRelOverride);
 
   // TODO save their index location in package.json and pass it in to writeGeneratedIndex above
   async function updatePackageJson() {
@@ -49,14 +53,17 @@ export async function build() {
     const isProd = primaryRoot === 'src';
     if (isProd) {
       const targetDirDist = path.join(targetDir, distDirRel);
+
+      // Rel path to /generated (may be './generated' or './generated/src' depending on primaryRoot)
       const relGenPath =
-        primaryRoot === 'src'
-          ? path.relative(targetDir, path.join(targetDir, 'generated'))
-          : path.relative(targetDir, path.join(targetDir, 'generated', primaryRoot));
+        primaryRoot && primaryRoot !== 'src'
+          ? path.relative(targetDir, path.join(targetDir, 'generated', primaryRoot))
+          : path.relative(targetDir, path.join(targetDir, 'generated'));
 
       const targetDirDistGenerated = path.join(targetDirDist, relGenPath);
       const generatedIndexJs = path.join(targetDirDistGenerated, 'index.js');
       const generatedIndexDts = path.join(targetDirDistGenerated, 'index.d.ts');
+
       targetPackageJson.main = `./${path.relative(targetDir, generatedIndexJs)}`;
       targetPackageJson.types = `./${path.relative(targetDir, generatedIndexDts)}`;
     }
