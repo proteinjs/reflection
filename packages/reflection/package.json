@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "@dagrejs/graphlib": "2.1.4",
-    "@proteinjs/util": "1.5.0"
+    "@proteinjs/util": "^1.5.0"
   },
   "devDependencies": {
     "@types/graphlib": "2.1.6",
