@@ -25,7 +25,7 @@
     "clean": "rm -rf dist/ node_modules/",
     "watch": "tsc -w -p .",
     "build": "tsc && cp -r modules/ dist/modules/ && chmod +x dist/src/runBuild.js dist/src/runWatch.js && chmod -R 755 dist/",
-    "test": "jest"
+    "test": "jest --passWithNoTests"
   },
   "dependencies": {
     "@dagrejs/graphlib": "2.1.4",
