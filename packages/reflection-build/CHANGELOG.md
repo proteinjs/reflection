@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.4.4](https://github.com/proteinjs/reflection/compare/@proteinjs/reflection-build@1.4.3...@proteinjs/reflection-build@1.4.4) (2026-04-08)
+
+
+### Bug Fixes
+
+* add --passWithNoTests to jest test script ([16167be](https://github.com/proteinjs/reflection/commit/16167bead41afc749f715420c822b8f16076f9d9))
+
+
+
+
+
 # [1.4.0](https://github.com/proteinjs/reflection/compare/@proteinjs/reflection-build@1.3.0...@proteinjs/reflection-build@1.4.0) (2025-11-11)
 
 
