@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.4.7](https://github.com/proteinjs/reflection/compare/@proteinjs/reflection-build@1.4.6...@proteinjs/reflection-build@1.4.7) (2026-05-21)
+
+
+### Performance Improvements
+
+* **reflection-build:** run watch in-process and clean up build logging ([d7f21f7](https://github.com/proteinjs/reflection/commit/d7f21f7c5fa233b423af27f6f90e728c0b193a34))
+
+
+
+
+
 ## [1.4.4](https://github.com/proteinjs/reflection/compare/@proteinjs/reflection-build@1.4.3...@proteinjs/reflection-build@1.4.4) (2026-04-08)
 
 
