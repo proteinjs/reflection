@@ -6,44 +6,53 @@ function getBuildScript(): string {
   return process.env.BUILD_SCRIPT || 'build';
 }
 
-// Utility function to execute shell commands
-function executeCommand(command: string, cb: (error?: any) => void): void {
-  exec(command, (err, stdout, stderr) => {
-    if (err) {
-      console.error(err.message);
-    }
-    if (stderr) {
-      console.error(stderr);
-    }
-    if (stdout) {
-      console.log(stdout);
+function timestamp(): string {
+  return new Date().toTimeString().slice(0, 8);
+}
+
+function formatElapsed(ms: number): string {
+  return ms >= 1000 ? `${(ms / 1000).toFixed(2)} s` : `${ms} ms`;
+}
+
+// Run the package build script, always signaling completion so the watcher stays alive.
+// `--silent` suppresses npm's per-script banner (and propagates to nested `npm run` calls),
+// so each build reduces to a clear start/end line plus any real build output.
+function runBuild(cb: (error?: any) => void): void {
+  const start = Date.now();
+  console.log(`[${timestamp()}] build started`);
+
+  exec(`npm run --silent ${getBuildScript()}`, (err, stdout, stderr) => {
+    const output = [stdout, stderr]
+      .map((stream) => stream.trim())
+      .filter(Boolean)
+      .join('\n');
+    if (output) {
+      console.log(output);
+    } else if (err) {
+      console.log(err.message);
     }
 
-    cb(); // Always call the callback to signal task completion
+    // Trailing newline separates consecutive builds into discrete, scannable blocks.
+    const result = err ? 'FAILED' : 'succeeded';
+    console.log(`[${timestamp()}] build ${result} in ${formatElapsed(Date.now() - start)}\n`);
+    cb();
   });
 }
 
-// Task to run the package build script
-gulp.task('build', (cb) => {
-  const scriptName = getBuildScript();
-  const command = `npm run ${scriptName}`;
-  executeCommand(command, cb);
-});
+export function watch(): void {
+  // Build once at startup, then watch for changes.
+  runBuild(() => {
+    const watcher = gulp.watch(
+      [
+        path.resolve(process.cwd(), 'src/**/*'),
+        path.resolve(process.cwd(), 'test/**/*'),
+        path.resolve(process.cwd(), 'index.ts'),
+      ],
+      (cb) => runBuild(cb)
+    );
 
-gulp.task('watch', () => {
-  const watcher = gulp.watch(
-    [
-      path.resolve(process.cwd(), 'src/**/*'),
-      path.resolve(process.cwd(), 'test/**/*'),
-      path.resolve(process.cwd(), 'index.ts'),
-    ],
-    gulp.series('build')
-  );
-
-  watcher.on('error', function (this: typeof watcher, err: any) {
-    console.error('Error:', err.toString());
-    this.emit('end'); // End the task to allow the watch task to continue
+    watcher.on('error', (err: any) => {
+      console.log(`[${timestamp()}] watch error: ${err.toString()}`);
+    });
   });
-});
-
-gulp.task('default', gulp.series('build', 'watch')); // run build once at the start
+}

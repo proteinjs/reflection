@@ -1,11 +1,6 @@
 #!/usr/bin/env node
 
-import * as path from 'path';
-import { cmd } from '@proteinjs/util-node';
+import { watch } from './watch';
 
-// Determine the paths to gulp and the src/watch.ts
-const gulpPath = require.resolve('gulp/bin/gulp.js');
-const gulpfilePath = path.resolve(__dirname, './watch.js');
-
-// Run the Gulp script
-cmd(gulpPath, ['--gulpfile', gulpfilePath, '--cwd', process.cwd()]);
+// Run the watcher in-process; no separate gulp process is spawned.
+watch();
