@@ -114,7 +114,8 @@ export function parseMethodParams(
                 if (cur.type && isTypeReferenceNode(cur.type)) {
                     boundParam.typeReference = getNodeType(cur.type);
                 } else if (cur.type && isTupleTypeNode(cur.type)) {
-                    types = cur.type.elementTypes.map(type => getNodeType(type));
+                    // TS 4.0 renamed TupleTypeNode.elementTypes -> elements.
+                    types = cur.type.elements.map(type => getNodeType(type));
                 }
 
                 boundParam.parameters = elements.map((bindingElement, index) => new TshParameter(

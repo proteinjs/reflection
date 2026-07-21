@@ -70,7 +70,8 @@ function parseMethodParams(node) {
                 boundParam.typeReference = parse_utilities_1.getNodeType(cur.type);
             }
             else if (cur.type && typescript_1.isTupleTypeNode(cur.type)) {
-                types = cur.type.elementTypes.map(type => parse_utilities_1.getNodeType(type));
+                // TS 4.0 renamed TupleTypeNode.elementTypes -> elements.
+                types = cur.type.elements.map(type => parse_utilities_1.getNodeType(type));
             }
             boundParam.parameters = elements.map((bindingElement, index) => new ParameterDeclaration_1.ParameterDeclaration(bindingElement.getText(), types[index], bindingElement.getStart(), bindingElement.getEnd()));
             params.push(boundParam);
