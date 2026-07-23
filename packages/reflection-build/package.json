@@ -24,7 +24,7 @@
   "scripts": {
     "clean": "rm -rf dist/ node_modules/",
     "watch": "tsc -w -p .",
-    "build": "tsc && cp -r modules/ dist/modules/ && rm -rf dist/modules/typescript-parser/node_modules && chmod +x dist/src/runBuild.js dist/src/runWatch.js && chmod -R 755 dist/",
+    "build": "tsc && cp -r modules/ dist/modules/ && chmod +x dist/src/runBuild.js dist/src/runWatch.js && chmod -R 755 dist/",
     "test": "jest --passWithNoTests"
   },
   "dependencies": {
@@ -35,7 +35,9 @@
     "globby": "11.0.1",
     "gulp": "4.0.2",
     "gulp-shell": "0.8.0",
-    "jsesc": "^3.0.1"
+    "jsesc": "^3.0.1",
+    "lodash": "^4.17.10",
+    "tslib": "^1.9.3"
   },
   "devDependencies": {
     "@proteinjs/reflection-build-test-a": "file:./test/examples/source-repository/a",
