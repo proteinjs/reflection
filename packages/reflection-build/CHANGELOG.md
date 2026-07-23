@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.4.9](https://github.com/proteinjs/reflection/compare/@proteinjs/reflection-build@1.4.8...@proteinjs/reflection-build@1.4.9) (2026-07-23)
+
+
+### Bug Fixes
+
+* demote the vendored typescript-parser from installable package — its own manifest+lock resurrected typescript 3.9.10 on every fresh install ([d620104](https://github.com/proteinjs/reflection/commit/d62010437759c9991aaa72373fb58325610440c4))
+* parser handles tuple-typed destructured params under modern TypeScript; unify parser runtime ([6aac8b8](https://github.com/proteinjs/reflection/commit/6aac8b864cf41a14e6aaa6c5dded8b3e8fee611b))
+* tuple-params parser test uses the parser's file-based API — no typescript import in the test ([d022d44](https://github.com/proteinjs/reflection/commit/d022d44b7219316e5be705ee2727c9ba73103cdf))
+
+
+
+
+
 ## [1.4.7](https://github.com/proteinjs/reflection/compare/@proteinjs/reflection-build@1.4.6...@proteinjs/reflection-build@1.4.7) (2026-05-21)
 
 
