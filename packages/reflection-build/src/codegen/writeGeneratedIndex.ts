@@ -139,7 +139,8 @@ function loadDependencySourceGraphs(packageDir: string, packageJson: any): strin
  */
 export function dependencyHasSourceGraph(packageDir: string, packageName: string): boolean {
   let currentDir = packageDir;
-  while (true) {
+  // Upward fs walk; exits are internal (found / package root / fs root).
+  for (;;) {
     const candidate = path.join(currentDir, 'node_modules', packageName);
     if (fs.existsSync(path.join(candidate, 'dist', 'generated', 'index.js'))) {
       return true;
