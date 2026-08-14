@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.5.0](https://github.com/proteinjs/reflection/compare/@proteinjs/reflection-build@1.4.12...@proteinjs/reflection-build@1.5.0) (2026-08-14)
+
+
+### Bug Fixes
+
+* no-constant-condition in dependencyHasSourceGraph — rule-exempt for(;;) for the upward fs walk ([9ce4332](https://github.com/proteinjs/reflection/commit/9ce43325d0a75a7913b1c90baf86ebc2b23ca10a))
+
+
+### Features
+
+* generated indexes import only reflection-built dependencies ([229277f](https://github.com/proteinjs/reflection/commit/229277f0c9c26716cee8a1a80f2aaa7587cdb839))
+
+
+
+
+
 ## [1.4.12](https://github.com/proteinjs/reflection/compare/@proteinjs/reflection-build@1.4.11...@proteinjs/reflection-build@1.4.12) (2026-08-13)
 
 **Note:** Version bump only for package @proteinjs/reflection-build
