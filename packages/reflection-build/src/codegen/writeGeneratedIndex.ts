@@ -1,3 +1,4 @@
+import * as fs from 'fs';
 import * as path from 'path';
 import { promisifiedFs } from '@proteinjs/util-node';
 import { graphSerializer, isInstanceOf } from '@proteinjs/util';
@@ -103,12 +104,19 @@ function loadDependencySourceGraphs(packageDir: string, packageJson: any): strin
 
   if (packageJson.dependencies) {
     for (const packageName in packageJson.dependencies) {
-      // Skip any packages listed in SKIP_REFLECTION_LOAD
+      // Skip any packages listed in SKIP_REFLECTION_LOAD (deliberate opt-out for deps that
+      // DO carry a graph but should not load in this package's context)
       if (skipList.includes(packageName)) {
         continue;
       }
 
-      if (packageName.startsWith('@material-ui')) {
+      // Only reflection-built dependencies belong here: the import exists solely to run the
+      // dependency's generated index (SourceRepository.merge of its source graph). A dep is
+      // reflection-built iff it ships the artifact this same codegen emits —
+      // dist/generated/index.js. Everything else (icon sets, ui libs, utilities) contributed
+      // nothing at runtime while pinning its entire dependency root into every consumer's
+      // bundle (observed: ~19 duplicate FontAwesome set copies across the app bundle).
+      if (!dependencyHasSourceGraph(packageDir, packageName)) {
         continue;
       }
 
@@ -121,6 +129,30 @@ function loadDependencySourceGraphs(packageDir: string, packageJson: any): strin
   }
 
   return code;
+}
+
+/**
+ * True iff the dependency ships a reflection source graph (`dist/generated/index.js`, the
+ * artifact `writeGeneratedIndex` itself emits). Located by walking `node_modules` up from the
+ * consuming package — the npm layout lookup, immune to `exports`-map resolution restrictions
+ * and correct for workspace symlinks (the symlinked package root carries its own dist).
+ */
+export function dependencyHasSourceGraph(packageDir: string, packageName: string): boolean {
+  let currentDir = packageDir;
+  while (true) {
+    const candidate = path.join(currentDir, 'node_modules', packageName);
+    if (fs.existsSync(path.join(candidate, 'dist', 'generated', 'index.js'))) {
+      return true;
+    }
+    if (fs.existsSync(candidate)) {
+      return false;
+    }
+    const parent = path.dirname(currentDir);
+    if (parent === currentDir) {
+      return false;
+    }
+    currentDir = parent;
+  }
 }
 
 /**
