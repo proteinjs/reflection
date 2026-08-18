@@ -77,9 +77,9 @@ async function sourceRepositoryLoader(
 
   // Allow multiple roots (e.g., ['test','src']) to keep ancestry intact.
   const roots = Array.isArray(sourceRootsRel) ? sourceRootsRel : [sourceRootsRel];
-  const sourceGraph: Graph = await createSourceGraph(packageDir, [], roots);
+  const sourceGraph: Graph = await createEmittedSourceGraph(packageDir, roots);
 
-  code += generateSourceGraph(sourceGraph, packageJson.name);
+  code += generateSourceGraph(sourceGraph);
   code += generateSourceLinks(sourceGraph, packageJson, packageDir, generatedIndexPath);
   code += mergeSourceGraph();
   return code;
@@ -138,19 +138,39 @@ function loadDependencySourceGraphs(packageDir: string, packageJson: any): strin
  * and correct for workspace symlinks (the symlinked package root carries its own dist).
  */
 export function dependencyHasSourceGraph(packageDir: string, packageName: string): boolean {
+  return !!findDependencySourceGraph(packageDir, packageName);
+}
+
+/**
+ * Full path to the dependency's source-graph artifact, or undefined when the dependency is
+ * not installed or not reflection-built. Same walk as `dependencyHasSourceGraph`; exposed for
+ * static graph harvesting (reflection-doctor).
+ */
+export function findDependencySourceGraph(packageDir: string, packageName: string): string | undefined {
+  const dependencyDir = findDependencyDir(packageDir, packageName);
+  if (!dependencyDir) {
+    return undefined;
+  }
+
+  const artifactPath = path.join(dependencyDir, 'dist', 'generated', 'index.js');
+  return fs.existsSync(artifactPath) ? artifactPath : undefined;
+}
+
+/**
+ * The installed location of a dependency, resolved by walking `node_modules` up from the
+ * consuming package — npm-layout resolution: the nearest installed copy shadows hoisted ones.
+ */
+export function findDependencyDir(packageDir: string, packageName: string): string | undefined {
   let currentDir = packageDir;
-  // Upward fs walk; exits are internal (found / package root / fs root).
+  // Upward fs walk; exits are internal (found / fs root).
   for (;;) {
     const candidate = path.join(currentDir, 'node_modules', packageName);
-    if (fs.existsSync(path.join(candidate, 'dist', 'generated', 'index.js'))) {
-      return true;
-    }
     if (fs.existsSync(candidate)) {
-      return false;
+      return candidate;
     }
     const parent = path.dirname(currentDir);
     if (parent === currentDir) {
-      return false;
+      return undefined;
     }
     currentDir = parent;
   }
@@ -210,8 +230,19 @@ function getDependencyImportSpecifier(packageDir: string, packageName: string): 
   }
 }
 
-function generateSourceGraph(sourceGraph: Graph, buildTargetPackageName: string): string {
-  removeNonLoadables(sourceGraph, buildTargetPackageName);
+/**
+ * The graph exactly as a build emits it: parsed from the package's source roots, with
+ * build-time-non-loadable declarations pruned. Owned here so build emit and diagnostic
+ * tooling (reflection-doctor drift checks) share one pipeline.
+ */
+export async function createEmittedSourceGraph(packageDir: string, sourceRootsRel: string[]): Promise<Graph> {
+  const packageJson = await getPackageJson(packageDir);
+  const sourceGraph = await createSourceGraph(packageDir, [], sourceRootsRel);
+  removeNonLoadables(sourceGraph, packageJson.name);
+  return sourceGraph;
+}
+
+function generateSourceGraph(sourceGraph: Graph): string {
   let code = `\n\n/** Generate Source Graph */\n\n`;
   const serializedSourceGraph = graphSerializer.serialize(sourceGraph);
   const doubleEscapedSerializedSourceGraph = jsesc(serializedSourceGraph, { json: true }); // since we write to file, need to escape a second time
