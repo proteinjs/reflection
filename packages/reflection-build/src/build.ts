@@ -1,11 +1,14 @@
 import * as path from 'path';
-const tsconfig = require('./tsconfigTemplate.json');
-import { promisifiedFs } from '@proteinjs/util-node';
 import { writeGeneratedIndex } from './codegen/writeGeneratedIndex';
+import { BuildContract } from './BuildContract';
 
-export async function build() {
+export interface BuildOptions {
+  /** Write conflicting package config to the contract instead of failing (reflection-build --fix) */
+  fix?: boolean;
+}
+
+export async function build(options: BuildOptions = {}) {
   const targetDir = process.env.INIT_CWD as string;
-  const targetDirTsconfig = path.join(targetDir, 'tsconfig.json');
 
   // Env is ONLY read here.
   // Allow multiple comma-separated roots, e.g. "test,src" or "integration,examples,src".
@@ -35,57 +38,17 @@ export async function build() {
 
   const generatedIndex = path.join(targetDirGenerated, 'index.ts');
 
-  await updatePackageJson();
-  await writeTsconfig();
+  // Validate-don't-mutate: the package-config contract (main/types, subpath exports +
+  // typesVersions + root stubs, tsconfig include/excludes) is validated before any parse
+  // work — absent config is completed, conflicting config fails the build friendly.
+  const contract = new BuildContract({
+    packageDir: targetDir,
+    primaryRoot,
+    distDirRel,
+    generatedIndexPath: generatedIndex,
+    fix: !!options.fix,
+  });
+  await contract.apply();
+
   await writeGeneratedIndex(targetDir, targetDirGenerated, generatedIndex, sourceRoots, publicEntryRelOverride);
-
-  // TODO save their index location in package.json and pass it in to writeGeneratedIndex above
-  async function updatePackageJson() {
-    const targetDirPackageJson = path.join(targetDir, 'package.json');
-    if (!(await promisifiedFs.exists(targetDirPackageJson))) {
-      throw new Error(`package.json does not exist, run \`npm init -y\` to create one`);
-    }
-
-    const targetPackageJson = require(targetDirPackageJson);
-    const originalPackageJsonString = JSON.stringify(targetPackageJson, null, 2);
-
-    // Only update main/types when primary root is 'src'. Prevents infinite toggle.
-    const isProd = primaryRoot === 'src';
-    if (isProd) {
-      const targetDirDist = path.join(targetDir, distDirRel);
-
-      // Rel path to /generated (may be './generated' or './generated/src' depending on primaryRoot)
-      const relGenPath =
-        primaryRoot && primaryRoot !== 'src'
-          ? path.relative(targetDir, path.join(targetDir, 'generated', primaryRoot))
-          : path.relative(targetDir, path.join(targetDir, 'generated'));
-
-      const targetDirDistGenerated = path.join(targetDirDist, relGenPath);
-      const generatedIndexJs = path.join(targetDirDistGenerated, 'index.js');
-      const generatedIndexDts = path.join(targetDirDistGenerated, 'index.d.ts');
-
-      targetPackageJson.main = `./${path.relative(targetDir, generatedIndexJs)}`;
-      targetPackageJson.types = `./${path.relative(targetDir, generatedIndexDts)}`;
-    }
-
-    const updatedPackageJsonString = JSON.stringify(targetPackageJson, null, 2);
-    if (originalPackageJsonString !== updatedPackageJsonString) {
-      await promisifiedFs.writeFile(targetDirPackageJson, updatedPackageJsonString);
-    }
-  }
-
-  async function writeTsconfig() {
-    if (await promisifiedFs.exists(targetDirTsconfig)) {
-      const existingTsconfig = require(targetDirTsconfig);
-      const includePath = `./${path.relative(targetDir, generatedIndex)}`;
-      if (existingTsconfig.include && !existingTsconfig.include.includes(includePath)) {
-        existingTsconfig.include.push(includePath);
-        await promisifiedFs.writeFile(targetDirTsconfig, JSON.stringify(existingTsconfig, null, 4));
-      }
-    } else {
-      const generatedTsconfig = Object.assign({}, tsconfig);
-      generatedTsconfig.include = [`./${path.relative(targetDir, generatedIndex)}`];
-      await promisifiedFs.writeFile(targetDirTsconfig, JSON.stringify(generatedTsconfig, null, 4));
-    }
-  }
 }
