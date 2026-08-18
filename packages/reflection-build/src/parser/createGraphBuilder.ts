@@ -1,3 +1,4 @@
+import * as path from 'path';
 import * as graphlib from '@dagrejs/graphlib';
 import {
   VariableDeclaration as ParserVariableDeclaration,
@@ -17,6 +18,10 @@ import { createInterfaceDeclaration } from './types/createInterfaceDeclaration';
 export function createGraphBuilder(graph: graphlib.Graph, packageJson: any, packageJsonDir: string) {
   const packageName = packageJson.name;
   return async (parsedFile: File): Promise<void> => {
+    // Package-relative: the graph is a serialized, shipped artifact — absolute build-machine
+    // paths (CI runner paths, local checkout paths) must never enter it. Build-time consumers
+    // that need a real location (sourceLink imports) join this with the package dir.
+    const filePath = path.relative(packageJsonDir, parsedFile.filePath);
     for (const declaration of parsedFile.declarations) {
       if (!(declaration as any)['isExported']) {
         continue;
@@ -31,7 +36,7 @@ export function createGraphBuilder(graph: graphlib.Graph, packageJson: any, pack
         const variableDeclaration = await createVariableDeclaration(
           declaration as ParserVariableDeclaration,
           packageNameFinder,
-          parsedFile.filePath
+          filePath
         );
         graph.setNode(
           variableDeclaration.qualifiedName,
@@ -47,7 +52,7 @@ export function createGraphBuilder(graph: graphlib.Graph, packageJson: any, pack
         const typeAliasDeclaration = await createTypeAliasDeclaration(
           declaration as ParserTypeAliasDeclaration,
           packageNameFinder,
-          parsedFile.filePath
+          filePath
         );
         graph.setNode(
           typeAliasDeclaration.qualifiedName,
@@ -63,7 +68,7 @@ export function createGraphBuilder(graph: graphlib.Graph, packageJson: any, pack
         const classDeclaration = await createClassDeclaration(
           declaration as ParserClassDeclaration,
           packageNameFinder,
-          parsedFile.filePath
+          filePath
         );
         graph.setNode(
           classDeclaration.qualifiedName,
@@ -100,7 +105,7 @@ export function createGraphBuilder(graph: graphlib.Graph, packageJson: any, pack
         const interfaceDeclaration = await createInterfaceDeclaration(
           declaration as ParserInterfaceDeclaration,
           packageNameFinder,
-          parsedFile.filePath
+          filePath
         );
         graph.setNode(
           interfaceDeclaration.qualifiedName,

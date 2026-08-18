@@ -80,7 +80,7 @@ async function sourceRepositoryLoader(
   const sourceGraph: Graph = await createSourceGraph(packageDir, [], roots);
 
   code += generateSourceGraph(sourceGraph, packageJson.name);
-  code += generateSourceLinks(sourceGraph, packageJson, generatedIndexPath);
+  code += generateSourceLinks(sourceGraph, packageJson, packageDir, generatedIndexPath);
   code += mergeSourceGraph();
   return code;
 }
@@ -288,7 +288,12 @@ function removeNonLoadableNode(
   return shouldRemove;
 }
 
-function generateSourceLinks(sourceGraph: Graph, packageJson: any, generatedIndexPath: string): string {
+function generateSourceLinks(
+  sourceGraph: Graph,
+  packageJson: any,
+  packageDir: string,
+  generatedIndexPath: string
+): string {
   let code = `\n\n/** Generate Source Links */\n\n`;
   const linkableNodes: PackageScope[] = [];
   for (const nodeName of sourceGraph.nodes()) {
@@ -309,7 +314,9 @@ function generateSourceLinks(sourceGraph: Graph, packageJson: any, generatedInde
       continue;
     }
 
-    const relativeImportPath = path.relative(path.dirname(generatedIndexPath), node.filePath);
+    // node.filePath is package-relative (never serialized absolute); resolve against the
+    // package dir to compute the real import location for the generated index.
+    const relativeImportPath = path.relative(path.dirname(generatedIndexPath), path.join(packageDir, node.filePath));
     code += `import { ${node.name} } from '${relativeImportPath.replace(/\.[^/.]+$/, '')}';\n`;
     linkableNodes.push(node);
   }
