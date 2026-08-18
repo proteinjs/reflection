@@ -3,6 +3,35 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0](https://github.com/proteinjs/reflection/compare/@proteinjs/reflection-build@1.5.0...@proteinjs/reflection-build@2.0.0) (2026-08-18)
+
+
+### Bug Fixes
+
+* **reflection-build:** emit package-relative filePaths in the source graph — kills the build-machine path disclosure ([df453e5](https://github.com/proteinjs/reflection/commit/df453e5433a6d085686c0818ec66d4826a7de6f2))
+
+
+### Features
+
+* **reflection-build:** reflection-doctor CLI — inventory, orphan detection, --explain parent-edge traces ([ab53c39](https://github.com/proteinjs/reflection/commit/ab53c39df976feeb46ce9d6130bcf397b0d48a5e))
+* **reflection-build:** validate-don't-mutate package-config contract + generalized ./test subpath contract (BuildContract, --fix) ([88b0a2b](https://github.com/proteinjs/reflection/commit/88b0a2b011fcf817fad6fbdff7fa5078422f4ba1))
+
+
+### BREAKING CHANGES
+
+* **reflection-build:** reflection-build no longer rewrites package.json/tsconfig.json on
+every build. It validates them as a contract: absent config is completed (including
+the ./test subpath's root stubs, exports/typesVersions, tsconfig excludes), but
+CONFLICTING config now FAILS the build with a friendly error (nothing changed on
+disk) instead of being silently overwritten. Run `reflection-build --fix` once to
+adopt the contract on out-of-sync packages.
+
+Co-Authored-By: Claude Fable 5 <noreply@anthropic.com>
+
+
+
+
+
 # [1.5.0](https://github.com/proteinjs/reflection/compare/@proteinjs/reflection-build@1.4.12...@proteinjs/reflection-build@1.5.0) (2026-08-14)
 
 
