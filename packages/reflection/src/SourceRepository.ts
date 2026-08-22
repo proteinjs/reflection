@@ -24,14 +24,31 @@ export class SourceRepository {
   // private readonly typeCache: { [type: string]: (ClassDeclaration|VariableDeclaration)[] } = {};
   private readonly objectCache: { [type: string]: any[] } = {};
 
+  /**
+   * The global object (realm) this repository was created for. `get()` anchors the singleton on
+   * the global object so that MULTIPLE module copies of this package in one realm share one
+   * repository — but some hosts (jest's per-test-file sandboxes) lazily copy the outer process's
+   * global properties into each sandbox's global, which would hand a sandbox another realm's
+   * repository. A foreign repository is poison: the Table/Loadable objects it caches were
+   * constructed in the other realm, so their closures read that realm's module state and global
+   * flags (e.g. a dead test file's restored authz toggle — the 2026-08 permissionSource flaky
+   * class). Stamping the creating realm lets `get()` detect a leaked foreign instance and mint a
+   * realm-local one instead, preserving copy-unification within a realm.
+   */
+  private realmGlobal: unknown;
+
   private constructor() {}
 
   static get(): SourceRepository {
-    if (!SourceRepository.getGlobal().__proteinjs_reflection_SourceRepository) {
-      SourceRepository.getGlobal().__proteinjs_reflection_SourceRepository = new SourceRepository();
+    const globalObject = SourceRepository.getGlobal();
+    const existing: SourceRepository | undefined = globalObject.__proteinjs_reflection_SourceRepository;
+    if (!existing || existing.realmGlobal !== globalObject) {
+      const repository = new SourceRepository();
+      repository.realmGlobal = globalObject;
+      globalObject.__proteinjs_reflection_SourceRepository = repository;
     }
 
-    return SourceRepository.getGlobal().__proteinjs_reflection_SourceRepository;
+    return globalObject.__proteinjs_reflection_SourceRepository;
   }
 
   private static getGlobal(): any {
