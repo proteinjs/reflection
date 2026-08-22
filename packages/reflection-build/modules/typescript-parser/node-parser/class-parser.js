@@ -78,6 +78,12 @@ exports.parseCtorParams = parseCtorParams;
 function parseClass(tsResource, node) {
     const name = node.name ? node.name.text : parse_utilities_1.getDefaultResourceIdentifier(tsResource);
     const classDeclaration = new ClassDeclaration_1.ClassDeclaration(name, parse_utilities_1.isNodeExported(node), node.getStart(), node.getEnd());
+    // The class-level `abstract` keyword lives in the class node's own modifiers — member scans
+    // (abstract accessors/methods/properties) are NOT a substitute: an abstract class need not
+    // declare any abstract member, and consumers (reflection's SourceRepository) must know the
+    // class itself is not instantiable.
+    classDeclaration.isAbstract =
+        node.modifiers !== undefined && node.modifiers.some(m => m.kind === typescript_1.SyntaxKind.AbstractKeyword);
     if (parse_utilities_1.isNodeDefaultExported(node)) {
         classDeclaration.isExported = false;
         tsResource.declarations.push(new DefaultDeclaration_1.DefaultDeclaration(classDeclaration.name, tsResource));

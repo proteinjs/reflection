@@ -9,14 +9,14 @@ export async function createClassDeclaration(
   packageNameFinder: PackageNameFinder,
   filePath: string
 ): Promise<ClassDeclaration> {
-  let isAbstract = false;
+  // Class-level truth, recorded by the parser from the class node's own `abstract` modifier.
+  // Never derive this from members: an abstract class need not declare any abstract member
+  // (the 2026-08 MachineAccount mis-stamp — abstract properties, concrete accessors — was
+  // emitted `isAbstract: false` by an accessor scan, and the runtime instantiated it).
+  const isAbstract = parserClassDeclaration.isAbstract;
   let isStatic = false;
   let visibility: Visibility = 'public';
   for (const accessor of parserClassDeclaration.accessors) {
-    if (accessor.isAbstract) {
-      isAbstract = true;
-    }
-
     if (accessor.isStatic) {
       isStatic = true;
     }

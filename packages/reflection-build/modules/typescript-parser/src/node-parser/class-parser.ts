@@ -121,6 +121,12 @@ export function parseCtorParams(
 export function parseClass(tsResource: Resource, node: ClassDeclaration): void {
     const name = node.name ? node.name.text : getDefaultResourceIdentifier(tsResource);
     const classDeclaration = new TshClass(name, isNodeExported(node), node.getStart(), node.getEnd());
+    // The class-level `abstract` keyword lives in the class node's own modifiers — member scans
+    // (abstract accessors/methods/properties) are NOT a substitute: an abstract class need not
+    // declare any abstract member, and consumers (reflection's SourceRepository) must know the
+    // class itself is not instantiable.
+    classDeclaration.isAbstract =
+        node.modifiers !== undefined && node.modifiers.some(m => m.kind === SyntaxKind.AbstractKeyword);
 
     if (isNodeDefaultExported(node)) {
         classDeclaration.isExported = false;

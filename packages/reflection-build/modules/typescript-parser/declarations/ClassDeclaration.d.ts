@@ -18,6 +18,7 @@ export declare class ClassDeclaration implements ClassLikeDeclaration, Exportabl
     start?: number | undefined;
     end?: number | undefined;
     ctor: ConstructorDeclaration | undefined;
+    isAbstract: boolean;
     accessors: AccessorDeclaration[];
     properties: PropertyDeclaration[];
     methods: MethodDeclaration[];

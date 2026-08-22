@@ -16,6 +16,7 @@ class ClassDeclaration {
         this.isExported = isExported;
         this.start = start;
         this.end = end;
+        this.isAbstract = false;
         this.accessors = [];
         this.properties = [];
         this.methods = [];

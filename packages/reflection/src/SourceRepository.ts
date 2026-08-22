@@ -91,6 +91,15 @@ export class SourceRepository {
     for (const baseChildQualifiedName in baseChildren) {
       const child = baseChildren[baseChildQualifiedName];
       if (isInstanceOf(child, Class)) {
+        // An abstract class is never instantiable — TypeScript erases `abstract` at runtime, so
+        // `new` would "succeed" and hand back a half-initialized object. An abstract class shows
+        // up here as a baseChild whenever no concrete subclass exists in the composition (e.g. an
+        // abstract loader whose concrete declarations live in other packages); its instances are
+        // its concrete subclasses' instances, which register as their own baseChildren.
+        if ((child as Class).isAbstract) {
+          continue;
+        }
+
         extendingObjects.push(new (child as any)._constructor());
       } else if (isInstanceOf(child, Variable)) {
         extendingObjects.push((child as any).value);

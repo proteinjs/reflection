@@ -15,6 +15,7 @@ import { PropertyDeclaration } from './PropertyDeclaration';
  */
 export class ClassDeclaration implements ClassLikeDeclaration, ExportableDeclaration, GenericDeclaration {
     public ctor: ConstructorDeclaration | undefined;
+    public isAbstract: boolean = false;
     public accessors: AccessorDeclaration[] = [];
     public properties: PropertyDeclaration[] = [];
     public methods: MethodDeclaration[] = [];
