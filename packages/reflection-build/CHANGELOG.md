@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.1](https://github.com/proteinjs/reflection/compare/@proteinjs/reflection-build@2.0.0...@proteinjs/reflection-build@2.0.1) (2026-08-22)
+
+
+### Bug Fixes
+
+* never instantiate abstract classes from objects(); stamp class-level isAbstract in the parser ([b971030](https://github.com/proteinjs/reflection/commit/b971030f42b8660cc2f0688848ecfe8599ca1dcf))
+
+
+
+
+
 # [2.0.0](https://github.com/proteinjs/reflection/compare/@proteinjs/reflection-build@1.5.0...@proteinjs/reflection-build@2.0.0) (2026-08-18)
 
 

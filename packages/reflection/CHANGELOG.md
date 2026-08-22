@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.14](https://github.com/proteinjs/reflection/compare/@proteinjs/reflection@1.1.13...@proteinjs/reflection@1.1.14) (2026-08-22)
+
+
+### Bug Fixes
+
+* never instantiate abstract classes from objects(); stamp class-level isAbstract in the parser ([b971030](https://github.com/proteinjs/reflection/commit/b971030f42b8660cc2f0688848ecfe8599ca1dcf))
+* realm-scoped SourceRepository singleton ([95206a4](https://github.com/proteinjs/reflection/commit/95206a44ac7b417840e72f80817859e1496f323e))
+
+
+
+
+
 ## [1.1.13](https://github.com/proteinjs/reflection/compare/@proteinjs/reflection@1.1.12...@proteinjs/reflection@1.1.13) (2026-08-13)
 
 **Note:** Version bump only for package @proteinjs/reflection
