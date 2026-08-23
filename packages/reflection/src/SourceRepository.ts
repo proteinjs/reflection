@@ -43,6 +43,15 @@ export class SourceRepository {
    * flags (e.g. a dead test file's restored authz toggle — the 2026-08 permissionSource flaky
    * class). Stamping the creating realm lets `get()` detect a leaked foreign instance and mint a
    * realm-local one instead, preserving copy-unification within a realm.
+   *
+   * An UNSTAMPED instance is a different case: only a copy of this package that predates the
+   * stamp mints one, and that copy may already have populated the repository (every package's
+   * generated index merges its source graph into whichever copy it resolved first). So an
+   * unstamped instance is ADOPTED — stamped for this realm and reused — never replaced; replacing
+   * it would drop every registration the older copy made ("Unable to find type" across the board
+   * when mixed package versions share a process, e.g. a dev workspace symlinking a newer copy
+   * next to merged older ones). Only a stamp that names ANOTHER realm's global proves the
+   * instance is foreign and triggers the realm-local mint.
    */
   private realmGlobal: unknown;
 
@@ -51,10 +60,13 @@ export class SourceRepository {
   static get(): SourceRepository {
     const globalObject = SourceRepository.getGlobal();
     const existing: SourceRepository | undefined = globalObject.__proteinjs_reflection_SourceRepository;
-    if (!existing || existing.realmGlobal !== globalObject) {
+    if (!existing || (existing.realmGlobal !== undefined && existing.realmGlobal !== globalObject)) {
       const repository = new SourceRepository();
       repository.realmGlobal = globalObject;
       globalObject.__proteinjs_reflection_SourceRepository = repository;
+    } else if (existing.realmGlobal === undefined) {
+      // Adopt a pre-stamp copy's instance: same realm, registrations intact.
+      existing.realmGlobal = globalObject;
     }
 
     return globalObject.__proteinjs_reflection_SourceRepository;
