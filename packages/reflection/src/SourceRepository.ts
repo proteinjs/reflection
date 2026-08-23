@@ -17,12 +17,21 @@ import { SOURCE_REPOSITORY_FILTER_QUALIFIED_NAME, getSourceRepositoryFilters } f
 
 type TypeMap = { [qualifiedName: string]: Interface | TypeAlias | Class | Variable };
 
+/**
+ * An object resolved from the source graph, paired with the identity of the declaration it came
+ * from: its `qualifiedName` (`<packageName>/<declarationName>`) and the declaring `packageName`.
+ * This is the seam for consumers that need to know WHERE an object was declared — e.g. per-package
+ * ownership of loaded records — rather than just the instantiated value.
+ */
+export type NamedObject<T> = { qualifiedName: string; packageName: string; object: T };
+
 export class SourceRepository {
   public readonly sourceGraph = new Graph();
   private readonly sourceLinks: { [qualifiedName: string]: any } = {};
   public flattenedSourceGraph: FlattenedSourceGraph = { variables: {}, typeAliases: {}, classes: {}, interfaces: {} };
   // private readonly typeCache: { [type: string]: (ClassDeclaration|VariableDeclaration)[] } = {};
   private readonly objectCache: { [type: string]: any[] } = {};
+  private readonly namedObjectCache: { [type: string]: NamedObject<any>[] } = {};
 
   /**
    * The global object (realm) this repository was created for. `get()` anchors the singleton on
@@ -86,8 +95,27 @@ export class SourceRepository {
       return this.objectCache[extendingType];
     }
 
+    const extendingObjects = this.objectsWithNames<T>(extendingType).map((namedObject) => namedObject.object);
+    this.objectCache[extendingType] = extendingObjects;
+    return extendingObjects;
+  }
+
+  /**
+   * Same as {@link SourceRepository.objects}, but each object is paired with the identity of the
+   * declaration that produced it (qualified name + declaring package). Use this when the consumer
+   * needs declaration provenance — e.g. to attribute loaded objects to the package that owns them.
+   *
+   * @param extendingType a Type, Interface, or Class that the Class or Variable extends
+   * @return variables and instantiated classes that extend `extendingType`, each with its
+   *   declaration's `qualifiedName` and `packageName`
+   */
+  objectsWithNames<T>(extendingType: string): NamedObject<T>[] {
+    if (this.namedObjectCache[extendingType]) {
+      return this.namedObjectCache[extendingType];
+    }
+
     const baseChildren = this.baseChildren(extendingType);
-    const extendingObjects: T[] = [];
+    const namedObjects: NamedObject<T>[] = [];
     for (const baseChildQualifiedName in baseChildren) {
       const child = baseChildren[baseChildQualifiedName];
       if (isInstanceOf(child, Class)) {
@@ -100,14 +128,22 @@ export class SourceRepository {
           continue;
         }
 
-        extendingObjects.push(new (child as any)._constructor());
+        namedObjects.push({
+          qualifiedName: baseChildQualifiedName,
+          packageName: (child as Class).packageName,
+          object: new (child as any)._constructor(),
+        });
       } else if (isInstanceOf(child, Variable)) {
-        extendingObjects.push((child as any).value);
+        namedObjects.push({
+          qualifiedName: baseChildQualifiedName,
+          packageName: (child as Variable).packageName,
+          object: (child as any).value,
+        });
       }
     }
 
-    this.objectCache[extendingType] = extendingObjects;
-    return extendingObjects;
+    this.namedObjectCache[extendingType] = namedObjects;
+    return namedObjects;
   }
 
   /**
