@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0](https://github.com/proteinjs/reflection/compare/@proteinjs/reflection@1.1.14...@proteinjs/reflection@1.2.0) (2026-08-24)
+
+
+### Bug Fixes
+
+* adopt an unstamped SourceRepository instead of replacing it ([27fa44f](https://github.com/proteinjs/reflection/commit/27fa44f46a6f53a3676bb9a04154df0cf72ef0fa))
+
+
+### Features
+
+* objectsWithNames — resolved objects paired with their declaration identity ([78a8589](https://github.com/proteinjs/reflection/commit/78a85894ccf43d4a6deb6c71f113125ccdf9a856))
+
+
+
+
+
 ## [1.1.14](https://github.com/proteinjs/reflection/compare/@proteinjs/reflection@1.1.13...@proteinjs/reflection@1.1.14) (2026-08-22)
 
 
