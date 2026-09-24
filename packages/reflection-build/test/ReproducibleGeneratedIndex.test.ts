@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import { ReproducibleFixture } from './ReproducibleFixture';
+import { ExamplePackageFixture } from './ExamplePackageFixture';
 
 /**
  * The same sources build to the same bytes: the generated index, the compiled dist and the
@@ -19,10 +19,9 @@ jest.mock('globby', () => {
 });
 
 const BUILD_TIMEOUT_MS = 120 * 1000;
-const qualified = (name: string) => `${ReproducibleFixture.PACKAGE_NAME}/${name}`;
 
 describe('reproducible generated index', () => {
-  const fixture = new ReproducibleFixture();
+  const fixture = new ExamplePackageFixture('reproducible', '@proteinjs/reflection-build-test-reproducible');
 
   afterEach(() => {
     mockEnumerationOrder = (paths) => paths;
@@ -69,29 +68,10 @@ describe('reproducible generated index', () => {
   );
 
   test(
-    'a name exported by two files holds the same declaration whatever the enumeration order',
-    async () => {
-      const orders: { [name: string]: (paths: string[]) => string[] } = {
-        asEnumerated: (paths) => paths,
-        reversed: (paths) => [...paths].reverse(),
-      };
-      for (const name of Object.keys(orders)) {
-        mockEnumerationOrder = orders[name];
-        const generated = await fixture.generate(fixture.materialize(`collision-${name}/pkg`));
-        const node = fixture.graphOf(generated).nodes.find((candidate) => candidate.v === qualified('defaults'));
-        // Sources parse in package-relative path order; the declaration parsed last holds the name.
-        expect(node?.value?.filePath).toBe('src/zeta/Defaults.ts');
-        expect(generated).toContain(`import { defaults } from '../src/zeta/Defaults';`);
-      }
-    },
-    BUILD_TIMEOUT_MS
-  );
-
-  test(
     'node filePaths are package-relative, with / separators and no leading ./',
     async () => {
       const graph = fixture.graphOf(await fixture.generate(fixture.materialize('relative/pkg')));
-      const gamma = graph.nodes.find((node) => node.v === qualified('GammaPlugin'));
+      const gamma = graph.nodes.find((node) => node.v === fixture.qualified('GammaPlugin'));
       expect(gamma?.value?.filePath).toBe('src/beta/deep/Gamma.ts');
 
       const filePaths = graph.nodes.map((node) => node.value?.filePath).filter((filePath) => !!filePath);
@@ -117,7 +97,7 @@ describe('reproducible generated index', () => {
       expect(nodeKeys).toEqual(byCodeUnit(nodeKeys));
       expect(nodeKeys.slice(0, 2)).toEqual([
         ['', '@proteinjs/reflection/Loadable'],
-        ['src/alpha/Alpha.ts', qualified('AardvarkPlugin')],
+        ['src/alpha/Alpha.ts', fixture.qualified('AardvarkPlugin')],
       ]);
 
       const edgeKeys = graph.edges.map((edge) => [edge.v, edge.w]);

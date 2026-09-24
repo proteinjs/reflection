@@ -9,8 +9,9 @@ import globby from 'globby';
  *
  * - ORDER. The glob returns files in the order its concurrent directory reads complete, which
  *   varies with the filesystem and from run to run. The parse order decides the graph's
- *   insertion order and, when two files export the same name, which declaration the qualified
- *   name holds (the last one parsed). `list()` therefore orders the files by their
+ *   insertion order, which declaration a name exported by two files holds (the last one parsed;
+ *   the build refuses such a name when it survives the prune — `SharedQualifiedNames`), and the
+ *   order that refusal lists the files in. `list()` therefore orders the files by their
  *   package-relative path, compared by code unit — never by `localeCompare`, whose collation
  *   depends on the machine's locale data.
  * - LOCATION. `relativePath()` is the only form a source path takes in a generated artifact:

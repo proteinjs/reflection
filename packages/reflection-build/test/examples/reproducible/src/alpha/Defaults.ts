@@ -1,4 +1,4 @@
 import { Plugin } from './Alpha';
 
-// Same exported name as src/zeta/Defaults.ts: one qualified name, two declarations.
+// The same file name as src/zeta/Defaults.ts, a different exported name: one declaration per qualified name.
 export const defaults: Plugin = { id: 'alpha-defaults' };

@@ -6,32 +6,48 @@ import { execFileSync } from 'child_process';
 import { build } from '../src/build';
 
 /**
- * Disposable copies of the `examples/reproducible` package, each at its own absolute location,
- * built the way the `reflection-build` bin builds a package (the package dir arrives as
- * INIT_CWD), compiled with tsc and packed with `npm pack` — so a test can compare what two
- * builds of the same sources ship.
+ * Disposable copies of an example package under `test/examples`, each at its own absolute
+ * location, built the way the `reflection-build` bin builds a package (the package dir arrives
+ * as INIT_CWD), compiled with tsc and packed with `npm pack` — so a test can compare what two
+ * builds of the same sources ship, or what one build refuses.
  */
-export class ReproducibleFixture {
-  static readonly PACKAGE_NAME = '@proteinjs/reflection-build-test-reproducible';
-  private static readonly SOURCES = path.join(__dirname, 'examples', 'reproducible');
+export class ExamplePackageFixture {
   private static readonly NODE_MODULES = path.join(__dirname, '..', 'node_modules');
-  private readonly tmpRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'refl-reproducible-'));
+  private readonly sources: string;
+  private readonly tmpRoot: string;
   private readonly links: string[] = [];
 
-  /** Copies the fixture package to `<tmp>/<location>` and returns its absolute path. */
+  /**
+   * @param example      the example's directory under `test/examples`
+   * @param packageName  the name its copies are built under (a fixture name, never a published package's)
+   */
+  constructor(
+    example: string,
+    readonly packageName: string
+  ) {
+    this.sources = path.join(__dirname, 'examples', example);
+    this.tmpRoot = fs.mkdtempSync(path.join(os.tmpdir(), `refl-${example}-`));
+  }
+
+  /** `packageName/name`: the qualified name this package declares `name` under. */
+  qualified(name: string): string {
+    return `${this.packageName}/${name}`;
+  }
+
+  /** Copies the example package to `<tmp>/<location>` and returns its absolute path. */
   materialize(location: string): string {
     const packageDir = path.join(this.tmpRoot, location);
     fs.mkdirSync(path.dirname(packageDir), { recursive: true });
-    this.copyTree(ReproducibleFixture.SOURCES, packageDir);
+    this.copyTree(this.sources, packageDir);
     fs.writeFileSync(path.join(packageDir, 'package.json'), JSON.stringify(this.packageJson(), null, 2));
     fs.writeFileSync(path.join(packageDir, 'tsconfig.json'), JSON.stringify(this.tsconfig(), null, 2));
     const link = path.join(packageDir, 'node_modules');
-    fs.symlinkSync(ReproducibleFixture.NODE_MODULES, link, 'dir');
+    fs.symlinkSync(ExamplePackageFixture.NODE_MODULES, link, 'dir');
     this.links.push(link);
     return packageDir;
   }
 
-  /** Runs reflection-build in `packageDir`; returns the generated index it wrote. */
+  /** Runs reflection-build in `packageDir`; returns the generated index it wrote (rejects when the build refuses). */
   async generate(packageDir: string): Promise<string> {
     const initCwd = process.env.INIT_CWD;
     process.env.INIT_CWD = packageDir;
@@ -83,7 +99,7 @@ export class ReproducibleFixture {
 
   private packageJson(): object {
     return {
-      name: ReproducibleFixture.PACKAGE_NAME,
+      name: this.packageName,
       version: '0.0.1',
       private: true,
       main: './dist/generated/index.js',
