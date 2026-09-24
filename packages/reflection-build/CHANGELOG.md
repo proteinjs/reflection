@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.1.0](https://github.com/proteinjs/reflection/compare/@proteinjs/reflection-build@2.0.3...@proteinjs/reflection-build@2.1.0) (2026-09-24)
+
+
+### Bug Fixes
+
+* reproducible generated index — sources parse in package-relative path order, the source graph is emitted in canonical order ([82db62e](https://github.com/proteinjs/reflection/commit/82db62ec245e25797b3c79bdb52a192b94d70d44))
+
+
+### Features
+
+* reflection-build refuses a name exported by two files when it reaches the generated index ([f024328](https://github.com/proteinjs/reflection/commit/f024328f879e71df665ce1731585a84288d28b37))
+
+
+
+
+
 ## [2.0.3](https://github.com/proteinjs/reflection/compare/@proteinjs/reflection-build@2.0.2...@proteinjs/reflection-build@2.0.3) (2026-09-13)
 
 **Note:** Version bump only for package @proteinjs/reflection-build
