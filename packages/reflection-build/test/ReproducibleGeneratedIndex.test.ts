@@ -8,12 +8,13 @@ import { ReproducibleFixture } from './ReproducibleFixture';
  * filesystem hands the source files back (which varies by filesystem and from run to run).
  *
  * The enumeration is stubbed at the glob the build reads its sources through: the real glob's
- * result, reordered by `mockEnumerationOrder`.
+ * result in a fixed base order (code-unit sorted — the glob's own order varies from copy to copy,
+ * so a reversal of it would not be the same reversal twice), reordered by `mockEnumerationOrder`.
  */
 let mockEnumerationOrder: (paths: string[]) => string[] = (paths) => paths;
 jest.mock('globby', () => {
   const actual = jest.requireActual('globby');
-  const reordered = async (...args: any[]) => mockEnumerationOrder(await actual(...args));
+  const reordered = async (...args: any[]) => mockEnumerationOrder([...(await actual(...args))].sort());
   return Object.assign(reordered, actual);
 });
 
