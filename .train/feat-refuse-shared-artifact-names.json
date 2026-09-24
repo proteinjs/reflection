@@ -1,0 +1,11 @@
+{
+  "branch": "feat/refuse-shared-artifact-names",
+  "packages": ["reflection-build"],
+  "suites": [
+    "packages/reflection-build/test/SharedQualifiedNames.test.ts",
+    "packages/reflection-build/test/ReflectionDoctor.test.ts",
+    "packages/reflection-build/test/ReproducibleGeneratedIndex.test.ts",
+    "packages/reflection-build/test/Class.test.ts"
+  ],
+  "removes": []
+}
