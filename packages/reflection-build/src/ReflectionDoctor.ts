@@ -1,8 +1,10 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { TypescriptParser } from '../modules/typescript-parser';
+import { Graph } from '@dagrejs/graphlib';
 import { createEmittedSourceGraph, findDependencyDir, findDependencySourceGraph } from './codegen/writeGeneratedIndex';
 import { PackageSourceFiles } from './parser/PackageSourceFiles';
+import { SharedQualifiedName } from './parser/SharedQualifiedNames';
 
 const LOADABLE_QUALIFIED_NAME = '@proteinjs/reflection/Loadable';
 const SOURCE_REPOSITORY_FILTER_QUALIFIED_NAME = '@proteinjs/reflection/SourceRepositoryFilter';
@@ -27,6 +29,8 @@ export interface DoctorReport {
     /** declarations in the built artifact no longer in sources (stale dist) */
     onlyInDist: string[];
   };
+  /** names in current sources that two or more files declare and that reach the graph (reflection-build refuses these sources) */
+  sharedNames: SharedQualifiedName[];
   orphans: Orphan[];
 }
 
@@ -61,7 +65,9 @@ interface Universe {
  * the runtime would merge).
  *
  * - `diagnose()` prints the registered inventory (deps with graphs / without / skip-listed),
- *   this package's node+edge+sourceLink counts, emitted-vs-source drift (stale dist), and
+ *   this package's node+edge+sourceLink counts, emitted-vs-source drift (stale dist), SHARED
+ *   NAMES: names in current sources that two files declare and that reach the graph (the build
+ *   refuses these sources; an artifact built before the refusal kept one file's declaration), and
  *   ORPHANS: nodes the build kept because a parent is foreign, whose parent's package
  *   resolves to no loadable graph — the undeclared-dep / typo footgun that the runtime
  *   silently prunes today.
@@ -83,11 +89,16 @@ export class ReflectionDoctor {
     const universe = this.harvestUniverse(packageJson);
     const own = universe.graphs[packageJson.name];
     const dependencies = this.dependencyInventory(packageJson);
-    const drift = await this.computeDrift(packageJson, own.graph);
+    const fresh = await createEmittedSourceGraph(this.packageDir, ['src']);
+    const drift = this.computeDrift(fresh.graph, own.graph);
     const orphans = this.findOrphans(packageJson, universe);
     const sourceLinkCount = this.parseSourceLinkKeys(fs.readFileSync(own.artifactPath, 'utf-8')).length;
 
-    const healthy = orphans.length === 0 && drift.missingFromDist.length === 0 && drift.onlyInDist.length === 0;
+    const healthy =
+      orphans.length === 0 &&
+      drift.missingFromDist.length === 0 &&
+      drift.onlyInDist.length === 0 &&
+      fresh.sharedNames.length === 0;
     const report: DoctorReport = {
       text: '',
       healthy,
@@ -96,6 +107,7 @@ export class ReflectionDoctor {
       edgeCount: own.graph.edges.length,
       sourceLinkCount,
       drift,
+      sharedNames: fresh.sharedNames,
       orphans,
     };
     report.text = this.formatReport(packageJson.name, own.artifactPath, report);
@@ -288,11 +300,10 @@ export class ReflectionDoctor {
   }
 
   /** Emitted-vs-source drift: rebuild-needed detection for the prod graph. */
-  private async computeDrift(
-    packageJson: any,
+  private computeDrift(
+    freshGraph: Graph,
     emittedGraph: GraphJson
-  ): Promise<{ missingFromDist: string[]; onlyInDist: string[] }> {
-    const freshGraph = await createEmittedSourceGraph(this.packageDir, ['src']);
+  ): { missingFromDist: string[]; onlyInDist: string[] } {
     const freshValued: { [qualifiedName: string]: boolean } = {};
     for (const nodeName of freshGraph.nodes()) {
       if (freshGraph.node(nodeName)) {
@@ -430,7 +441,7 @@ export class ReflectionDoctor {
       ? nameOrQualifiedName.substring(nameOrQualifiedName.lastIndexOf('/') + 1)
       : nameOrQualifiedName;
 
-    const freshGraph = await createEmittedSourceGraph(this.packageDir, ['src']);
+    const { graph: freshGraph } = await createEmittedSourceGraph(this.packageDir, ['src']);
     const freshMatch = freshGraph
       .nodes()
       .find((qualifiedName: string) => freshGraph.node(qualifiedName) && qualifiedName.endsWith(`/${name}`));
@@ -547,6 +558,21 @@ export class ReflectionDoctor {
       }
       for (const qualifiedName of report.drift.onlyInDist) {
         lines.push(`  in artifact, not in sources: ${qualifiedName}`);
+      }
+    }
+
+    if (report.sharedNames.length === 0) {
+      lines.push(`Shared names: none — each name in the graph has one declaring file`);
+    } else {
+      lines.push(
+        `Shared names: reflection-build refuses these sources — each name below reaches the graph from more than ` +
+          `one file, and the graph keeps one declaration per name; give each declaration its own name`
+      );
+      for (const { qualifiedName, filePaths } of report.sharedNames) {
+        lines.push(`  ${qualifiedName}`);
+        for (const filePath of filePaths) {
+          lines.push(`    declared in ${filePath}`);
+        }
       }
     }
 

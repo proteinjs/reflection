@@ -6,6 +6,7 @@ import { Graph } from '@dagrejs/graphlib';
 import jsesc from 'jsesc';
 import { createSourceGraph } from '../parser/createSourceGraph';
 import { PackageSourceFiles } from '../parser/PackageSourceFiles';
+import { SharedQualifiedName, SharedQualifiedNames } from '../parser/SharedQualifiedNames';
 import { CanonicalSourceGraph } from './CanonicalSourceGraph';
 import { VariableDeclaration, PackageScope, ClassDeclaration, LOADABLE_QUALIFIED_NAME } from '@proteinjs/reflection';
 
@@ -82,7 +83,8 @@ async function sourceRepositoryLoader(
 
   // Allow multiple roots (e.g., ['test','src']) to keep ancestry intact.
   const roots = Array.isArray(sourceRootsRel) ? sourceRootsRel : [sourceRootsRel];
-  const sourceGraph: Graph = await createEmittedSourceGraph(packageDir, roots);
+  const { graph: sourceGraph, sharedNames } = await createEmittedSourceGraph(packageDir, roots);
+  SharedQualifiedNames.refuse(packageJson.name, sharedNames);
 
   code += generateSourceGraph(sourceGraph);
   code += generateSourceLinks(sourceGraph, packageJson, packageDir, generatedIndexPath);
@@ -235,18 +237,32 @@ function getDependencyImportSpecifier(packageDir: string, packageName: string): 
   }
 }
 
+export interface EmittedSourceGraph {
+  /** The pruned graph in canonical order: what the generated index serializes. */
+  graph: Graph;
+  /** The names in `graph` that two or more source files declare; the build refuses to emit while there is one. */
+  sharedNames: SharedQualifiedName[];
+}
+
 /**
  * The graph exactly as a build emits it: parsed from the package's source roots, with
  * build-time-non-loadable declarations pruned, in canonical order (the serialized graph and
- * the source links follow it, so the same sources emit the same bytes on every machine).
- * Owned here so build emit and diagnostic tooling (reflection-doctor drift checks) share one
- * pipeline.
+ * the source links follow it, so the same sources emit the same bytes on every machine), and
+ * the names in it that more than one file declares. Owned here so build emit and diagnostic
+ * tooling (reflection-doctor drift and shared-name checks) share one pipeline.
  */
-export async function createEmittedSourceGraph(packageDir: string, sourceRootsRel: string[]): Promise<Graph> {
+export async function createEmittedSourceGraph(
+  packageDir: string,
+  sourceRootsRel: string[]
+): Promise<EmittedSourceGraph> {
   const packageJson = await getPackageJson(packageDir);
-  const sourceGraph = await createSourceGraph(packageDir, [], sourceRootsRel);
+  const declarations = new SharedQualifiedNames();
+  const sourceGraph = await createSourceGraph(packageDir, [], sourceRootsRel, declarations);
   removeNonLoadables(sourceGraph, packageJson.name);
-  return CanonicalSourceGraph.of(sourceGraph);
+  // Shared names are read AFTER the prune, never before: a name whose declarations the prune
+  // drops never reaches the index, and two files exporting it is ordinary TypeScript.
+  const sharedNames = declarations.in(sourceGraph);
+  return { graph: CanonicalSourceGraph.of(sourceGraph), sharedNames };
 }
 
 function generateSourceGraph(sourceGraph: Graph): string {

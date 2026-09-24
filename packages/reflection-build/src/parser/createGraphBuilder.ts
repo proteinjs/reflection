@@ -14,8 +14,18 @@ import { createTypeAliasDeclaration } from './types/createTypeAliasDeclaration';
 import { createClassDeclaration } from './types/createClassDeclaration';
 import { createInterfaceDeclaration } from './types/createInterfaceDeclaration';
 import { PackageSourceFiles } from './PackageSourceFiles';
+import { SharedQualifiedNames } from './SharedQualifiedNames';
 
-export function createGraphBuilder(graph: graphlib.Graph, packageJson: any, packageJsonDir: string) {
+/**
+ * @param sharedNames  records the file of every declaration set on the graph: the graph keeps one
+ *                     node per qualified name, so it cannot show a name two files declare
+ */
+export function createGraphBuilder(
+  graph: graphlib.Graph,
+  packageJson: any,
+  packageJsonDir: string,
+  sharedNames: SharedQualifiedNames
+) {
   const packageName = packageJson.name;
   return async (parsedFile: File): Promise<void> => {
     // Package-relative with `/` separators: the graph is a serialized, shipped artifact —
@@ -23,6 +33,10 @@ export function createGraphBuilder(graph: graphlib.Graph, packageJson: any, pack
     // separator must never enter it. Build-time consumers that need a real location
     // (sourceLink imports) join this with the package dir.
     const filePath = PackageSourceFiles.relativePath(packageJsonDir, parsedFile.filePath);
+    const setDeclaration = (qualifiedName: string, value: object) => {
+      graph.setNode(qualifiedName, value);
+      sharedNames.record(qualifiedName, filePath);
+    };
     for (const declaration of parsedFile.declarations) {
       if (!(declaration as any)['isExported']) {
         continue;
@@ -39,7 +53,7 @@ export function createGraphBuilder(graph: graphlib.Graph, packageJson: any, pack
           packageNameFinder,
           filePath
         );
-        graph.setNode(
+        setDeclaration(
           variableDeclaration.qualifiedName,
           Object.assign(variableDeclaration, { sourceType: SourceType.variable })
         );
@@ -55,7 +69,7 @@ export function createGraphBuilder(graph: graphlib.Graph, packageJson: any, pack
           packageNameFinder,
           filePath
         );
-        graph.setNode(
+        setDeclaration(
           typeAliasDeclaration.qualifiedName,
           Object.assign(typeAliasDeclaration, { sourceType: SourceType.typeAlias })
         );
@@ -71,7 +85,7 @@ export function createGraphBuilder(graph: graphlib.Graph, packageJson: any, pack
           packageNameFinder,
           filePath
         );
-        graph.setNode(
+        setDeclaration(
           classDeclaration.qualifiedName,
           Object.assign(classDeclaration, { sourceType: SourceType.class })
         );
@@ -108,7 +122,7 @@ export function createGraphBuilder(graph: graphlib.Graph, packageJson: any, pack
           packageNameFinder,
           filePath
         );
-        graph.setNode(
+        setDeclaration(
           interfaceDeclaration.qualifiedName,
           Object.assign(interfaceDeclaration, { sourceType: SourceType.interface })
         );

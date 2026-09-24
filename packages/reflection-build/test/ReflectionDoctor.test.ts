@@ -16,6 +16,18 @@ import { writeGeneratedIndex } from '../src/codegen/writeGeneratedIndex';
 describe('ReflectionDoctor', () => {
   const fixtureA = path.join(__dirname, 'examples', 'source-repository', 'a');
 
+  const emitFixture = async (pkgDirToBuild: string) => {
+    const generatedDir = path.join(pkgDirToBuild, 'generated');
+    fs.mkdirSync(generatedDir, { recursive: true });
+    const generatedIndexPath = path.join(generatedDir, 'index.ts');
+    await writeGeneratedIndex(pkgDirToBuild, generatedDir, generatedIndexPath, ['src']);
+    // The doctor reads the built artifact; the sourceGraph/sourceLinks lines it parses are
+    // identical between generated/index.ts and its compiled dist twin.
+    const distGeneratedDir = path.join(pkgDirToBuild, 'dist', 'generated');
+    fs.mkdirSync(distGeneratedDir, { recursive: true });
+    fs.copyFileSync(generatedIndexPath, path.join(distGeneratedDir, 'index.js'));
+  };
+
   describe('inventory + healthy fixture (fixture a)', () => {
     it('reports dependency graphs, own graph size, and no orphans', async () => {
       const doctor = new ReflectionDoctor(fixtureA);
@@ -60,18 +72,6 @@ describe('ReflectionDoctor', () => {
 
   describe('broken chains (crafted fixture)', () => {
     let pkgDir: string;
-
-    const emitFixture = async (pkgDirToBuild: string) => {
-      const generatedDir = path.join(pkgDirToBuild, 'generated');
-      fs.mkdirSync(generatedDir, { recursive: true });
-      const generatedIndexPath = path.join(generatedDir, 'index.ts');
-      await writeGeneratedIndex(pkgDirToBuild, generatedDir, generatedIndexPath, ['src']);
-      // The doctor reads the built artifact; the sourceGraph/sourceLinks lines it parses are
-      // identical between generated/index.ts and its compiled dist twin.
-      const distGeneratedDir = path.join(pkgDirToBuild, 'dist', 'generated');
-      fs.mkdirSync(distGeneratedDir, { recursive: true });
-      fs.copyFileSync(generatedIndexPath, path.join(distGeneratedDir, 'index.js'));
-    };
 
     beforeEach(() => {
       pkgDir = fs.mkdtempSync(path.join(os.tmpdir(), 'refl-doctor-'));
@@ -188,6 +188,44 @@ describe('ReflectionDoctor', () => {
       const explanation = await doctor.explain('Late');
       expect(explanation.verdict.toLowerCase()).toContain('stale');
       expect(explanation.verdict).toContain('rebuild');
+    });
+  });
+
+  describe('a name two files declare (crafted fixture)', () => {
+    let pkgDir: string;
+
+    beforeEach(() => {
+      pkgDir = fs.mkdtempSync(path.join(os.tmpdir(), 'refl-doctor-shared-'));
+      fs.writeFileSync(
+        path.join(pkgDir, 'package.json'),
+        JSON.stringify({ name: '@test/doctor-shared-name', version: '1.0.0', dependencies: {} }, null, 2)
+      );
+      fs.mkdirSync(path.join(pkgDir, 'src', 'alpha'), { recursive: true });
+      fs.writeFileSync(path.join(pkgDir, 'src', 'index.ts'), `export * from './alpha/Widget';\n`);
+      fs.writeFileSync(
+        path.join(pkgDir, 'src', 'alpha', 'Widget.ts'),
+        `import { Loadable } from '@proteinjs/reflection';\n\nexport interface Widget extends Loadable {}\n`
+      );
+    });
+
+    afterEach(() => {
+      fs.rmdirSync(pkgDir, { recursive: true });
+    });
+
+    it('reports a name that reaches the graph from two files, with every declaring file, as the build would refuse it', async () => {
+      // Built while one file declared the name; a second file declares it since.
+      await emitFixture(pkgDir);
+      fs.mkdirSync(path.join(pkgDir, 'src', 'beta'));
+      fs.writeFileSync(path.join(pkgDir, 'src', 'beta', 'Widget.ts'), `export class Widget {}\n`);
+
+      const report = await new ReflectionDoctor(pkgDir).diagnose();
+      expect(report.sharedNames).toEqual([
+        { qualifiedName: '@test/doctor-shared-name/Widget', filePaths: ['src/alpha/Widget.ts', 'src/beta/Widget.ts'] },
+      ]);
+      expect(report.healthy).toBe(false);
+      expect(report.text).toContain(
+        '  @test/doctor-shared-name/Widget\n    declared in src/alpha/Widget.ts\n    declared in src/beta/Widget.ts'
+      );
     });
   });
 });
