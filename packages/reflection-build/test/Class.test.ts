@@ -60,7 +60,7 @@ test('do not load non-loadable classes', async () => {
   ).toBeUndefined();
   expect(
     sourceRepository.flattenedSourceGraph.classes[
-      '@proteinjs/reflection-build-test-a/ImplementsExtendsLocalNotLoadableInterface'
+      '@proteinjs/reflection-build-test-a/ImplementsExtendsNotLoadableForeignInterface'
     ]
   ).toBeUndefined();
   expect(
