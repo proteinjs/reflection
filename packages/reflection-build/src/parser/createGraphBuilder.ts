@@ -1,4 +1,3 @@
-import * as path from 'path';
 import * as graphlib from '@dagrejs/graphlib';
 import {
   VariableDeclaration as ParserVariableDeclaration,
@@ -14,14 +13,16 @@ import { PackageNameFinder } from './types/PackageNameFinder';
 import { createTypeAliasDeclaration } from './types/createTypeAliasDeclaration';
 import { createClassDeclaration } from './types/createClassDeclaration';
 import { createInterfaceDeclaration } from './types/createInterfaceDeclaration';
+import { PackageSourceFiles } from './PackageSourceFiles';
 
 export function createGraphBuilder(graph: graphlib.Graph, packageJson: any, packageJsonDir: string) {
   const packageName = packageJson.name;
   return async (parsedFile: File): Promise<void> => {
-    // Package-relative: the graph is a serialized, shipped artifact — absolute build-machine
-    // paths (CI runner paths, local checkout paths) must never enter it. Build-time consumers
-    // that need a real location (sourceLink imports) join this with the package dir.
-    const filePath = path.relative(packageJsonDir, parsedFile.filePath);
+    // Package-relative with `/` separators: the graph is a serialized, shipped artifact —
+    // absolute build-machine paths (CI runner paths, local checkout paths) and the platform's
+    // separator must never enter it. Build-time consumers that need a real location
+    // (sourceLink imports) join this with the package dir.
+    const filePath = PackageSourceFiles.relativePath(packageJsonDir, parsedFile.filePath);
     for (const declaration of parsedFile.declarations) {
       if (!(declaration as any)['isExported']) {
         continue;

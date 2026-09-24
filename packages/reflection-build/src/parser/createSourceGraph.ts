@@ -1,9 +1,9 @@
 import * as graphlib from '@dagrejs/graphlib';
-import globby from 'globby';
 import * as path from 'path';
 import { TypescriptParser } from '../../modules/typescript-parser';
 import { promisifiedFs } from '@proteinjs/util-node';
 import { createGraphBuilder } from './createGraphBuilder';
+import { PackageSourceFiles } from './PackageSourceFiles';
 
 export async function createSourceGraph(
   dir: string,
@@ -17,24 +17,15 @@ export async function createSourceGraph(
 
   const packageJson = require(packageJsonPath);
   const roots = Array.isArray(sourceRootsRel) ? sourceRootsRel : [sourceRootsRel];
-
-  const patterns: string[] = [];
-  for (const rel of roots) {
-    const root = path.join(dir, rel);
-    patterns.push(path.join(root, '**/*.ts'));
-    patterns.push(path.join(root, '**/*.tsx'));
-  }
-
-  const excludePatterns = ['!**/node_modules/**', '!**/generated/**', ...excludedDirs.map((d) => `!${d}`)];
-
-  const sourceFilePaths = await globby([...patterns, ...excludePatterns]);
-  const uniqueFilePaths = Array.from(new Set(sourceFilePaths));
+  const sourceFilePaths = await new PackageSourceFiles(dir, roots, excludedDirs).list();
 
   const graph = new graphlib.Graph();
   const addSourceFile = createGraphBuilder(graph, packageJson, dir);
   const parser = new TypescriptParser();
 
-  for (const sourceFilePath of uniqueFilePaths) {
+  // Sequential, in PackageSourceFiles order: the parse order is part of the graph's content
+  // (a name exported by two files holds the declaration parsed last).
+  for (const sourceFilePath of sourceFilePaths) {
     const sourceFile = await parser.parseFile(sourceFilePath, path.dirname(sourceFilePath));
     await addSourceFile(sourceFile);
   }

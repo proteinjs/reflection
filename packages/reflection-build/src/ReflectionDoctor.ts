@@ -1,8 +1,8 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import globby from 'globby';
 import { TypescriptParser } from '../modules/typescript-parser';
 import { createEmittedSourceGraph, findDependencyDir, findDependencySourceGraph } from './codegen/writeGeneratedIndex';
+import { PackageSourceFiles } from './parser/PackageSourceFiles';
 
 const LOADABLE_QUALIFIED_NAME = '@proteinjs/reflection/Loadable';
 const SOURCE_REPOSITORY_FILTER_QUALIFIED_NAME = '@proteinjs/reflection/SourceRepositoryFilter';
@@ -457,20 +457,14 @@ export class ReflectionDoctor {
 
   /** Raw parser pass over src — sees non-exported declarations the graph never contains. */
   private async findDeclarationInSources(name: string): Promise<{ filePath: string; isExported: boolean } | undefined> {
-    const patterns = [
-      path.join(this.packageDir, 'src', '**/*.ts'),
-      path.join(this.packageDir, 'src', '**/*.tsx'),
-      '!**/node_modules/**',
-      '!**/generated/**',
-    ];
-    const sourceFilePaths: string[] = await globby(patterns);
+    const sourceFilePaths = await new PackageSourceFiles(this.packageDir, ['src']).list();
     const parser = new TypescriptParser();
     for (const sourceFilePath of sourceFilePaths) {
       const parsedFile = await parser.parseFile(sourceFilePath, path.dirname(sourceFilePath));
       for (const declaration of parsedFile.declarations) {
         if (declaration.name === name) {
           return {
-            filePath: path.relative(this.packageDir, sourceFilePath),
+            filePath: PackageSourceFiles.relativePath(this.packageDir, sourceFilePath),
             isExported: !!(declaration as any).isExported,
           };
         }

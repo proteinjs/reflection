@@ -5,6 +5,8 @@ import { graphSerializer, isInstanceOf } from '@proteinjs/util';
 import { Graph } from '@dagrejs/graphlib';
 import jsesc from 'jsesc';
 import { createSourceGraph } from '../parser/createSourceGraph';
+import { PackageSourceFiles } from '../parser/PackageSourceFiles';
+import { CanonicalSourceGraph } from './CanonicalSourceGraph';
 import { VariableDeclaration, PackageScope, ClassDeclaration, LOADABLE_QUALIFIED_NAME } from '@proteinjs/reflection';
 
 /**
@@ -59,8 +61,11 @@ export async function writeGeneratedIndex(
   // - If override provided, re-export from that (path relative to generated dir, without extension)
   // - Else fallback to the current default: '<packageRoot>/index'
   const exportTargetNoExt = publicEntryRelOverride
-    ? path.relative(packageGeneratedDir, path.join(packageDir, publicEntryRelOverride)).replace(/\.[^/.]+$/, '')
-    : `${path.relative(packageGeneratedDir, packageDir)}/index`;
+    ? PackageSourceFiles.relativePath(packageGeneratedDir, path.join(packageDir, publicEntryRelOverride)).replace(
+        /\.[^/.]+$/,
+        ''
+      )
+    : `${PackageSourceFiles.relativePath(packageGeneratedDir, packageDir)}/index`;
 
   generatedIndex += `\n\n\nexport * from '${exportTargetNoExt}';`;
 
@@ -232,14 +237,16 @@ function getDependencyImportSpecifier(packageDir: string, packageName: string): 
 
 /**
  * The graph exactly as a build emits it: parsed from the package's source roots, with
- * build-time-non-loadable declarations pruned. Owned here so build emit and diagnostic
- * tooling (reflection-doctor drift checks) share one pipeline.
+ * build-time-non-loadable declarations pruned, in canonical order (the serialized graph and
+ * the source links follow it, so the same sources emit the same bytes on every machine).
+ * Owned here so build emit and diagnostic tooling (reflection-doctor drift checks) share one
+ * pipeline.
  */
 export async function createEmittedSourceGraph(packageDir: string, sourceRootsRel: string[]): Promise<Graph> {
   const packageJson = await getPackageJson(packageDir);
   const sourceGraph = await createSourceGraph(packageDir, [], sourceRootsRel);
   removeNonLoadables(sourceGraph, packageJson.name);
-  return sourceGraph;
+  return CanonicalSourceGraph.of(sourceGraph);
 }
 
 function generateSourceGraph(sourceGraph: Graph): string {
@@ -347,7 +354,10 @@ function generateSourceLinks(
 
     // node.filePath is package-relative (never serialized absolute); resolve against the
     // package dir to compute the real import location for the generated index.
-    const relativeImportPath = path.relative(path.dirname(generatedIndexPath), path.join(packageDir, node.filePath));
+    const relativeImportPath = PackageSourceFiles.relativePath(
+      path.dirname(generatedIndexPath),
+      path.join(packageDir, node.filePath)
+    );
     code += `import { ${node.name} } from '${relativeImportPath.replace(/\.[^/.]+$/, '')}';\n`;
     linkableNodes.push(node);
   }
