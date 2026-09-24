@@ -78,7 +78,7 @@ describe('graph emit: package-relative filePaths', () => {
     }
     // Fixture a declares sources under src/ — the graph must actually carry them.
     expect(checked.length).toBeGreaterThan(0);
-    expect(checked.every((p) => p.startsWith('src' + path.sep) || p.startsWith('index.'))).toBe(true);
+    expect(checked.every((p) => p.startsWith('src/') || p.startsWith('index.'))).toBe(true);
   });
 
   it('sourceLink imports still resolve to the linked source files (outcome: links survive)', () => {
