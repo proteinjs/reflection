@@ -57,7 +57,7 @@ export interface ExtendsNotLoadableForeignInterface extends NotLoadableForeignIn
   b: number;
 }
 
-export class ImplementsExtendsLocalNotLoadableInterface implements ExtendsNotLoadableForeignInterface {
+export class ImplementsExtendsNotLoadableForeignInterface implements ExtendsNotLoadableForeignInterface {
   z = 1;
   b = 2;
 }
