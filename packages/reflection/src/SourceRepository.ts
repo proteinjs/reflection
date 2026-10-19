@@ -30,8 +30,28 @@ export class SourceRepository {
   private readonly sourceLinks: { [qualifiedName: string]: any } = {};
   public flattenedSourceGraph: FlattenedSourceGraph = { variables: {}, typeAliases: {}, classes: {}, interfaces: {} };
   // private readonly typeCache: { [type: string]: (ClassDeclaration|VariableDeclaration)[] } = {};
-  private readonly objectCache: { [type: string]: any[] } = {};
-  private readonly namedObjectCache: { [type: string]: NamedObject<any>[] } = {};
+  /**
+   * The resolved objects per type, filled lazily by `objects()` / `objectsWithNames()` and DROPPED WHOLE by every
+   * `merge()`. A merge can carry a `SourceRepositoryFilter` (which changes every type's answer), children of any
+   * cached type at any depth, or a source link for a name already resolved, so the entries one merge can affect
+   * are "any of them" — and merges happen only while the packages' generated indexes load, so the refill is paid
+   * once per package at startup, lazily, by the next read. Before this, an entry filled by a read made before the
+   * graph was whole (a module-scope registry read, a class field initializer, a declaration constructed by the
+   * `objects()` walk itself) stood for the rest of the process: the filter list cached `[]` before a test door
+   * merged its filter ran every later lookup unfiltered, and the spanner sample's `test` database won the default
+   * driver in every server suite (thought verify 39186875346, skills verify 39216898674).
+   */
+  private objectCache: { [type: string]: any[] } = {};
+  private namedObjectCache: { [type: string]: NamedObject<any>[] } = {};
+  /**
+   * The stack of the first filter-list read not yet followed by a merge: recorded when `objectsWithNames` fills
+   * the filter list's entry, reported by the next `merge()` — a read made before the graph was whole was answered
+   * without what the later merge carries, and the reader cannot tell, so the seam is said aloud with the reader's
+   * stack. Once per repository, never a throw: the house has module-scope readers today, and a throw at load
+   * would take the process down where a warning lets it heal (the caches are dropped at that merge).
+   */
+  private prematureFilterReadStack: string | undefined;
+  private prematureFilterReadWarned = false;
 
   /**
    * The global object (realm) this repository was created for. `get()` anchors the singleton on
@@ -155,6 +175,14 @@ export class SourceRepository {
     }
 
     this.namedObjectCache[extendingType] = namedObjects;
+    if (
+      extendingType === SOURCE_REPOSITORY_FILTER_QUALIFIED_NAME &&
+      !this.prematureFilterReadWarned &&
+      this.prematureFilterReadStack === undefined
+    ) {
+      this.prematureFilterReadStack = new Error().stack || '(no stack available)';
+    }
+
     return namedObjects;
   }
 
@@ -253,6 +281,7 @@ export class SourceRepository {
       SourceRepository.get().sourceGraph,
       SourceRepository.get().sourceLinks
     );
+    SourceRepository.get().graphMerged(sourceLinks);
   }
 
   private static deserializeClass(classJson: any): any {
@@ -267,6 +296,34 @@ export class SourceRepository {
     }
 
     return classJson;
+  }
+
+  /**
+   * After a graph merged: every resolved object is dropped (the next read re-resolves over the whole graph), and a
+   * filter-list read that preceded this merge is said aloud once — it was answered before the graph was whole. The
+   * merging package is named from the merged source links (a generated index links its own declarations only).
+   */
+  private graphMerged(sourceLinks: { [qualifiedName: string]: any }) {
+    this.objectCache = {};
+    this.namedObjectCache = {};
+    if (this.prematureFilterReadStack === undefined || this.prematureFilterReadWarned) {
+      return;
+    }
+
+    this.prematureFilterReadWarned = true;
+    const packageNames: string[] = [];
+    for (const qualifiedName of Object.keys(sourceLinks)) {
+      const node = this.sourceGraph.node(qualifiedName);
+      const packageName: string | undefined = node && node.packageName;
+      if (packageName && packageNames.indexOf(packageName) < 0) {
+        packageNames.push(packageName);
+      }
+    }
+
+    const mergedPackages = packageNames.length > 0 ? packageNames.join(', ') : '(a graph with no source links)';
+    console.warn(
+      `[@proteinjs/reflection] ${SOURCE_REPOSITORY_FILTER_QUALIFIED_NAME} was read before the source graph was whole: the graph of ${mergedPackages} merged after the read. Every registry answer given before this merge was resolved without what it carries (its filters among them); the resolved objects are dropped now, so the next read is whole — but a reader that acted on an early answer acted on a stale one. Read the registry at use (a getter, or inside the method that needs it), never at module scope, in a class field initializer or in a declaration's constructor. The read's stack:\n${this.prematureFilterReadStack}`
+    );
   }
 
   // objects<T>(type: string): T[] {
