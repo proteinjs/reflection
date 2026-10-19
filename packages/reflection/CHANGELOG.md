@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.2](https://github.com/proteinjs/reflection/compare/@proteinjs/reflection@1.2.1...@proteinjs/reflection@1.2.2) (2026-10-19)
+
+
+### Bug Fixes
+
+* **reflection:** a merge drops the resolved-object caches, and a filter-list read before the graph was whole is said aloud once ([7073d70](https://github.com/proteinjs/reflection/commit/7073d705fa992410faabba77382e56b3e2c993cb))
+
+
+
+
+
 ## [1.2.1](https://github.com/proteinjs/reflection/compare/@proteinjs/reflection@1.2.0...@proteinjs/reflection@1.2.1) (2026-09-13)
 
 **Note:** Version bump only for package @proteinjs/reflection

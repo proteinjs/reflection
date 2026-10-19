@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.1.1](https://github.com/proteinjs/reflection/compare/@proteinjs/reflection-build@2.1.0...@proteinjs/reflection-build@2.1.1) (2026-10-19)
+
+**Note:** Version bump only for package @proteinjs/reflection-build
+
+
+
+
+
 # [2.1.0](https://github.com/proteinjs/reflection/compare/@proteinjs/reflection-build@2.0.3...@proteinjs/reflection-build@2.1.0) (2026-09-24)
 
 
