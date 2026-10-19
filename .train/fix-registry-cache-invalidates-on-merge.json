@@ -1,0 +1,11 @@
+{
+  "branch": "fix/registry-cache-invalidates-on-merge",
+  "packages": ["reflection"],
+  "suites": [
+    "packages/reflection/test/SourceRepository.mergeInvalidatesCache.test.ts",
+    "packages/reflection/test/SourceRepository.abstract.test.ts",
+    "packages/reflection/test/SourceRepository.objectsWithNames.test.ts",
+    "packages/reflection/test/SourceRepository.realm.test.ts"
+  ],
+  "removes": []
+}
